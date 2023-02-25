@@ -1,0 +1,38 @@
+<%-include('../layouts/header.ejs') %>
+
+
+<div class="body">
+    <title>Login Page</title>
+
+   
+
+   
+
+    <div class="login-page">
+    
+      <div class="avatar">
+        <img src="https://cdn.pixabay.com/photo/2014/04/02/14/10/female-306407_960_720.png" alt="Avatar">
+      </div>
+      <div class="form">
+        <h2>Login</h2>
+        <% 
+        if(typeof message!=='undefined'){
+            %>
+            <h6 style="color: red;"><%= message %></h6>
+            <%            
+        }
+    
+    %>
+  
+        <form action="/login" method="post">
+          <input type="text" name="email" required placeholder="Email">
+          <input type="password" name="password" required placeholder="Password">
+          <button>Log in</button>
+        </form>
+        <p class="message">Not registered? <a href="http://localhost:3000/register">Create an account</a></p>
+        <p class="message">Forgot your password? <a href="/forget">Click here to reset </a></p>
+      </div>
+    </div>
+  </div>
+
+<%-include('../layouts/footer.ejs') %>

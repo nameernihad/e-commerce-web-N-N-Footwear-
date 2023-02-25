@@ -1,0 +1,36 @@
+<%-include('../layouts/header.ejs') %>
+
+
+<div class="body">
+    <title>Udmin Login Page</title>
+
+   
+
+   
+
+    <div class="login-page">
+    
+      <div class="avatar">
+        <img src="https://cdn.pixabay.com/photo/2014/04/02/14/10/female-306407_960_720.png" alt="Avatar">
+      </div>
+      <div class="form">
+        <h2>Admin Login</h2>
+        <% 
+        if(typeof message!=='undefined'){
+            %>
+            <h6 style="color: red;"><%= message %></h6>
+            <%            
+        }
+    
+    %>
+  
+        <form action="" method="post">
+          <input type="text" name="email" required placeholder="Email">
+          <input type="password" name="password" required placeholder="Password">
+          <button>Log in</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<%-include('../layouts/footer.ejs') %>
