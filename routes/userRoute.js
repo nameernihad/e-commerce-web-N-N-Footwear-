@@ -2,13 +2,13 @@ const bodyParser = require("body-parser");
 const express = require("express")
 const user_route = express();
 const session = require('express-session');
-
 const config  = require("../config/config");
+
 
 user_route.use(session({secret:config.sessionSecret}));
 
-user_route.route('./sent-otp').post(sentOTP);
-user_route.route('./verify-otp').post(verifyOTP);
+// user_route('./sent-otp').post(sentOTP);
+// user_route('./verify-otp').post(verifyOTP);
 
 
 const auth = require('../Middleware/auth');
@@ -50,6 +50,14 @@ user_route.post('/forget-password',userController.resetPassword);
 user_route.get('/verification',userController.verificationLoad);
 
 user_route.post('/verification',userController.sendVerification);
+
+user_route.get('/phoneNum',userController.phoneCheck);
+
+user_route.post('/phoneNum',userController.sentOTP);
+
+user_route.get('/otp',userController.verifyOTP);
+
+
 
 
 

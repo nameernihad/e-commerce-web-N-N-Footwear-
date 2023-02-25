@@ -9,11 +9,12 @@ const nodemailer = require('nodemailer');
 const config = require('../config/config');
 
 const Randormstring = require('Randomstring');
+const { json } = require('body-parser');
 
 
 const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = process.env;
 const client  = require('twilio')( TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, {
-    lazyLoading: true;
+    lazyLoading: true
 })
 
 
@@ -159,10 +160,11 @@ const insertUser = async(req,res)=>{
                  const userData = await user.save();
                 
         if(userData){
+            
          sentVerifyMail(req.body.name, req.body.email, userData._id);
             
 
-             res.render("registration",{message:"Congratulations, Verifivation message is sended, please verify your email.."});
+             res.render("registration",{message:"   Congratulations, Verifivation message is sended, please verify your email.."});
              message==null;
         }
         else {
@@ -189,6 +191,79 @@ const VerifyMail = async(req, res)=>{
        
     }
 }
+
+
+
+const phoneCheck = async(req,res)=>{
+try {
+   await res.render('phoneNumber',{message:""}); 
+}
+ catch (error) {
+    console.log(error.message);
+    console.log("phonecheck");
+}
+
+}
+
+
+const sentOTP = async(req,res,next) =>{
+    const { countryCode, phoneNumber } = req.body;
+
+try {
+   
+    const check = await user.findOne({phone:{ countryCode, phoneNumber } })
+    
+    if(check){
+    const otpResponse  = await client.verify.v2
+        v2.services(TWILIO_SERVICE_SID)
+        .verifications.create({
+            to: `+${countryCode}${phoneNumber}`,
+            channel:"sms",
+        });
+        
+        res.render('otp',{message:{ countryCode, phoneNumber } })
+    }
+    else{
+        res.render('phoneNumber',{message:'This Number Is Not Registerd'})
+    }
+} catch (error) {
+   console.log(error.message);
+   console.log(sentOTP);
+
+}
+
+};
+
+
+const verifyOTP = async(req,res,next)=>{
+    const {countryCode, phoneNumber, otp } = req.body;
+
+    try {
+        const verifiedResponse = await client.verify.v2
+        v2.services(TWILIO_SERVICE_SID)
+        .verificationChecks.create({
+            to: `+${countryCode}${phoneNumber}`,
+            code: otp,
+        });
+        if (verifiedResponse.status=='approved') {
+            const userDetails = User.findOne({phone:phoneNumber})
+            req.session.user_id = userDetails._id
+            res.redirect('user_homr');
+            console.log("otp goted");
+            
+        } else {
+            res.remder('otp',{message:"incorrect otp"});
+            console.log("otp false");
+        }
+
+    } 
+    catch (error) {
+      console.log(error.message);
+    }
+}
+
+
+
 
 
 
@@ -444,6 +519,8 @@ module.exports = {
     loadRegister,
     insertUser,
     VerifyMail,
+    sentOTP,
+    verifyOTP ,
     loginload,
     verifyLogin,
     loadHome,
@@ -453,5 +530,7 @@ module.exports = {
     forgetPasswordLoad,
     resetPassword,
     verificationLoad,
-    sendVerification
+    sendVerification,
+    phoneCheck ,
+
 }
