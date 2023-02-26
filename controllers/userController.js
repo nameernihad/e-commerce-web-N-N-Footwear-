@@ -58,7 +58,7 @@ const sentVerifyMail = async( name, email , user_id)=>{
          from:config.emailUser,
         to: email,
         subject:'For verification mail',
-        html:'<p>hay '+name+',please click here to <a href="http://localhost:3000/verify?id='+user_id+'">verify</a> your mail.</p>'
+        html:'<p>hay '+name+',please click here to <a href="http://localhost:8080/verify?id='+user_id+'">verify</a> your mail.</p>'
        
        }
        transporter.sendMail(mailOption, function(error,info){
@@ -196,39 +196,43 @@ const VerifyMail = async(req, res)=>{
 
 const phoneCheck = async(req,res)=>{
 try {
-   await res.render('phoneNumber',{message:""}); 
+    // console.log('phonecheck');
+    res.render('phoneNumber',{message:""}); 
+    
 }
  catch (error) {
     console.log(error.message);
-    console.log("phonecheck");
+    console.log("phonecheck error");
 }
 
 }
 
 
 const sentOTP = async(req,res,next) =>{
-    const { countryCode, phoneNumber } = req.body;
+   console.log("otp sent");
 
 try {
+    console.log('setotp');
+    const num =  req.body.phone;
    
-    const check = await user.findOne({phone:{ countryCode, phoneNumber } })
+    const check = await user.findOne({phone:num })
     
     if(check){
-    const otpResponse  = await client.verify.v2
+    const otpResponse  = await client.verify.
         v2.services(TWILIO_SERVICE_SID)
         .verifications.create({
-            to: `+${countryCode}${phoneNumber}`,
+            to: num,
             channel:"sms",
         });
         
-        res.render('otp',{message:{ countryCode, phoneNumber } })
+        res.render('otp',{message:num});
     }
     else{
         res.render('phoneNumber',{message:'This Number Is Not Registerd'})
     }
 } catch (error) {
    console.log(error.message);
-   console.log(sentOTP);
+   console.log("sentOTP error");
 
 }
 
@@ -240,7 +244,7 @@ const verifyOTP = async(req,res,next)=>{
 
     try {
         const verifiedResponse = await client.verify.v2
-        v2.services(TWILIO_SERVICE_SID)
+        .services(TWILIO_SERVICE_SID)
         .verificationChecks.create({
             to: `+${countryCode}${phoneNumber}`,
             code: otp,

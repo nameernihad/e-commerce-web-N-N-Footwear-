@@ -4,36 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="public/stylesheet/style.css">
+    <link rel="stylesheet" href="stylesheet/style.css">
     <title>Document</title>
 </head>
 <body>
     
     <div id="content">
-    <img src="https://www.seekpng.com/png/detail/105-1057578_n-blem-logo-png-transparent-logo-de-una.png" alt="Logo" id="logo">
+    <!-- <img src="https://www.seekpng.com/png/detail/105-1057578_n-blem-logo-png-transparent-logo-de-una.png" alt="Logo" id="logo"> -->
     <h1>Phone Number Verification</h1>
     <h3>Pleace Enter Your Phone Number Here </h3>
 
-    <form action=""  class="form" method="post">
+    <form action="/phoneNum"  class="form" method="post">
     
         <div class="form-outline mb-4  " >
             <label class="form-label"  for="form3Example3cg">phone:-</label>
             <input type="phone" name="phone" id="form3Example3cg" placeholder="Phone" class="form-control form-control-lg" style="height: 25px; margin-bottom: 20px;" />
             
           </div>
-      </form>
-      if(typeof message !=='undefined'){
-        %>
+    
+      <%  
 
-        <p style="color: green;"><%= message %></p>
-        <%
-      }
-      
-      
-      %>
-    <a href="/otp" id="button" style="margin-top: 5px;">NEXT</a>
+            if(typeof message !=='undefined'){
+              %>
+
+              <p style="color: green;"><%= message %></p>
+              <%
+            }
+            
+            
+            %>
+    <a href="" id="button" style="margin-top: 5px;">NEXT</a>
   </div>
-  
+</form>
 
 
 </body>

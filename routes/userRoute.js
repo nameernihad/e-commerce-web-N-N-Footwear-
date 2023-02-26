@@ -51,11 +51,13 @@ user_route.get('/verification',userController.verificationLoad);
 
 user_route.post('/verification',userController.sendVerification);
 
-user_route.get('/phoneNum',userController.phoneCheck);
+user_route.get('/phoneNum',auth.isLogout, userController.phoneCheck);
 
 user_route.post('/phoneNum',userController.sentOTP);
 
-user_route.get('/otp',userController.verifyOTP);
+// user_route.get('/otp',userController.verifyOTP);
+
+user_route.post('/otp',userController.verifyOTP);
 
 
 
