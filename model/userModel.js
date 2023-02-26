@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema({
     token:{
         type:String,
         default:''
+    },
+    otp:{
+        type:number,
+        default:0
     }
 
     });

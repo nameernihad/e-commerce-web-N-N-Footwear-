@@ -196,7 +196,7 @@ const VerifyMail = async(req, res)=>{
 
 const phoneCheck = async(req,res)=>{
 try {
-    // console.log('phonecheck');
+    console.log('phonecheck');
     res.render('phoneNumber',{message:""}); 
     
 }
@@ -215,17 +215,19 @@ try {
     console.log('setotp');
     const num =  req.body.phone;
    
-    const check = await user.findOne({phone:num })
+    const check = await User.findOne({phone:num })
     
     if(check){
+        console.log("checkotp");
     const otpResponse  = await client.verify.
         v2.services(TWILIO_SERVICE_SID)
         .verifications.create({
             to: num,
             channel:"sms",
         });
-        
+        console.log("otp sented");
         res.render('otp',{message:num});
+    
     }
     else{
         res.render('phoneNumber',{message:'This Number Is Not Registerd'})
@@ -240,19 +242,21 @@ try {
 
 
 const verifyOTP = async(req,res,next)=>{
-    const {countryCode, phoneNumber, otp } = req.body;
-
+   
     try {
-        const verifiedResponse = await client.verify.v2
-        .services(TWILIO_SERVICE_SID)
+        const num = req.body.phone;
+        const otp = req.body.otp;
+        console.log(otp+""+num);
+        const verifiedResponse = await client.verify.
+        v2.services(TWILIO_SERVICE_SID)
         .verificationChecks.create({
-            to: `+${countryCode}${phoneNumber}`,
+            to:num,
             code: otp,
         });
         if (verifiedResponse.status=='approved') {
             const userDetails = User.findOne({phone:phoneNumber})
             req.session.user_id = userDetails._id
-            res.redirect('user_homr');
+            res.redirect('user_home');
             console.log("otp goted");
             
         } else {
