@@ -244,6 +244,7 @@ try {
 const verifyOTP = async(req,res,next)=>{
    
     try {
+        console.log("otp verification");
         const num = req.body.phone;
         const otp = req.body.otp;
         console.log(otp+""+num);

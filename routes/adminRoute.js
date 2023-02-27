@@ -3,6 +3,7 @@ const admin_route = express();
 const session = require('express-session');
 const config = require('../config/config');
 
+
 admin_route.use(session({secret:config.sessionSecret}));
 
 
@@ -15,16 +16,31 @@ admin_route.set('view engine','ejs');
 admin_route.set('views','./views/admin');
 
 
+const auth = require("../Middleware/adminAuth");
+
 const adminController = require('../controllers/adminController');
 
 
-admin_route.get('/',adminController.loadLogin);
+admin_route.get('/', auth.isLogout, adminController.loadLogin);
 
 admin_route.post('/',adminController.verifyLogin);
 
-admin_route.get('/home',adminController.loadDashboard);
+admin_route.get('/home', auth.isLogin, adminController.loadDashboard);
 
-admin_route.get('*',function(req,res) {
+admin_route.get('/user', auth.isLogin,adminController.loadUser);
+
+admin_route.get('/logout', auth.isLogin,adminController.logout);
+
+admin_route.get('/forget', auth.isLogout,adminController.forgetLoad);
+
+admin_route.post('/forget',adminController.forgetVerify);
+
+admin_route.get('/forget-password',adminController.forgetPasswordLoad);
+
+
+// admin_route.get('/product',adminController.loadProduct);
+
+admin_route.get('*',function(req,res){
 
     res.redirect('/admin');
     

@@ -10,6 +10,8 @@ const app =express();
 const path =require('path');
 
 
+// app.use(express.static(path.join(__dirname, "public")));
+
 const { PORT } = process.env;
 const port = 8080 || PORT;
 const jsonParser = bodyParser.json();
@@ -27,7 +29,7 @@ app.use('/admin',adminRoute)
 
 app.use(nocache());
 
-app.use(express.static(path.join('public')))
+app.use(express.static(path.join(__dirname,'public')))
 
 
 app.listen(port,()=>{
