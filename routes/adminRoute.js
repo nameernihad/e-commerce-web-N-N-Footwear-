@@ -27,7 +27,7 @@ admin_route.post('/',adminController.verifyLogin);
 
 admin_route.get('/home', auth.isLogin, adminController.loadDashboard);
 
-admin_route.get('/user', auth.isLogin,adminController.loadUser);
+admin_route.get('/user',adminController.loadUser);
 
 admin_route.get('/logout', auth.isLogin,adminController.logout);
 
@@ -35,16 +35,22 @@ admin_route.get('/forget', auth.isLogout,adminController.forgetLoad);
 
 admin_route.post('/forget',adminController.forgetVerify);
 
-admin_route.get('/forget-password',adminController.forgetPasswordLoad);
+admin_route.get('/forget-password', auth.isLogout,adminController.forgetPasswordLoad);
+
+admin_route.post('/forget-password',adminController.resetPassword);
+
+admin_route.get('/block_user',adminController.blockUser);
+
+admin_route.get('/unblock_user',adminController.unblockUser);
 
 
 // admin_route.get('/product',adminController.loadProduct);
 
-admin_route.get('*',function(req,res){
+// admin_route.get('*',function(req,res){
 
-    res.redirect('/admin');
+//     res.redirect('/admin');
     
-})
+// })
 
 module.exports = admin_route;
 

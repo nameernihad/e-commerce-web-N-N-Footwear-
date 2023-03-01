@@ -1,10 +1,22 @@
 const User = require("../model/userModel");
-const bycrpt = require('bcrypt');
 const randomstring = require('randomstring');
 const config = require("../config/config");
 const nodemailer = require('nodemailer');
+const bycrpt = require('bcrypt');
 
+// password securing 
+const securePassword = async(password)=>{
 
+    try {
+        
+      const passwordHash = await bycrpt.hash(password, 10);
+      return passwordHash;
+
+    } catch (error) {
+        console.log(error.message);
+    }
+
+}
 
 
 // for reset password sent mail
@@ -92,7 +104,7 @@ const verifyLogin = async(req,res)=>{
             else{
 
                 req.session.user_id = adminData._id;
-                res.redirect('/admin/home')
+                res.render('admin_home')
             }
 
 
@@ -134,8 +146,9 @@ const loadDashboard = async(req,res)=>{
 const loadUser = async(req,res)=>{
 
     try {
-        const  userData = await User.findOne({_id:req.session.user_id});
-        res.render('user_managment',{admin:userData});
+       
+        const  userData = await User.find({is_admin:0});
+        res.render('user_managment',{users:userData});
 
     } catch (error) {
         console.log(error.message);
@@ -209,7 +222,7 @@ const forgetPasswordLoad = async(req,res)=>{
 
        const tokenData = await User.findOne({token:token});
        if (tokenData) {
-        res.render('email-verified',{user_id:tokenData._id});
+        res.render('forget-password',{user_id:tokenData._id});
 
        } else {
         res.render('404')
@@ -223,6 +236,41 @@ const forgetPasswordLoad = async(req,res)=>{
 
 }
 
+const resetPassword = async(req,res)=>{
+    try {
+        
+        const password = req.body.password;
+        const user_id =  req.body.user_id;
+        console.log(password);
+        const securepassword = await securePassword(password);
+    const updatedData =  await User.findByIdAndUpdate({_id:user_id},{$set:{password:securepassword,token:''}})  
+
+        res.redirect('/admin');
+    } 
+    catch (error) {
+       console.log(error.message);
+        console.log("resetpassword");
+    }
+}
+
+const blockUser = async(req,res)=>{
+    try {
+        
+        const id = req.query.id;
+       const blockedUser = await User.updateOne({_id:user_id},{block:true});
+
+    }
+     catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const unblockUser = async(req,res)=>{
+    const id = req.query.id;
+    const blockedUser = await User.updateOne({_id:user_id},{block:false});
+}
+
 module.exports = {
     loadLogin,
     verifyLogin,
@@ -231,7 +279,10 @@ module.exports = {
     logout,
     forgetLoad,
     forgetVerify,
-    forgetPasswordLoad
+    forgetPasswordLoad,
+    resetPassword,
+    blockUser,
+    unblockUser
 }
 
 

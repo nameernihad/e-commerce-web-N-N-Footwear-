@@ -295,45 +295,62 @@ const verifyLogin = async(req,res)=>{
 
         const email = req.body.email;
         const password = req.body.password;
-
+        
         const userData = await User.findOne({email:email});
+        console.log(userData);
 
         if (userData) {
+            console.log(userData)
+             const passwordMatch= await bcrypt.compare(password,userData.password)
+                console.log("aaaaa")
+                
+              
+    
+            if(passwordMatch){
 
-            const passwordMatch =  await  bcrypt.compare(password,userData.password);
-        if(passwordMatch){
+                if (userData.block===true) {
+                    res.redirect('/login')
+                } else {
+                   
+                    if(userData.is_verified === 0){
+                        console.log("verify==0");
+                          res.render('user_login',{message:"Please verify your mail." })
+                         
+                        }
+                        else{
+                            console.log("homeee")
+                            req.session.user_id = userData._id;
+                            
+                          res.redirect('/home');
+                        }
+                
+                }
 
 
-    if(userData.is_verified === 0){
 
-          res.render('user_login',{message:"Please verify your mail." })
-          message==null;
-        }
-        else{
-            req.session.user_id = userData._id;
-          res.redirect('/home');
-        }
-
+   
              
         }
         else{
              res.render('user_login',{message:"Your Email or password is not valid"})
-             message==null;
+           
         }
         
+    
+
     }else{
 
             res.render('user_login',{message:"Your Email and Password are incorrect"});
-            message==null;
+           
         }
 
 
     } catch (error) {
         console.log(error.message);
-       
-        
+       console.log("login error");
     }
 }
+
 
 const loadHome = async(req,res)=>{
 
