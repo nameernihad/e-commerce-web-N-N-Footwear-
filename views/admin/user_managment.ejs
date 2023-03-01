@@ -21,7 +21,7 @@
   <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="/assets/img/favicon.png">
   <title>
-    Material Dashboard 2 by Creative Tim
+    N&N FOOTWEAR
   </title>
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
@@ -34,6 +34,7 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <!-- CSS Files -->
   <link id="pagestyle" href="/assets/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -57,7 +58,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" href="../pages/tables.html">
+          <a class="nav-link text-white active bg-gradient-primary" href="/admin/user">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
@@ -65,7 +66,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/billing.html">
+          <a class="nav-link text-white " href="/admin/productList">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">receipt_long</i>
             </div>
@@ -112,7 +113,7 @@
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">login</i>
             </div>
-            <span class="nav-link-text ms-1">Sign In</span>
+            <span class="nav-link-text ms-1">LOG OUT</span>
           </a>
         </li>
         <li class="nav-item">
@@ -136,11 +137,8 @@
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
-          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Tables</li>
-          </ol>
-          <h6 class="font-weight-bolder mb-0">Tables</h6>
+         
+          <h6 class="font-weight-bolder mb-0">User Management</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -268,21 +266,22 @@
               <td><%= users[i].email %></td>
               <td><%= users[i].phone %></td>
               <td><%
-                if(users[i].is_varified == 0){
+                if(users[i].is_verified === 0){
                   %>
-                  <ul><li style="color: red; font-size: 40px;" ></li></ul>
+                  <button type="button" class="btn" style="background-color: rgb(245, 38, 15);">NV</button>
 
                   <%
                 }
                 else{
                   %>
-                  <ul style="color: green; font-size: 40px;"><li></li></ul>
+                  
+                  <button type="button" class="btn " style="background-color: rgb(15, 244, 15);">Verified</button>
                   <%
                 }
                 %>
               </td>
-              <td><button style="background-color: red;"><a href="/admin/block_user" onclick="return confirm('Do You Want To Block ')">Block</a> </button></td>
-              <td><button style="background-color: rgb(15, 239, 41);"><a href="/admin/unblock_user" onclick="return confirm('Do You Want To UNBLOCK ')">UNBLOCK</a> </button></td>
+              <td><button type="button" class="btn btn-danger"><a style="text-decoration: none; color: rgb(18, 18, 18);" href="/admin/block_user" onclick="return confirm('Do You Want To Block ')">Block</a></button></td>
+              <td><button type="button" class="btn btn-success"><a style="text-decoration: none; color: rgb(18, 18, 18);" href="/admin/unblock_user" onclick="return confirm('Do You Want To UNBLOCK ')">UNBLOCK</a> </button></td>
             </tr>
             <%
           }

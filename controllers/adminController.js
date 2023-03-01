@@ -1,4 +1,5 @@
 const User = require("../model/userModel");
+const Product = require('../model/productModel');
 const randomstring = require('randomstring');
 const config = require("../config/config");
 const nodemailer = require('nodemailer');
@@ -268,8 +269,59 @@ const blockUser = async(req,res)=>{
 
 const unblockUser = async(req,res)=>{
     const id = req.query.id;
-    const blockedUser = await User.updateOne({_id:user_id},{block:false});
+    const unblockedUser = await User.updateOne({_id:user_id},{block:false});
 }
+
+const ProductForm = async(req,res)=>{
+    try {
+        
+      
+        res.render('productAdd');
+
+    } 
+    catch (error) {
+        console.log(error.message);
+        console.log("productAdd");
+    }
+}
+
+const productList = async(req,res)=>{
+    try {
+        const  productData = await Product.find();
+        res.render('product-List',{products:productData}); 
+        
+
+    } 
+    catch (error) {
+     console.log(error.message);
+     console.log("pro list")   
+    }
+}
+
+const ProductInsert = async(req,res)=>{
+    try {
+       const product = new Product({
+        name:req.body.name,
+        price:req.body.price,
+        discription:req.body.Discription,
+        Image:req.file.filename,
+        category:req.body.Category,
+        brand:req.body.brand,
+        quantity:req.body.quantity,
+        })
+
+        const productData =  await product.save();
+
+        
+    } 
+    catch (error) {
+       console.log(error.message);
+       console.log("pro -insert"); 
+    }
+}
+
+
+
 
 module.exports = {
     loadLogin,
@@ -282,7 +334,10 @@ module.exports = {
     forgetPasswordLoad,
     resetPassword,
     blockUser,
-    unblockUser
+    unblockUser,
+    ProductForm,
+    productList,
+    ProductInsert
 }
 
 
