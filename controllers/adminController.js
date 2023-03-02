@@ -1,5 +1,6 @@
 const User = require("../model/userModel");
 const Product = require('../model/productModel');
+const Category = require('../model/Category');
 const randomstring = require('randomstring');
 const config = require("../config/config");
 const nodemailer = require('nodemailer');
@@ -258,7 +259,8 @@ const blockUser = async(req,res)=>{
     try {
         
         const id = req.query.id;
-       const blockedUser = await User.updateOne({_id:user_id},{block:true});
+       const blockedUser = await User.findByIdAndUpdate({_id:id},{$set:{block:true}});
+       res.redirect('/admin/user')
 
     }
      catch (error) {
@@ -268,13 +270,14 @@ const blockUser = async(req,res)=>{
 
 
 const unblockUser = async(req,res)=>{
-    const id = req.query.id;
-    const unblockedUser = await User.updateOne({_id:user_id},{block:false});
+    const userid = req.query.id;
+    const unblockedUser = await User.findByIdAndUpdate({_id:userid},{$set:{block:false}});
+    res.redirect('/admin/user')
 }
 
 const ProductForm = async(req,res)=>{
     try {
-        
+         
       
         res.render('productAdd');
 
@@ -311,7 +314,7 @@ const ProductInsert = async(req,res)=>{
         })
 
         const productData =  await product.save();
-
+        res.redirect('/admin/productform')
         
     } 
     catch (error) {
@@ -320,8 +323,63 @@ const ProductInsert = async(req,res)=>{
     }
 }
 
+const categoryList = async(req,res)=>{
+    try {
+        
+        const  categoryData = await Category.find();
+        res.render('categoryList',{categorys:categoryData}); 
 
 
+
+    }
+     catch (error) {
+        console.log(error.message);
+        console.log("category list");
+}
+}
+
+const categoryInsert = async(req,res)=>{
+    try {
+      const category =  new Category({
+        name:req.body.name,
+        image:req.file.filename,
+        discription:req.body.discription,
+      })
+
+      const categoryData = await category.save();
+    } 
+    catch (error) {
+        console.log(error.message);
+        console.log("cat - insert");
+    }
+}
+
+
+const categoryAdd = async(req,res)=>{
+    try {
+        
+        res.render('categoryAdd');
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const deleteProduct = async(req,res)=>{
+
+    try {
+        
+        const product_id = req.query.id
+        await Product.deleteOne({_id : product_id}) ;
+        res.redirect('/admin/productList')
+
+    }
+     catch (error) {
+    console.log(error.message);
+    console.log("deleteProduct");    
+    }
+
+}
 
 module.exports = {
     loadLogin,
@@ -337,7 +395,11 @@ module.exports = {
     unblockUser,
     ProductForm,
     productList,
-    ProductInsert
+    ProductInsert,
+    categoryList,
+    categoryInsert,
+    categoryAdd,
+    deleteProduct
 }
 
 

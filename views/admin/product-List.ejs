@@ -73,21 +73,14 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/virtual-reality.html">
+          <a class="nav-link text-white " href="/admin/categoryList">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">view_in_ar</i>
             </div>
-            <span class="nav-link-text ms-1">Virtual Reality</span>
+            <span class="nav-link-text ms-1">Category</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/rtl.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
-            </div>
-            <span class="nav-link-text ms-1">RTL</span>
-          </a>
-        </li>
+        
         <li class="nav-item">
           <a class="nav-link text-white " href="../pages/notifications.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -259,6 +252,7 @@
           <th scope="col">Quantity</th>
            <th scope="col">Stock</th>
            <th scope="col">Image</th>
+           <th scope="col">Delete</th>
          </tr>
        </thead>
        <% products.forEach((value,index)=>{%>
@@ -277,7 +271,11 @@
               <% } %> 
            </td> 
            <td> <img src="/product/<%= value.Image[0] %>" alt="" style="width: 80px;" height="80px"></td>
+
+           <td><button type="button"  class="btn" style="background-color: rgb(232, 14, 14); color: #000;"> <a href="/admin/deleteProduct?id=<%= value._id %>">Delete</a> </button></td>
         </tr>
+          
+
        <% })%>
       
   <!--   Core JS Files   -->

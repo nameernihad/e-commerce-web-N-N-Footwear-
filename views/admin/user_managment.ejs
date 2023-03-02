@@ -82,14 +82,6 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/rtl.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
-            </div>
-            <span class="nav-link-text ms-1">Brands</span>
-          </a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link text-white " href="../pages/notifications.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">notifications</i>
@@ -280,8 +272,8 @@
                 }
                 %>
               </td>
-              <td><button type="button" class="btn btn-danger"><a style="text-decoration: none; color: rgb(18, 18, 18);" href="/admin/block_user" onclick="return confirm('Do You Want To Block ')">Block</a></button></td>
-              <td><button type="button" class="btn btn-success"><a style="text-decoration: none; color: rgb(18, 18, 18);" href="/admin/unblock_user" onclick="return confirm('Do You Want To UNBLOCK ')">UNBLOCK</a> </button></td>
+              <td><button type="button" class="btn btn-danger"><a style="text-decoration: none; color: rgb(18, 18, 18);" href="/admin/block_user?id=<%= users[i]._id %>" onclick="return confirm('Do You Want To Block ')">Block</a></button></td>
+              <td><button type="button" class="btn btn-success"><a style="text-decoration: none; color: rgb(18, 18, 18);" href="/admin/unblock_user?id=<%= users[i]._id %>" onclick="return confirm('Do You Want To UNBLOCK ')">UNBLOCK</a> </button></td>
             </tr>
             <%
           }

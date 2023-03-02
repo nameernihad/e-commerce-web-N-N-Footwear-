@@ -1,5 +1,7 @@
 const User = require('../model/userModel');
 
+
+
 const { unsubscribe } = require('../routes/userRoute');
 
 const bcrypt = require('bcrypt');
@@ -242,11 +244,12 @@ try {
 
 
 const verifyOTP = async(req,res,next)=>{
-   
+   console.log("verifyOTP");
     try {
         console.log("otp verification");
         const num = req.body.phone;
         const otp = req.body.otp;
+        console.log("phone&otp");
         console.log(otp+""+num);
         const verifiedResponse = await client.verify.
         v2.services(TWILIO_SERVICE_SID)
@@ -255,13 +258,13 @@ const verifyOTP = async(req,res,next)=>{
             code: otp,
         });
         if (verifiedResponse.status=='approved') {
-            const userDetails = User.findOne({phone:phoneNumber})
+            const userDetails = User.findOne({phone:num})
             req.session.user_id = userDetails._id
             res.redirect('user_home');
             console.log("otp goted");
             
         } else {
-            res.remder('otp',{message:"incorrect otp"});
+            res.render('otp',{message:"incorrect otp"});
             console.log("otp false");
         }
 
@@ -309,7 +312,7 @@ const verifyLogin = async(req,res)=>{
             if(passwordMatch){
 
                 if (userData.block===true) {
-                    res.redirect('/login')
+                    res.redirect('/login',{message:"You are banned by the admin"})
                 } else {
                    
                     if(userData.is_verified === 0){

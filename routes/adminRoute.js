@@ -28,6 +28,21 @@ const upload = multer({storage:storage});
 
 
 
+
+    const storageCategory = multer.diskStorage({
+        destination:function(req,file,cb){
+            cb(null,path.join(__dirname,'../public/categoryImages'));
+        },
+        filename:function(req,file,cb){
+            const name =Date.now()+'-'+file.originalname;
+            cb(null,name);
+        }
+    })
+
+const uploadCategory = multer({storage:storageCategory});
+
+
+
 admin_route.set('view engine','ejs');
 admin_route.set('views','./views/admin');
 // admin_route.set('views','./views/admin/products');
@@ -65,6 +80,18 @@ admin_route.get('/productform',adminController.ProductForm);
 admin_route.post('/productform',upload.single('image'), adminController.ProductInsert);
 
 admin_route.get('/productList',adminController.productList);
+
+admin_route.get('/categoryList',adminController.categoryList);
+
+admin_route.get('/categoryAdd',adminController.categoryAdd);
+
+admin_route.post('/categoryAdd',uploadCategory.single('image'),adminController.categoryInsert);
+
+admin_route.get('/deleteProduct',adminController.deleteProduct);
+
+
+
+
 
 
 // admin_route.get('/product',adminController.loadProduct);
