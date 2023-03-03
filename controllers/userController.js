@@ -168,6 +168,8 @@ const insertUser = async(req,res)=>{
 
              res.render("registration",{message:"   Congratulations, Verifivation message is sended, please verify your email.."});
              message==null;
+        }else if (email===""|| password===""){
+            res.redirect('/register',{message:"enter valid inputs"})
         }
         else {
        res.render("registration",{message:"Oops something wrong..."});
@@ -260,7 +262,7 @@ const verifyOTP = async(req,res,next)=>{
         if (verifiedResponse.status=='approved') {
             const userDetails = User.findOne({phone:num})
             req.session.user_id = userDetails._id
-            res.redirect('user_home');
+            res.render('user_home');
             console.log("otp goted");
             
         } else {
@@ -296,58 +298,46 @@ const loginload = async(req,res)=>{
 const verifyLogin = async(req,res)=>{
     try {
 
-        const email = req.body.email;
-        const password = req.body.password;
-        
-        const userData = await User.findOne({email:email});
-        console.log(userData);
-
+    const email = req.body.email;
+    const password = req.body.password;
+    const userData = await User.findOne({email:email});
+    console.log(userData);
+    if(email==="" || password === ""){
+    res.redirect('/login',{message:"please enter valid input"})
+        }else{
         if (userData) {
-            console.log(userData)
-             const passwordMatch= await bcrypt.compare(password,userData.password)
-                console.log("aaaaa")
-                
-              
-    
-            if(passwordMatch){
+        console.log(userData)
+            const passwordMatch= await bcrypt.compare(password,userData.password)
+             console.log("aaaaa")
 
-                if (userData.block===true) {
+                if(passwordMatch){
+                  if (userData.block===true) {
                     res.redirect('/login',{message:"You are banned by the admin"})
-                } else {
+                    } else {
                    
-                    if(userData.is_verified === 0){
-                        console.log("verify==0");
-                          res.render('user_login',{message:"Please verify your mail." })
-                         
-                        }
-                        else{
-                            console.log("homeee")
-                            req.session.user_id = userData._id;
-                            
-                          res.redirect('/home');
-                        }
-                
+            if(userData.is_verified === 0){
+            console.log("verify==0");
+            res.render('user_login',{message:"Please verify your mail." })
                 }
-
-
-
-   
-             
+                else{
+                 console.log("homeee")
+             req.session.user_id = userData._id;   
+             res.redirect('/home');
+                }
         }
+    }
         else{
              res.render('user_login',{message:"Your Email or password is not valid"})
            
         }
         
-    
-
     }else{
 
             res.render('user_login',{message:"Your Email and Password are incorrect"});
            
-        }
+    }
 
-
+}
     } catch (error) {
         console.log(error.message);
        console.log("login error");

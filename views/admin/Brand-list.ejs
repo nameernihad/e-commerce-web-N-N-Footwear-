@@ -73,7 +73,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white active bg-gradient-primary" href="/admin/categoryList">
+              <a class="nav-link text-white " href="/admin/categoryList">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="material-icons opacity-10">view_in_ar</i>
                 </div>
@@ -82,9 +82,9 @@
             </li>
           
             <li class="nav-item">
-              <a class="nav-link text-white " href="/admin/brandList">
+              <a class="nav-link text-white active bg-gradient-primary" href="/admin/brandList">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i class="material-icons opacity-10"></i>
+                  <i class="material-icons opacity-10">notifications</i>
                 </div>
                 <span class="nav-link-text ms-1">Brand</span>
               </a>
@@ -132,9 +132,9 @@
               <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                 <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
               </ol>
-              <h6 class="font-weight-bolder mb-0">Category</h6>
+              <h6 class="font-weight-bolder mb-0">brand</h6>
             </nav>
-            <button type="button" class="btn" style="background-color: #e91e63; margin-left: 20px;"><a style="text-decoration: none; color: rgb(43, 40, 42);" href="/admin/categoryAdd">Add Category</a></button>
+            <button type="button" class="btn" style="background-color: #e91e63; margin-left: 20px;"><a style="text-decoration: none; color: rgb(43, 40, 42);" href="/admin/brandAdd">Add Brand</a></button>
             <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
               <div class="ms-md-auto pe-md-3 d-flex align-items-center">
                 <div class="input-group input-group-outline">
@@ -242,30 +242,27 @@
         </nav>
         <!-- End Navbar -->
         
-        
-    
         <table class="table">
-            <thead>
-            <tr>
-          
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-               <th scope="col">Image</th>
-              <th scope="col">Discription</th>
-             </tr>
-           </thead>
-           <% categorys.forEach((value,index)=>{%>
-           <tbody>
-             <tr>
-              <th scope="row"><%= index +1 %></th>
-               <td><%= value.name %></td>
-               <td> <img src="/Category/<%= value.image[0] %>" alt="" style="width: 80px;" height="80px"></td>
-            <td><%= value.discription %></td>
-            <td><button type="button"  class="btn" style="background-color: rgb(232, 14, 14); color: #000;"> <a href="/admin/deleteCategory?id=<%= value._id %>">Delete</a> </button></td>
-
-            </tr>
-           <% })%>
+          <thead>
+          <tr>
         
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+             <th scope="col">Image</th>
+            <th scope="col">Discription</th>
+           </tr>
+         </thead>
+         <% brands.forEach((value,index)=>{%>
+         <tbody>
+           <tr>
+            <th scope="row"><%= index +1 %></th>
+             <td><%= value.name %></td>
+          <td><%= value.discription %></td>
+          <td><button type="button"  class="btn" style="background-color: rgb(232, 14, 14); color: #000;"> <a href="/admin/deleteBrand?id=<%= value._id %>">Delete</a> </button></td>
+
+          </tr>
+         <% })%>
+     
       <!--   Core JS Files   -->
       <script src="../assets/js/core/popper.min.js"></script>
       <script src="../assets/js/core/bootstrap.min.js"></script>

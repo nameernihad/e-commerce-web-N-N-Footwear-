@@ -229,13 +229,13 @@ html {
 
 /* otp page */
 
-html,
+/* html,
 body {
   height: 100%;
   display: grid;
   place-items: center;
   background-color: #bacecf;
-}
+} */
 
 .container {
   width: 400px;

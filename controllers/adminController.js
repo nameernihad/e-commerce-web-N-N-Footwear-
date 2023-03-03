@@ -1,5 +1,6 @@
 const User = require("../model/userModel");
 const Product = require('../model/productModel');
+const Brand = require('../model/Brand')
 const Category = require('../model/Category');
 const randomstring = require('randomstring');
 const config = require("../config/config");
@@ -278,9 +279,15 @@ const unblockUser = async(req,res)=>{
 const ProductForm = async(req,res)=>{
     try {
          
-      
-        res.render('productAdd');
-
+    //   if(req.session.admin)
+      const categoryDetailes =await Category.find({})
+      console.log(categoryDetailes);
+      const brandDetailes = await Brand.find({})
+      console.log(brandDetailes);
+        res.render('productAdd', { 
+            categories: categoryDetailes, 
+            brands: brandDetailes 
+          });
     } 
     catch (error) {
         console.log(error.message);
@@ -328,8 +335,7 @@ const categoryList = async(req,res)=>{
         
         const  categoryData = await Category.find();
         res.render('categoryList',{categorys:categoryData}); 
-
-
+        
 
     }
      catch (error) {
@@ -347,6 +353,7 @@ const categoryInsert = async(req,res)=>{
       })
 
       const categoryData = await category.save();
+      res.redirect('/admin/categoryAdd')
     } 
     catch (error) {
         console.log(error.message);
@@ -381,6 +388,99 @@ const deleteProduct = async(req,res)=>{
 
 }
 
+const deleteCategory = async(req,res)=>{
+
+    try {
+        
+        const category_id = req.query.id
+        await Category.deleteOne({_id : category_id}) ;
+        res.redirect('/admin/categoryList')
+
+    }
+     catch (error) {
+    console.log(error.message);
+    console.log("deleteProduct");    
+    }
+
+}
+
+const deleteBrand = async(req,res)=>{
+
+    try {
+        
+        const Brand_id = req.query.id
+        await Brand.deleteOne({_id : Brand_id}) ;
+        res.redirect('/admin/brandList')
+
+    }
+     catch (error) {
+    console.log(error.message);
+    console.log("deleteProduct");    
+    }
+
+}
+
+
+const brandList = async(req,res)=>{
+    try {
+        
+
+        const  brandData = await Brand.find();
+        res.render('brand-list',{brands:brandData}); 
+        
+
+    }
+     catch (error) {
+        console.log(error.message);
+        console.log("brandlist");
+    }
+}
+
+const brandAdd =async(req,res)=>{
+    try {
+        
+       
+        res.render('BrandAdd'); 
+
+    } 
+    catch (error) {
+        console.log(error.message);
+        console.log("brand add");
+    }
+}
+
+const brandInsert = async(req,res)=>{
+    try {
+        
+        const brand =  new Brand({
+            name:req.body.name,
+           
+            discription:req.body.discription,
+          })
+    
+          const brandData = await brand.save();
+          res.redirect('/admin/brandAdd')
+
+
+    } catch (error) {
+        console.log(error.message);
+        console.log("error insert");
+    }
+
+}
+
+
+const couponAdd = async(req,res)=>{
+    try {
+        
+        res.render("couponAdd")
+
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 module.exports = {
     loadLogin,
     verifyLogin,
@@ -399,7 +499,13 @@ module.exports = {
     categoryList,
     categoryInsert,
     categoryAdd,
-    deleteProduct
+    deleteProduct,
+    brandList,
+    brandAdd,
+    brandInsert,
+    deleteCategory,
+    deleteBrand,
+    couponAdd
 }
 
 

@@ -30,23 +30,15 @@
     
     
     %>
-
-    <div class="wrapper">
-      <input type="text" class="field 1" maxlength="1">
-      <input type="text" class="field 2" maxlength="1">
-      <input type="text" class="field 3" maxlength="1">
-      <input type="text" class="field 4" maxlength="1">
-      <input type="text" class="field 4" maxlength="1">
-      <input type="text" class="field 4" maxlength="1">
+    <form action="/otp" method="post">
+    <div class="">
+      <input type="mobile" placeholder="enter otp"  name="otp">
+    
+      <input type="hidden" value="<%= message %>" name="phone">
     </div>
 
     <button type="submit"> next</button>
-
-    <button class="resend">
-      Resend OTP
-      <i class="fa fa-caret-right"></i>
-    </button>
-  
+  </form>
   </div>
   
 </body>`

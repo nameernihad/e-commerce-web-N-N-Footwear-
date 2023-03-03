@@ -13,10 +13,11 @@ const productSchema = new mongoose.Schema({
         type:Array,
         required:true
     },
-    category:{
-        type:String,
+    category:[{
+        type: String,
+        ref:'categrory',
         required:true
-    },
+    }],
    brand:{
         type:String,
         required:true

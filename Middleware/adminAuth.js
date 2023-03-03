@@ -1,4 +1,4 @@
-const isLogin = async(req,res,next)=>{
+const is_Login = async(req,res,next)=>{
 try {
 
     if(req.session.user_id){ }
@@ -14,7 +14,7 @@ catch (error) {
 }
 }
 
-const isLogout = async(req,res,next)=>{
+const is_Logout = async(req,res,next)=>{
     try {
         
          if (req.session.user_id) {
@@ -32,6 +32,6 @@ const isLogout = async(req,res,next)=>{
 }
 
 module.exports = {
-    isLogin,
-    isLogout
+    is_Login,
+    is_Logout
 }

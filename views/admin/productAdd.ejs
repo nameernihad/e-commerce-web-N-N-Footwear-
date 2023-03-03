@@ -61,11 +61,11 @@
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
-            <span class="nav-link-text ms-1">products</span>
+            <span class="nav-link-text ms-1">User</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" href="/admin/productsList">
+          <a class="nav-link text-white active bg-gradient-primary" href="/admin/productList">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">receipt_long</i>
             </div>
@@ -73,31 +73,31 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/virtual-reality.html">
+          <a class="nav-link text-white " href="/admin/categoryList">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">view_in_ar</i>
             </div>
-            <span class="nav-link-text ms-1">Virtual Reality</span>
+            <span class="nav-link-text ms-1">Category</span>
           </a>
         </li>
         
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/notifications.html">
+          <a class="nav-link text-white " href="/admin/brandList">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">notifications</i>
             </div>
-            <span class="nav-link-text ms-1">Notifications</span>
+            <span class="nav-link-text ms-1">Brand</span>
           </a>
         </li>
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/profile.html">
+          <a class="nav-link text-white " href="./admin/couponAdd">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
-            <span class="nav-link-text ms-1">Profile</span>
+            <span class="nav-link-text ms-1">Coupon</span>
           </a>
         </li>
         <li class="nav-item">
@@ -265,9 +265,12 @@
       <div class="col-md-6">
         <label for="inputState" style="color: black;" class="form-label">Category</label>
         <select id="inputState" class="form-select" name="Category" style="border: 1px solid #bcbcbc;">
-          <option selected>Choose...</option>`
-          <option>men's</option>
-         
+          <option selected>Category list</option>
+          
+            <% categories.forEach((Category) => { %>
+              <option><%= Category.name %></option>
+            <% }); %>
+           
         </select>
       </div>
      
@@ -276,7 +279,10 @@
         <label for="inputState" style="color: black;" class="form-label">Brand</label>
         <select id="inputState" class="form-select" name="brand" style="border: 1px solid #bcbcbc;">
           <option selected>Brand</option>
-         <option>nike</option>
+          <% brands.forEach((brand) => { %>
+            <option><%= brand.name %></option>
+          <% }); %>
+         
            
           
         </select>
