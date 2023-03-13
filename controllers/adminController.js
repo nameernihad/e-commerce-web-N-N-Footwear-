@@ -106,7 +106,7 @@ const verifyLogin = async(req,res)=>{
             }
             else{
 
-                req.session.user_id = adminData._id;
+                req.session.admin_id = adminData._id;
                 res.render('admin_home')
             }
 
@@ -310,16 +310,22 @@ const productList = async(req,res)=>{
 
 const ProductInsert = async(req,res)=>{
     try {
+
+        const Images =[]
+
+        for(file of req.files){
+            Images.push(file.filename)
+        }
        const product = new Product({
         name:req.body.name,
         price:req.body.price,
         discription:req.body.Discription,
-        Image:req.file.filename,
+        Image:Images,
         category:req.body.Category,
         brand:req.body.brand,
         quantity:req.body.quantity,
         })
-
+        console.log(Images);
         const productData =  await product.save();
         res.redirect('/admin/productform')
         
@@ -454,7 +460,7 @@ const brandInsert = async(req,res)=>{
         
         const brand =  new Brand({
             name:req.body.name,
-           
+            image:req.file.filename,
             discription:req.body.discription,
           })
     
@@ -470,6 +476,17 @@ const brandInsert = async(req,res)=>{
 }
 
 
+const couponList = async(req,res)=>{
+    try {
+        
+        res.render("couponList")
+
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 const couponAdd = async(req,res)=>{
     try {
         
@@ -478,6 +495,45 @@ const couponAdd = async(req,res)=>{
 
     } catch (error) {
         console.log(error.message);
+    }
+}
+
+const couponInsert = async(req,res)=>{
+    try {
+        
+        res.redirect("couponAdd")
+
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const editcategory  = async(req,res)=>{
+    try {
+        const id = req.query.id
+        
+        const category = await Category.findOne({_id:id})
+        res.render('editCategoryForm',{category});
+
+
+    } catch (error) {
+        console.log(error.message);
+        console.log("edit category");
+    }
+}
+
+const updatecategory = async(req,res)=>{
+    try {
+        
+        const id = req.query.id
+        console.log(id);
+       const updatedData = await Category.findByIdAndUpdate({_id:id},{$set:{ name:req.body.name,discription:req.body.discription,}});
+        res.redirect('/admin/categoryList')
+
+    } catch (error) {
+        console.log(error.message);
+        console.log("update category");
     }
 }
 
@@ -505,7 +561,11 @@ module.exports = {
     brandInsert,
     deleteCategory,
     deleteBrand,
-    couponAdd
+    couponList,
+    couponAdd,
+    editcategory,
+    updatecategory,
+    couponInsert
 }
 
 

@@ -1,6 +1,12 @@
 const User = require('../model/userModel');
 
+const coupon = require('../model/coupon');
 
+const product = require('../model/productModel');
+
+const category = require('../model/Category');
+
+const brand = require('../model/Brand');
 
 const { unsubscribe } = require('../routes/userRoute');
 
@@ -12,6 +18,7 @@ const config = require('../config/config');
 
 const Randormstring = require('Randomstring');
 const { json } = require('body-parser');
+const mongoose = require('mongoose')
 
 
 const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = process.env;
@@ -301,43 +308,41 @@ const verifyLogin = async(req,res)=>{
     const email = req.body.email;
     const password = req.body.password;
     const userData = await User.findOne({email:email});
-    console.log(userData);
-    if(email==="" || password === ""){
-    res.redirect('/login',{message:"please enter valid input"})
-        }else{
+    
+
+
+
         if (userData) {
-        console.log(userData)
+       
             const passwordMatch= await bcrypt.compare(password,userData.password)
-             console.log("aaaaa")
+            
 
                 if(passwordMatch){
-                  if (userData.block===true) {
-                    res.redirect('/login',{message:"You are banned by the admin"})
-                    } else {
+                  
+                    if(userData.is_verified === 0){
+                    console.log("verify==0");
+                    res.render('user_login',{message:"Please verify your mail." })
+                        }
+                        else{
+                        console.log("homeee")
+                    req.session.user_id = userData._id;   
+                    res.redirect('/home');
+                        }
+                    }
+                    else{
+                         res.render('user_login',{message:"Your Email or password is not valid"})
+                       
+                    }
+            }else{
+
+                res.render('user_login',{message:"Your Email and Password are incorrect"});
                    
-            if(userData.is_verified === 0){
-            console.log("verify==0");
-            res.render('user_login',{message:"Please verify your mail." })
-                }
-                else{
-                 console.log("homeee")
-             req.session.user_id = userData._id;   
-             res.redirect('/home');
-                }
-        }
-    }
-        else{
-             res.render('user_login',{message:"Your Email or password is not valid"})
-           
-        }
+            }    
+    
         
-    }else{
+    
 
-            res.render('user_login',{message:"Your Email and Password are incorrect"});
-           
-    }
 
-}
     } catch (error) {
         console.log(error.message);
        console.log("login error");
@@ -348,12 +353,17 @@ const verifyLogin = async(req,res)=>{
 const loadHome = async(req,res)=>{
 
       try {
-        
-     res.render('user_home');
+        const Product = await product.find({});
+        const Category = await category.find({});
+        const Brand = await brand.find({});
+        console.log(product);
+        console.log(category); 
+     res.render('user_home',{Product,Category,Brand});
       
     } 
       catch (error) {
         console.log(error.message);
+        console.log("load home");
         
       }
 
@@ -472,9 +482,11 @@ const resetPassword = async(req,res)=>{
 
     
        const updatedData  = await User.findByIdAndUpdate({_id:user_id},{$set:{password:secure_password, token:''}})
-
-        res.redirect("/")
-
+        console.log(updatedData)
+        if(updatedData){
+            console.log("password updated");
+             res.redirect("/")
+        }
        
     }
      catch (error) {
@@ -533,9 +545,99 @@ const sendVerification = async(req,res)=>{
 
 }
 
+const productDetails = async(req,res)=>{
+    try {
+        const id = req.query.id;
+        console.log(id);
+        const Product = await product.find({_id:id});
+        const allProduct = await product.find({});
+        console.log(Product);
+        res.render('product-details',{Product,allProduct})
+
+    } catch (error) {
+        console.log(error.message);
+        console.log("product details");
+    }
+}
+
+const loadWishlist  = async(req,res)=>{
+    try {
+        const userid = req.session.user_id;
+        console.log(userid);
+        const userdata = await User.findOne({_id:userid}).populate('wishlist.product').exec()
+        console.log(userdata);
+        
+        res.render('wishlist',{userdata});
+ 
+
+    } catch (error) {
+        console.log(error.message);
+        console.log("loadwishlist");
+    }
+}
+
+const addToWishlist = async(req,res)=>{
+    try {
+        
+        const ProductId = req.body.productId;
+        
+        
+        console.log(ProductId);
+        console.log(req.body.productId)
+        console.log("addtowishlist");
+
+        let exist = await User.find({_id:req.session.user_id,'wishlist.product':ProductId})
+        
+        
+            if(exist){
+                console.log("item allready exist in whishlist");
+                res.json({exist:true})
+            }else{
+               const Product = await product.findOne({id:req.body.productId})
+               console.log(Product);
+               const _id =req.session.user_id;
+               const userData = await User.findOne({_id})
+               const result = await User.updateOne({_id},{$push:{wishlist:{product:Product._id}}})
+              console.log(result);
+               if(result){
+                res.redirect('/home')
+                console.log("wishlist added");
+               
+               }
+               else{
+                console.log("not added to wishlist ");
+               }
+            }
+        
+    } catch (error) {
+        console.log(error.message)
+        console.log('kitteela')
+    }
+}
+
+const deleteWishlist = async(req,res)=>{
+    try {
+        
+        const id = req.session.user_id;
+        console.log("delete"+id);
+        const deleteproductId = req.query.id;
+        console.log("delete"+deleteproductId);
+
+        const deletedData = await product.findByIdAndUpdate({_id:id},{$pull:{wishlist:{product:deleteproductId}}});
+
+        console.log(deletedData);
+        if(deletedData){
+            res.json({success:true})
+        }
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 
 module.exports = {
-    loadRegister,
+     loadRegister,
     insertUser,
     VerifyMail,
     sentOTP,
@@ -551,5 +653,8 @@ module.exports = {
     verificationLoad,
     sendVerification,
     phoneCheck ,
-
+    productDetails,
+    loadWishlist,
+    addToWishlist,
+    deleteWishlist
 }

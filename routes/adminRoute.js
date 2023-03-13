@@ -40,6 +40,19 @@ const upload = multer({storage:storage});
     })
 
 const uploadCategory = multer({storage:storageCategory});
+   
+// brand
+const storageBrand = multer.diskStorage({
+        destination:function(req,file,cb){
+            cb(null,path.join(__dirname,'../public/BrandImages'));
+        },
+        filename:function(req,file,cb){
+            const name =Date.now()+'-'+file.originalname;
+            cb(null,name);
+        }
+    })
+
+const uploadBrand = multer({storage:storageBrand});
 
 
 
@@ -59,7 +72,7 @@ admin_route.post('/',adminController.verifyLogin);
 
 admin_route.get('/home', auth.is_Login, adminController.loadDashboard);
 
-admin_route.get('/user',adminController.loadUser);
+admin_route.get('/user', auth.is_Logout,adminController.loadUser);
 
 admin_route.get('/logout', auth.is_Login,adminController.logout);
 
@@ -77,7 +90,7 @@ admin_route.get('/unblock_user',auth.is_Login,adminController.unblockUser);
 
 admin_route.get('/productform',auth.is_Login,adminController.ProductForm);
 
-admin_route.post('/productform',upload.single('image'), adminController.ProductInsert);
+admin_route.post('/productform',upload.array('image',3), adminController.ProductInsert);
 
 admin_route.get('/productList',auth.is_Login,adminController.productList);
 
@@ -85,7 +98,7 @@ admin_route.get('/categoryList',auth.is_Login,adminController.categoryList);
 
 admin_route.get('/categoryAdd',auth.is_Login,adminController.categoryAdd);
 
-admin_route.post('/categoryAdd',uploadCategory.single('image'),adminController.categoryInsert);
+admin_route.post('/categoryAdd',auth.is_Login,uploadCategory.single('image'),adminController.categoryInsert);
 
 admin_route.get('/deleteProduct',auth.is_Login,adminController.deleteProduct);
 
@@ -93,13 +106,21 @@ admin_route.get('/deleteCategory',auth.is_Login,adminController.deleteCategory);
 
 admin_route.get('/deleteBrand',auth.is_Login,adminController.deleteBrand);
 
-admin_route.get('/brandList',adminController.brandList);
+admin_route.get('/brandList', auth.is_Login,adminController.brandList);
 
-admin_route.get('/brandAdd',adminController.brandAdd);
+admin_route.get('/brandAdd',  auth.is_Login,adminController.brandAdd);
 
-admin_route.post('/brandAdd',adminController.brandInsert);
+admin_route.post('/brandAdd', auth.is_Login,uploadBrand.single('image'),adminController.brandInsert);
 
-admin_route.get('/couponAdd',adminController.couponAdd);
+admin_route.get('/couponList', auth.is_Login,adminController.couponList);
+
+admin_route.get('/couponAdd', auth.is_Login,adminController.couponAdd);
+
+admin_route.post('/couponAdd', auth.is_Login,adminController.couponInsert);
+
+admin_route.get('/editCategory',auth.is_Login,adminController.editcategory);
+
+admin_route.post('/editCategory',auth.is_Login,adminController.updatecategory);
 
 
 

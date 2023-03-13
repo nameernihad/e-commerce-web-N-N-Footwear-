@@ -27,7 +27,7 @@
       <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
       <link rel="icon" type="image/png" href="../assets/img/favicon.png">
       <title>
-        Material Dashboard 2 by Creative Tim
+        N&N FOOTWEAR
       </title>
       <!--     Fonts and icons     -->
       <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
@@ -99,7 +99,7 @@
               <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white active bg-gradient-primary" href="/admin/couponAdd">
+              <a class="nav-link text-white active bg-gradient-primary" href="/admin/couponList">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="material-icons opacity-10">person</i>
                 </div>
@@ -124,11 +124,7 @@
             </li>
           </ul>
         </div>
-        <div class="sidenav-footer position-absolute w-100 bottom-0 ">
-          <div class="mx-3">
-            <a class="btn bg-gradient-primary mt-4 w-100" href="https://www.creative-tim.com/product/material-dashboard-pro?ref=sidebarfree" type="button">Upgrade to pro</a>
-          </div>
-        </div>
+        
       </aside>
       <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <!-- Navbar -->
@@ -247,24 +243,46 @@
         </nav>
         <!-- End Navbar -->
       
-
-        <form>
-            <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label">Coupon Code</label>
-              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">Coupon Discount</label>
-              <input type="number" class="form-control" id="exampleInputPassword1">
-            </div>
-            <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1">
-              <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
-        
-
+        <div style="margin-left: 5%;">
+        <form method="post">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Coupon Code</label>
+            <input type="text" value="Coupon Code" style="border: 1px solid #646262;" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          </div>
+           <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              select Discound Type
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Discound Amount</label>
+            <input type="text" style="border: 1px solid #646262;" class="form-control" id="exampleInputPassword1">
+          </div>
+         
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Max Discound Amount</label>
+            <input type="text" style="border: 1px solid #646262;" class="form-control" id="exampleInputPassword1">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Min Purchase</label>
+            <input type="text" style="border: 1px solid #646262;" class="form-control" id="exampleInputPassword1">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Expiry Date</label>
+            <input type="text" style="border: 1px solid #646262;" class="form-control" id="exampleInputPassword1">
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
 
       <!--   Core JS Files   -->
       <script src="../assets/js/core/popper.min.js"></script>

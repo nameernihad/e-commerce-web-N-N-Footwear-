@@ -9,6 +9,9 @@ const BrandSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    image:{
+        type:Array,
+    }
 });
 
 module.exports = mongoose.model('brand',BrandSchema);

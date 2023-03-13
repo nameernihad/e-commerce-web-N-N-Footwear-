@@ -34,7 +34,15 @@ const userSchema = new mongoose.Schema({
     block:{
         type:Boolean,
         default:false
-    }
+    },
+    wishlist: [{
+        product:{
+            type: mongoose.Types.ObjectId,
+            ref: 'product',
+            required:true
+        
+        }
+      }],
 
     });
 
