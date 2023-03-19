@@ -72,8 +72,6 @@ user_route.get('/userProfile',auth.isLogin,userController.loaduserprofile)
 // user cart
 user_route.get('/cart',auth.isLogin,userController.loadCart);
 user_route.post('/add-to-cart',auth.isLogin,userController.AddToCart);
-user_route.post('/delete-cart-product',auth.isLogin,userController.deleteCartProduct);
-user_route.post('/change-quantity',auth.isLogin,userController.change_Quantities);
 
 
 

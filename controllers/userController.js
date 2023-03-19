@@ -323,7 +323,8 @@ const verifyLogin = async(req,res)=>{
                         }
                         else{
                         
-                    req.session.user_id = userData._id;   
+                    req.session.user_id = userData._id;
+                    
                     res.redirect('/home');
                         }
 
@@ -354,12 +355,12 @@ const loadHome = async(req,res)=>{
 
       try {
         Id = req.session.user_id;
-        console.log(Id);
+        
         const Product = await product.find({});
         const Category = await category.find({});
         const Brand = await brand.find({});
         const userdata = await User.findOne({_id:req.session.user_id}).populate('wishlist.product')
-        console.log(userdata);
+        
         
      res.render('user_home', {Product,Category,Brand,userdata});
       
@@ -551,12 +552,12 @@ const sendVerification = async(req,res)=>{
 const productDetails = async(req,res)=>{
     try {
         const prodId = req.query.id;
-        console.log(prodId);
+        
         const Product = await product.findOne({_id:prodId});
-        console.log(Product);
+        
         const allProduct = await product.find({});
         
-        console.log(Product);
+        
         res.render('product-details',{Product,allProduct})
 
     } catch (error) {
@@ -565,21 +566,7 @@ const productDetails = async(req,res)=>{
     }
 }
 
-// const loadWishlist  = async(req,res)=>{
-//     try {
-//         const userid = req.session.user_id;
-//         console.log(userid);
-//         const userdata = await User.findOne({_id:userid}).populate('wishlist.product').exec()
-//         console.log(userdata);
-        
-//         res.render('wishlist',{userdata});
- 
 
-//     } catch (error) {
-//         console.log(error.message);
-//         console.log("loadwishlist");
-//     }
-// }
 const loadWishlist = async(req,res) => { 
     try{
         const id = req.session.user_id
@@ -604,7 +591,7 @@ const addToWishlist  =async(req,res) => {
         // console.log(exist);
         if(exist){
             console.log("item allready exist in wishlist");
-            res.json({exist:true})
+            res.json({status:false})
         }else{
             const Product =await product.findOne({_id:req.body.productId})
             const _id = req.session.user_id
@@ -613,7 +600,9 @@ const addToWishlist  =async(req,res) => {
             // console.log("haoiweyp");
             // console.log(userData);
             const result = await User.updateOne({_id:userData},{$push:{wishlist:{product:Product._id}}})
+            
             if(result){
+                res.json({status:true})
                 res.redirect('/home')
                 console.log('added to whislist');
             }else{
@@ -655,107 +644,60 @@ const loaduserprofile = async(req,res)=>{
 const loadCart = async(req,res) => {
     try{
         console.log("showing cart....");
-        const userId = req.session.user_id
-        const temp = mongoose.Types.ObjectId(req.session.user_id)
-        const usercart =  await User.aggregate([ { $match: { _id: temp } }, { $unwind: '$cart' },{ $group: { _id: null, totalcart: { $sum: '$cart.productTotalPrice' } } }])
-        // console.log(usercart);
-        if(usercart.length >0){
-            const cartTotal =usercart[0].totalcart
-        // console.log(cartTotal);
-        const cartTotalUpdate = await User.updateOne({_id:userId},{$set:{cartTotalPrice:cartTotal}})
-        // console.log(cartTotalUpdate);
-        const userData = await User.findOne({_id:userId}).populate('cart.productId').exec()
-        res.render('cart',{userData})
-
-        }else{
-            const userData = await User.findOne({userId})
+        const id = req.session.user_id
+       
+        const userData = await User.findOne({_id:id}).populate('cart.productId').exec()
+        console.log(userData);
             res.render('cart',{userData})
-        }
+        
         
 
     }catch(error){
         console.log(error.message);
+        console.log("loadcart");
     }
 }
 
 
 const AddToCart = async(req,res) => {
     try{ 
-        const productId = req.body.productId
-        console.log(req.session.user_id);
-        const _id = req.session.user_id
-        let exist =await User.findOne({id:req.session.user_id,'cart.productId':productId})
-        console.log(exist);
+        const ProductId = req.body.productId;
+        const userid = req.session.user_id
+        
+        console.log(userid);
+        const exist =await User.findOne({_id:userid,'cart.productId':ProductId})
         if(exist){
-            const user = await User.findOne({_id:req.session.user_id})
-            const index =await user.cart.findIndex(data=>data.productId._id == req.body.productId );
-            // console.log(index);
-                 user.cart[index].qty +=1;
-                user.cart[index].productTotalPrice= user.cart[index].qty * user.cart[index].price
-                await user.save();
-              res.send(true)
+            console.log("item allready exist in Cart");
+            res.json({status:false})
         }else{
-            const product =await Product.findOne({_id:req.body.productId})
             
+            // data adding to cart
+            const Product =await product.findOne({_id:req.body.productId})
+            const userid = req.session.user_id
             // console.log(_id);
-            const userData = await User.findOne({_id})
-            // console.log(userData);
-            const result = await User.updateOne({_id},{$push:{cart:{productId:product._id,qty:1,price:product.price,productTotalPrice:product.price}}})
+            const userData = await User.findOne({_id:userid})
+            // console.log("haoiweyp");
+            console.log(userData);
+            const result = await User.updateOne({_id:userData},{$push:{cart:{productId:Product.userid}}})
+            console.log(result);
             if(result){
+                res.json({status:true})
                 res.redirect('/home')
                 console.log('added to cart');
             }else{
                 console.log('not addeed to cart');
             }
+
+
         }
     }catch(error){
         console.log(error.message);
+        console.log("add to cart");
     }
 }
 
-const deleteCartProduct = async(req,res) => { 
-    try{
-        const userId = req.body.userId
-        const deleteProId = req.body.deleteProId
-        // console.log(userId);
-        // console.log(deleteProId);
-        const userData = await User.findByIdAndUpdate({_id:userId},{$pull:{cart:{productId:deleteProId}}})
-        // console.log(userData)
-        if(userData){
-            res.json({success:true})
-        }
-    }catch(error){
-        console.log(error.message);
-    }
-}
 
-const change_Quantities = async(req,res) => {
-    try{
-        const {user,product,count,Quantity,proPrice} =req.body
-        const producttemp=mongoose.Types.ObjectId(product)
-        const usertemp=mongoose.Types.ObjectId(user)
-        const updateQTY = await User.findOneAndUpdate({_id:usertemp,'cart.productId':producttemp},{$inc:{'cart.$.qty':count}})
-       
-        const currentqty = await User.findOne({_id:usertemp,'cart.productId':producttemp},{_id:0,'cart.qty.$':1})
-       
-        const qty = currentqty.cart[0].qty
-       
-        const productSinglePrice =proPrice*qty
-        
-        await User.updateOne({_id:usertemp,'cart.productId':producttemp},{$set:{'cart.$.productTotalPrice':productSinglePrice}})
-        const cart = await User.findOne({_id:usertemp})
-        let sum=0
-        for(let i=0;i<cart.cart.length;i++){
-            sum=sum + cart.cart[i].productTotalPrice
-        }
-        const update =await User.updateOne({_id:usertemp},{$set:{cartTotalPrice:sum}})
-        .then(async(response)=>{
-            res.json({ response: true,productSinglePrice,sum })
-            })
-    }catch(error){
-        console.log(error.message);
-    }
-}
+
 
 
 
@@ -783,7 +725,6 @@ module.exports = {
     loaduserprofile,
     loadCart,
     AddToCart,
-    deleteCartProduct,
-    change_Quantities,
+    
      
 }

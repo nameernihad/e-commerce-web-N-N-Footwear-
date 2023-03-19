@@ -376,7 +376,7 @@
                                                 </ul>
                                             </li>
                                             <li class="dropdown me-3 me-lg-0">
-                                                <a href="/home?id=<%= %>" class="dropdown-toggle"
+                                                <a href="" class="dropdown-toggle"
                                                     data-bs-toggle="dropdown">
                                                     <i class="ti-heart"></i>
                                                     
@@ -543,7 +543,7 @@
                                     <a href="/productDetails?id=<%= value._id%>"><img
                                             src="/Images/<%= value.Image[0] %>" alt="..."></a>
                                     <div class="action-butn">
-                                        <a href="#!"><i class="ti-shopping-cart"></i></a>
+                                        <a class="btn" onclick="AddToCart('<%= value._id%>')"><i class="ti-shopping-cart"></i></a>
                                         <a href="#!"><i class="ti-eye"></i></a>
                                         <a class="btn" onclick="addToWishlist('<%= value._id%>')"><i
                                                 class="ti-heart"></i></a>
@@ -765,7 +765,7 @@
                 },
                 method: 'post',
                 success: (res) => {
-                    if (res) {
+                    if (res.status) {
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
@@ -774,7 +774,7 @@
                             timer: 1000
                         })
 
-                    } else if (exist) {
+                    } else {
                         Swal.fire({
 
                             icon: 'error',
@@ -789,6 +789,43 @@
         }
 
     </script>
+
+    <!-- add to cart ajax -->
+
+    <script>
+        function AddToCart(Id) {
+            $.ajax({
+                url: '/add-to-cart',
+                data: {
+                    productId:Id
+                },
+                method: 'post',
+                success: (res) => {
+                    if (res.status) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Your product added to Cart',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+
+                    } else {
+                        Swal.fire({
+
+                            icon: 'error',
+                            title: 'oops...',
+                            Text: 'item already exist in cart',
+
+                        })
+
+                    }
+                }
+            })
+        }
+
+    </script>
+
 
 
     <script>
