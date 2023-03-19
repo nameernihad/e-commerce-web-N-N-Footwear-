@@ -5,7 +5,24 @@ const session = require('express-session');
 const config  = require("../config/config");
 
 
-user_route.use(session({secret:config.sessionSecret}));
+user_route.use(session({
+  secret: 'thisismysessionsecret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    maxAge: 3600000 // 1 hour in milliseconds
+  }
+}));
+
+
+
+// user_route.use(session({secret:config.sessionSecret}));
+
+user_route.use(session({
+    secret: 'thisismysessionsecret',
+    resave: false,
+    saveUninitialized: false
+  }));
 
 // user_route('./sent-otp').post(sentOTP);
 // user_route('./verify-otp').post(verifyOTP);
@@ -48,7 +65,16 @@ user_route.get('/productDetails',auth.isLogin,userController.productDetails);
 // wishlist
 user_route.get('/wishlist',auth.isLogin,userController.loadWishlist);
 user_route.post('/add-to-wishlist',auth.isLogin,userController.addToWishlist)
-user_route.get('/deleteWishlist',auth.isLogin,userController.deleteWishlist)
+user_route.post('/deleteWishlist',auth.isLogin,userController.deleteWishlist)
+// user profile
+user_route.get('/userProfile',auth.isLogin,userController.loaduserprofile)
+
+// user cart
+user_route.get('/cart',auth.isLogin,userController.loadCart);
+user_route.post('/add-to-cart',auth.isLogin,userController.AddToCart);
+user_route.post('/delete-cart-product',auth.isLogin,userController.deleteCartProduct);
+user_route.post('/change-quantity',auth.isLogin,userController.change_Quantities);
+
 
 
 

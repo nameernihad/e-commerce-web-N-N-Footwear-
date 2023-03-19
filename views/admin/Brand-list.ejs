@@ -30,6 +30,8 @@
       <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
       <!-- Font Awesome Icons -->
       <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
+      <script src="https://kit.fontawesome.com/97bdc000f0.js" crossorigin="anonymous"></script>
       <!-- Material Icons -->
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
       <!-- CSS Files -->
@@ -246,7 +248,8 @@
             <th scope="col">Name</th>
             <th scope="col">Image</th>
             <th scope="col">Discription</th>
-            <th scope="col">action</th>
+            <th scope="col">delete</th>
+            <th scope="col">edit</th>
            </tr>
          </thead>
          <% brands.forEach((value,index)=>{%>
@@ -256,7 +259,8 @@
              <td><%= value.name %></td>
              <td> <img src="/BrandImages/<%= value.image[0] %>" alt="" style="width: 80px;" height="80px"></td>
           <td><%= value.discription %></td>
-          <td><button type="button"  class="btn" style="background-color: rgb(232, 14, 14); color: #000;"> <a href="/admin/deleteBrand?id=<%= value._id %>">Delete</a> </button></td>
+          <td><button type="button"  class="btn" style="background-color: rgb(232, 14, 14); color: #000;"> <a href="/admin/deleteBrand?id=<%= value._id %>"><i class="fa-sharp fa-solid fa-trash"></i></a> </button></td>
+          <td><button type="button"  class="btn" style="background-color: rgb(12, 227, 12);"> <a href="/admin/editbrand?id=<%= value._id %>"><i class="fa-sharp fa-solid fa-pen"></i></a> </button></td>
 
           </tr>
          <% })%>

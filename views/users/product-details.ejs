@@ -28,13 +28,17 @@
     <!-- theme core css -->
     <link href="user/css/styles.css" rel="stylesheet">
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
 </head>
 
 <body>
 
     <!-- PAGE LOADING
     ================================================== -->
-    <div id="preloader"></div>
+    <!-- <div id="preloader"></div> -->
 
     <!-- MAIN WRAPPER
     ================================================== -->
@@ -358,7 +362,10 @@
                                                     </li>
                                                 </ul>
                                             </li>
-                                            <li class="search"><a href="#"><i class="ti-search"></i></a></li>
+                                             <li class="search"><a href="#"><i class="ti-search"></i></a></li>
+                                            <li ><a href="/logout">
+                                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                            </a></li>
                                         </ul>
                                     </div>
                                     <!-- end attribute navigation -->
@@ -512,13 +519,13 @@
                         <!-- product left start -->
                          
                              <div class="xzoom-container">
-                            <img class="xzoom5 mb-1-9" id="xzoom-magnific" src="/Images/<%= Product[0].Image[0] %>" xoriginal="/Images/<%= Product[0].Image[0] %>" alt="..." />
+                            <img class="xzoom5 mb-1-9" id="xzoom-magnific" src="/Images/<%= Product.Image[0] %>" xoriginal="/Images/<%= Product.Image[0] %>" alt="..." />
                             <div class="xzoom-thumbs no-margin">
                                 
                                  <!-- <a href=""><img class="xzoom-gallery5" width="80" src="" xpreview="" title="The description goes here"></a> -->
 
-                                 <%if (Product[0].Image.length > 0) {
-                                    Product[0].Image.forEach((image) => {
+                                 <%if (Product.Image.length > 0) {
+                                    Product.Image.forEach((image) => {
                                       %>
                                       <a href="/Images/<%=image %>">
                                         <img class="xzoom-gallery5" width="80" src="/Images/<%=image %>" title="The description goes here">
@@ -535,10 +542,10 @@
                     </div>
                     <div class="col-lg-7 ps-lg-2-3">
                         <div class="product-detail">
-                            <h2 class="mb-1"><%= Product[0].name %><span class="label-sale bg-primary text-white text-uppercase display-31">Sale</span></h2>
+                            <h2 class="mb-1"><%= Product.name %><span class="label-sale bg-primary text-white text-uppercase display-31">Sale</span></h2>
                             <div class="bg-primary separator-line-horrizontal-full mb-4"></div>
                             <!-- <p class="rating-text"><span>SKU:</span> <span class="font-500 theme-color">290397</span></p> -->
-                            <p><%= Product[0].discription %></p>
+                            <p><%= Product.discription %></p>
 
                             <div class="mb-4">
 
@@ -555,7 +562,7 @@
                             </div>
                             <div class="mb-4">
                                 <!-- <span class="me-3 display-26 font-weight-600 offer-price">$21.00</span> -->
-                                <span class="display-26 font-weight-700 text-primary">$<%= Product[0].price %></span>
+                                <span class="display-26 font-weight-700 text-primary">$<%= Product.price %></span>
                             </div>
 
                             <div class="row">
@@ -572,38 +579,24 @@
 
                                 </div>
 
-                                <% if(Product[0].quantity>=5){%>
+                                <% if(Product.quantity>=5){%>
                                     <p style="color: green;">In Stock</p>
-                                    <% }else if(Product[0].quantity<=0){%>
+                                    <% }else if(Product.quantity<=0){%>
                                         <p style="color: red;" class="text-uppercase font-weight-600   d-block mb-2 mb-sm-3" >Out of stock</p>
                                     <% }else{%>
                                         <p style="color: orange;">Less In Stock</p>
                                    <% } %>
-                                <!-- <div class="col-5 col-md-3">
-                                    <div class="product-color">
-                                        <label>Color:</label>
-                                        <select class="mb-4 form-control medium form-select">
-                                            <option value="Red">Red</option>
-                                            <option value="Black">Black</option>
-                                            <option value="Beige">Beige</option>
-                                            <option value="White">White</option>
-                                        </select>
-                                    </div>
-                                </div> -->
+                               
                             </div>
                             <div class="row">
-                                <!-- <div class="col-4 col-lg-2">
-                                    <label>Qty:</label>
-                                    <input type="text" value="" placeholder="1" class="form-control medium mb-4">
-                                    
-                                </div> -->
+                              
 
                             </div>
 
                             <div class="row mb-4">
                                 <div class="col-lg-12">
                                     <button class="butn-style2 me-3 mb-2 mb-md-0"><span><i class="fas fa-shopping-cart me-1"></i> Add to Cart</span></button>
-                                    <button class="butn-style2 dark"> <a href="/wishlist?id=<%= Product[0]._id %>"> <span><i class="fas fa-heart me-1"></i> Add to wishlist</span></a></button>
+                                    <button class="butn-style2 dark" onclick="addToWishlist('<%= Product._id%>')"> <span><i class="fas fa-heart me-1"></i> Add to wishlist</span></button>
                                 </div>
                             </div>
 
@@ -626,244 +619,7 @@
                     </div>
                 
                 </div>
-                <!-- end product section -->
-
-                <!-- product description -->
-                <!-- <div class="row justify-content-center mb-6 mb-md-7">
-
-                    <div class="col-12">
-                        <div class="horizontaltab tab-style-two">
-                            <ul class="resp-tabs-list hor_1 text-start">
-                                
-                                <li><i class="ti-more d-md-block d-none"></i>Additional Info</li>
-                                <li><i class="ti-star d-md-block d-none"></i>Reviews (2)</li>
-                            </ul>
-                            <div class="resp-tabs-container hor_1">
-                                
-                                <div>
-                                    <div class="row">
-                                        <div class="col-lg-6 mb-1-9 mb-lg-0">
-
-                                            <h3 class="display-29">Information:</h3>
-                                            <ul class="primary-list mb-1-9">
-                                                <li><strong>Weight:</strong> 15 grams</li>
-                                                <li><strong>Dimensions:</strong> 8.03 x 1.27 x 2.54 Cm</li>
-                                                <li><strong>Size:</strong> 64 GB</li>
-                                                <li><strong>Color:</strong> White</li>
-                                                <li><strong>Guarantee:</strong> 5 Years</li>
-                                            </ul>
-
-                                            <p class="mb-0">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto in ea voluptate velit.</p>
-
-                                        </div>
-                                        <div class="col-lg-6 ps-lg-1-9">
-
-                                            <div class="table-responsive">
-                                                <table class="table bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Shipping Options</th>
-                                                            <th>Delivery Time</th>
-                                                            <th>Price</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                Standard Shipping
-                                                            </td>
-                                                            <td>
-                                                                Delivery in 5 - 7 working days
-                                                            </td>
-                                                            <td>
-                                                                $8.00
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                Express Shipping
-                                                            </td>
-                                                            <td>
-                                                                28 August 2022
-                                                            </td>
-                                                            <td>
-                                                                $12.00
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                1 - 2 day Shipping
-                                                            </td>
-                                                            <td>
-                                                                27 August 2022
-                                                            </td>
-                                                            <td>
-                                                                $12.00
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                Free Shipping
-                                                            </td>
-                                                            <td>
-                                                                25 August 2022
-                                                            </td>
-                                                            <td>
-                                                                $0.00
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div>
-                                    <div class="row">
-
-                                        <div class="col-lg-6 order-lg-2 mb-1-9 mb-lg-0">
-                                            <div class="common-block">
-
-                                                <div class="mb-2-3 pb-2-3 border-bottom">
-
-                                                    <div class="media mb-4 product-review">
-                                                        <img class="me-3 rounded-circle w-60px" src="user/img/avatar/t-1.jpg" alt="...">
-                                                        <div class="media-body">
-                                                            <a href="#" class="mb-1 font-weight-600 text-extra-dark-gray">Jonal Doe</a>
-                                                            <span class="d-block text-primary">Sep 15, 2018</span>
-                                                        </div>
-
-                                                        <span class="text-primary">
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star-half-alt"></i>
-                                                        </span>
-
-                                                    </div>
-
-                                                    <p class="mb-0">Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
-
-                                                </div>
-
-                                                <div class="pb-4">
-
-                                                    <div class="media mb-4 product-review">
-                                                        <img class="me-3 rounded-circle w-60px" src="user/img/avatar/t-2.jpg" alt="...">
-                                                        <div class="media-body">
-                                                            <a href="#" class="mb-1 font-weight-600 text-extra-dark-gray">Marina Modra</a>
-                                                            <span class="d-block text-primary">Sep 15, 2018</span>
-                                                        </div>
-
-                                                        <span class="text-primary">
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star-half-alt"></i>
-                                                        </span>
-
-                                                    </div>
-
-                                                    <p class="mb-0">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem.</p>
-
-                                                </div>
-
-                                                <div class="text-start">
-                                                    <a href="#" class="butn-style2 small">Load More Reviews</a>
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-lg-6 order-lg-1">
-
-                                            <div class="common-block">
-
-                                                <div class="inner-title">
-                                                    <h4 class="mb-0">Leave Review</h4>
-                                                    <p class="mb-0">Leave review takes it to the next level.</p>
-                                                </div>
-
-                                                <form>
-
-                                                    <div class="row">
-
-                                                        <div class="col-sm-6">
-
-                                                            <div class="form-group">
-                                                                <label>Your Name</label>
-                                                                <input type="text" class="form-control" name="name" placeholder="Your name here">
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="col-sm-6">
-
-                                                            <div class="form-group">
-                                                                <label>Your Email</label>
-                                                                <input type="email" class="form-control" name="email" placeholder="Your email here">
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="row">
-
-                                                        <div class="col-sm-12 mb-2">
-
-                                                            <div class="form-group">
-                                                                <label>Rating</label>
-                                                                <select class="form-control form-select">
-                                                                    <option>5 Stars</option>
-                                                                    <option>4 Stars</option>
-                                                                    <option>3 Stars</option>
-                                                                    <option>2 Stars</option>
-                                                                    <option>1 Star</option>
-                                                                </select>
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="row">
-
-                                                        <div class="col-12 mb-4">
-
-                                                            <label>Comment</label>
-                                                            <div class="form-group mb-1">
-                                                                <textarea rows="2" class="form-control" placeholder="Tell us a few words"></textarea>
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                    <button type="button" class="butn-style2">Submit Review</button>
-
-                                                </form>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div> -->
-                <!-- end product description -->
-
-                <!-- related product -->
+               
                 <div class="inner-title">
                     <h3 class="mb-0">Related Products</h3>
                 </div>
@@ -893,80 +649,7 @@
                         </div>
                     </div>
                     <% })%>
-                    <!-- <div class="product-grid">
-                        <div class="product-img">
-                            <a href="shop-product-detail.html"><img src="user/img/products/product-grid/product-02.jpg" alt="..."></a>
-                        </div>
-                        <div class="product-description">
-                            <h3><a href="shop-product-detail.html">Desktop Speakers</a></h3>
-                            <h4 class="price">
-                                                        <span class="offer-price">$29.00</span>
-                                                    </h4>
-                        </div>
-                        <div class="product-buttons">
-                            <ul class="ps-0">
-                                <li><a href="#" class="btn-link" title="Add To Wishlist"><i class="far fa-heart"></i></a></li>
-                                <li><a href="#" class="butn-style2" title="Add to Cart">Add to Cart</a></li>
-                                <li><a href="#" class="btn-link" title="Add To Compare"><i class="fas fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="product-grid">
-                        <div class="product-img">
-                            <a href="shop-product-detail.html">
-                                <div class="label-offer left-align bg-primary">New</div><img src="user/img/products/product-grid/product-03.jpg" alt="..."></a>
-                        </div>
-                        <div class="product-description">
-                            <h3><a href="shop-product-detail.html">Wireless Controller</a></h3>
-                            <h4 class="price">
-                                                        <span class="regular-price line-through">$57.00</span>
-                                                        <span class="offer-price">$55.00</span>
-                                                    </h4>
-                        </div>
-                        <div class="product-buttons">
-                            <ul class="ps-0">
-                                <li><a href="#" class="btn-link" title="Add To Wishlist"><i class="far fa-heart"></i></a></li>
-                                <li><a href="#" class="butn-style2" title="Add to Cart">Add to Cart</a></li>
-                                <li><a href="#" class="btn-link" title="Add To Compare"><i class="fas fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="product-grid">
-                        <div class="product-img">
-                            <a href="shop-product-detail.html"><img src="user/img/products/product-grid/product-04.jpg" alt="..."></a>
-                        </div>
-                        <div class="product-description">
-                            <h3><a href="shop-product-detail.html">Wireless Headset</a></h3>
-                            <h4 class="price">
-                                                        <span class="offer-price">$28.00</span>
-                                                    </h4>
-                        </div>
-                        <div class="product-buttons">
-                            <ul class="ps-0">
-                                <li><a href="#" class="btn-link" title="Add To Wishlist"><i class="far fa-heart"></i></a></li>
-                                <li><a href="#" class="butn-style2" title="Add to Cart">Add to Cart</a></li>
-                                <li><a href="#" class="btn-link" title="Add To Compare"><i class="fas fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="product-grid">
-                        <div class="product-img">
-                            <a href="shop-product-detail.html"><img src="user/img/products/product-grid/product-05.jpg" alt="..."></a>
-                        </div>
-                        <div class="product-description">
-                            <h3><a href="shop-product-detail.html">Hp Wireless Printer</a></h3>
-                            <h4 class="price">
-                                                    <span class="offer-price">$90.00</span>
-                                                </h4>
-                        </div>
-                        <div class="product-buttons">
-                            <ul class="ps-0">
-                                <li><a href="#" class="btn-link" title="Add To Wishlist"><i class="far fa-heart"></i></a></li>
-                                <li><a href="#" class="butn-style2" title="Add to Cart">Add to Cart</a></li>
-                                <li><a href="#" class="btn-link" title="Add To Compare"><i class="fas fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                    </div> -->
+                  
                 </div>
                 <!-- end related product -->
 
@@ -1117,8 +800,37 @@
     <a href="#" class="scroll-to-top"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
 
     <!-- all js include start -->
+    <script>
+        function addToWishlist(id) {
+            $.ajax({
+                url: '/add-to-wishlist',
+                data: {
+                    productId: id
+                },
+                method: 'post',
+                success: (res) => {
+                    if(res){
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Your product added to wishlist',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
 
-    <!-- jQuery -->
+                    }else if(exist){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'oops...',
+                            Text: 'item already exist',
+
+                        })
+
+                    }   
+                }
+            })
+        }
+</script>    <!-- jQuery -->
     <script src="user/js/jquery.min.js"></script>
 
     <!-- popper js -->
@@ -1147,5 +859,5 @@
 </body>
 
 
-<!-- Mirrored from smartshop.websitelayout.net/shop-product-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 03 Jan 2023 15:59:12 GMT -->
+// <!-- Mirrored from smartshop.websitelayout.net/shop-product-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 03 Jan 2023 15:59:12 GMT -->
 </html>

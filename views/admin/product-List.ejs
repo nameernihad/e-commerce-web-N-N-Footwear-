@@ -30,6 +30,9 @@
   <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
+  <script src="https://kit.fontawesome.com/97bdc000f0.js" crossorigin="anonymous"></script>
+
   <!-- Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <!-- CSS Files -->
@@ -93,7 +96,7 @@
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="./admin/couponList">
+          <a class="nav-link text-white " href="/admin/couponList">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -273,7 +276,7 @@
            </td> 
            <td> <img src="/Images/<%= value.Image[0] %>" alt="" style="width: 80px;" height="80px"></td>
 
-           <td><button type="button"  class="btn" style="background-color: rgb(232, 14, 14); color: #000;"> <a href="">Delete</a> </button></td>
+           <td><button type="button"  class="btn" style="background-color: rgb(232, 14, 14); color: #000;"> <a href=""><i class="fa-sharp fa-solid fa-trash"></i></a> </button></td>
            <td><button type="button"  class="btn" style="background-color: rgb(12, 227, 12);"> <a href="/admin/editProduct?id=<%= value._id %>"><i class="fa-sharp fa-solid fa-pen"></i></a> </button></td>
           </tr>
           

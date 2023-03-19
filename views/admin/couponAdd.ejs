@@ -242,46 +242,142 @@
           </div>
         </nav>
         <!-- End Navbar -->
-      
-        <div style="margin-left: 5%;">
-        <form method="post">
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Coupon Code</label>
-            <input type="text" value="Coupon Code" style="border: 1px solid #646262;" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+      <div>
+        
+          <!-- <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Coupon Code</label>
+            <input type="text" name="code" style="border: 1px solid #646262;" class="form-control" id="exampleInputPassword1">
           </div>
-           <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-              select Discound Type
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
+          <div class="mb-3">
+            <label for="disabledSelect" class="form-label">Disabled select menu</label>
+            <select id="disabledSelect" name="selectDiscAmt" class="form-select">
+              <option>Disabled select</option>
+              <option>Flat</option>
+              <option>Percentaget</option>
+            </select>
           </div>
           <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Discound Amount</label>
-            <input type="text" style="border: 1px solid #646262;" class="form-control" id="exampleInputPassword1">
+            <input type="text" name="discoundAmount" style="border: 1px solid #646262;" class="form-control" id="exampleInputPassword1">
           </div>
-         
           <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Max Discound Amount</label>
-            <input type="text" style="border: 1px solid #646262;" class="form-control" id="exampleInputPassword1">
+            <input type="text" name="maxDiscAmt" style="border: 1px solid #646262;" class="form-control" id="exampleInputPassword1">
           </div>
           <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Min Purchase</label>
-            <input type="text" style="border: 1px solid #646262;" class="form-control" id="exampleInputPassword1">
+            <input type="text" name="minPurchase" style="border: 1px solid #646262;" class="form-control" id="exampleInputPassword1">
           </div>
           <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Expiry Date</label>
-            <input type="text" style="border: 1px solid #646262;" class="form-control" id="exampleInputPassword1">
+            <input type="date" name="expdate" style="border: 1px solid #646262;" class="form-control" id="exampleInputPassword1">
           </div>
-          <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+          <button type="submit" class="btn btn-primary">Submit</button> -->
+          
+            <!-- <label for="couponCode">Coupon Code:</label>
+            <input type="text" id="couponCode" name="couponCode" required>
+          
+            <label for="couponAmountType">Coupon Amount Type:</label>
+            <select id="couponAmountType" name="couponAmountType" required>
+              <option value="percentage">Percentage</option>
+              <option value="fixed">Fixed</option>
+            </select>
+          
+            <label for="couponAmount">Coupon Amount:</label>
+            <input type="number" id="couponAmount" name="couponAmount" required>
+          
+            <label for="minRedeemAmound">Minimum Redeem Amount:</label>
+            <input type="number" id="minRedeemAmound" name="minRedeemAmound" required>
+          
+            <label for="minCartAmount">Minimum Cart Amount:</label>
+            <input type="number" id="minCartAmount" name="minCartAmount" required>
+          
+            <label for="expiryDate">Expiry Date:</label>
+            <input type="date" id="expiryDate" name="expiryDate" required>
+          
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="startDate" required>
+          
+            <label for="limit">Limit:</label>
+            <input type="number" id="limit" name="limit" required>
+          
+            <button type="submit">Submit</button> -->
+            <form method="POST" action="/admin/couponAdd" class="container my-5">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="couponCode">Coupon Code:</label>
+                    <input type="text" style="border: 2px solid black;" id="couponCode" name="couponCode" class="form-control" required>
+                  </div>
+            
+                  <div class="form-group">
+                    <label for="couponAmountType">Coupon Amount Type:</label>
+                    <select id="couponAmountType" style="border: 2px solid black;" name="couponAmountType" class="form-control" required>
+                      <option value="percentage">select coupon type</option>
+                      <option value="percentage">Percentage</option>
+                      <option value="fixed">Fixed</option>
+                    </select>
+                  </div>
+            
+                  <div class="form-group">
+                    <label for="couponAmount">Coupon Amount:</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input type="number" style="border: 2px solid black;" id="couponAmount" name="couponAmount" class="form-control" required>
+                    </div>
+                  </div>
+            
+                  <div class="form-group">
+                    <label for="minRedeemAmound">Minimum Redeem Amount:</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input type="number" style="border: 2px solid black;" id="minRedeemAmound" name="minRedeemAmound" class="form-control" required>
+                    </div>
+                  </div>
+            
+                </div>
+            
+                <div class="col-md-6">
+            
+                  <div class="form-group">
+                    <label for="minCartAmount">Minimum Cart Amount:</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input type="number" style="border: 2px solid black;" id="minCartAmount" name="minCartAmount" class="form-control" required>
+                    </div>
+                  </div>
+            
+                  <div class="form-group">
+                    <label for="expiryDate">Expiry Date:</label>
+                    <input type="date" style="border: 2px solid black;" id="expiryDate" name="expiryDate" class="form-control" required>
+                  </div>
+            
+                  <div class="form-group">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" style="border: 2px solid black;" id="startDate" name="startDate" class="form-control" required>
+                  </div>
+            
+                  <div class="form-group">
+                    <label for="limit">Limit:</label>
+                    <input type="number" style="border: 2px solid black;" id="limit" name="limit" class="form-control" required>
+                  </div>
+            
+                </div>
+              </div>
+            
+              <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </form>
+            
+          
+          
+          
+        
       </div>
 
       <!--   Core JS Files   -->

@@ -257,7 +257,9 @@
              <tr>
               <th scope="row"><%= index +1 %></th>
                <td><%= value.name %></td>
-               <td> <img src="/CategoryImages/<%= value.image[0] %>" alt="" style="width: 80px;" height="80px"></td>
+               <td> <img src="/CategoryImages/<%= value.image[0] %>" alt="" style="width: 80px;" height="80px"> </td>
+  
+             
             <td><%= value.discription %></td>
             <td><button type="button"  class="btn" style="background-color: rgb(232, 14, 14);"> <a href="/admin/deleteCategory?id=<%= value._id %>"><i class="fa-sharp fa-solid fa-trash"></i></a> </button></td>
             <td><button type="button"  class="btn" style="background-color: rgb(12, 227, 12);"> <a href="/admin/editCategory?id=<%= value._id %>"><i class="fa-sharp fa-solid fa-pen"></i></a> </button></td>
