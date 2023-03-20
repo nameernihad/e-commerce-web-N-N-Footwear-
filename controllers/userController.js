@@ -18,7 +18,8 @@ const config = require('../config/config');
 
 const Randormstring = require('Randomstring');
 const { json } = require('body-parser');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const { findByIdAndDelete, findByIdAndUpdate } = require('../model/userModel');
 
 
 const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = process.env;
@@ -30,7 +31,7 @@ const client  = require('twilio')( TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, {
 // sent otp;
 
 
-
+console.log(product)
 
 
 
@@ -486,7 +487,7 @@ const resetPassword = async(req,res)=>{
 
     
        const updatedData  = await User.findByIdAndUpdate({_id:user_id},{$set:{password:secure_password, token:''}})
-        console.log(updatedData)
+    
         if(updatedData){
             console.log("password updated");
              res.redirect("/")
@@ -571,8 +572,7 @@ const loadWishlist = async(req,res) => {
     try{
         const id = req.session.user_id
         const userData = await User.findOne({_id:id}).populate('wishlist.product').exec()
-        // console.log(userData);
-        // console.log(userData.whishlist);
+      
         res.render('wishlist',{userData})
 
     }catch(error){
@@ -584,21 +584,16 @@ const loadWishlist = async(req,res) => {
 const addToWishlist  =async(req,res) => { 
     try{
         const productId = req.body.productId
-        console.log(productId);
+        
        
-        // console.log(req.session.user_id);
         let exist =await User.findOne({id:req.session.user_id,'wishlist.product':productId})
-        // console.log(exist);
         if(exist){
             console.log("item allready exist in wishlist");
             res.json({status:false})
         }else{
             const Product =await product.findOne({_id:req.body.productId})
             const _id = req.session.user_id
-            // console.log(_id);
             const userData = await User.findOne({_id})
-            // console.log("haoiweyp");
-            // console.log(userData);
             const result = await User.updateOne({_id:userData},{$push:{wishlist:{product:Product._id}}})
             
             if(result){
@@ -620,11 +615,8 @@ const addToWishlist  =async(req,res) => {
 const deleteWishlist = async(req,res) => { 
     try{
         const id = req.session.user_id
-        console.log(id)
         const deleteProId = req.body.productId
-        console.log(deleteProId);
         const deleteWishlist = await User.findByIdAndUpdate({_id:id},{$pull:{wishlist:{product:deleteProId}}})
-        console.log(deleteWishlist);
         if(deleteWishlist){
             res.json({success:true})
         }
@@ -647,7 +639,6 @@ const loadCart = async(req,res) => {
         const id = req.session.user_id
        
         const userData = await User.findOne({_id:id}).populate('cart.productId').exec()
-        console.log(userData);
             res.render('cart',{userData})
         
         
@@ -663,9 +654,8 @@ const AddToCart = async(req,res) => {
     try{ 
         const ProductId = req.body.productId;
         const userid = req.session.user_id
+        const exist = await User.findOne({id:userid,'cart.productId':ProductId})
         
-        console.log(userid);
-        const exist =await User.findOne({_id:userid,'cart.productId':ProductId})
         if(exist){
             console.log("item allready exist in Cart");
             res.json({status:false})
@@ -674,12 +664,11 @@ const AddToCart = async(req,res) => {
             // data adding to cart
             const Product =await product.findOne({_id:req.body.productId})
             const userid = req.session.user_id
-            // console.log(_id);
+           
             const userData = await User.findOne({_id:userid})
-            // console.log("haoiweyp");
-            console.log(userData);
-            const result = await User.updateOne({_id:userData},{$push:{cart:{productId:Product.userid}}})
-            console.log(result);
+            
+            const result = await User.updateOne({_id:userData},{$push:{cart:{productId:Product._id}}})
+            
             if(result){
                 res.json({status:true})
                 res.redirect('/home')
@@ -696,10 +685,57 @@ const AddToCart = async(req,res) => {
     }
 }
 
+const deletecart  = async(req,res)=>{
+    try {
+     const ProductId = req.body.productId;
+     console.log(req.body.productId)
+    const userId  = req.session.user_id;
+    console.log(userId)
+        
+    const deletedata = await User.findOneAndUpdate({_id:userId},{$pull:{cart:{productId:ProductId}}})
+    console.log(deletedata)
+    if(deletedata){
+        res.json({success:true})
+    }
+
+    } catch (error) {
+        console.log(error.message);
+        console.log("deletecart");
+    }
+}
 
 
+const change_Quantities = async(req,res) => {
+    try{
+        console.log('quantity updation first part')
+        const {user,product,count,Quantity,proPrice} =req.body
+        const producttemp=mongoose.Types.ObjectId(product)
+        console.log(producttemp)
+        const usertemp=mongoose.Types.ObjectId(user)
+        const updateQTY = await User.findOneAndUpdate({_id:usertemp,'cart.productId':producttemp},{$inc:{'cart.$.qty':count}})
+       
+        const currentqty = await User.findOne({_id:usertemp,'cart.productId':producttemp},{_id:0,'cart.qty.$':1})
+       
+        const qty = currentqty.cart[0].qty
+       
+        const productSinglePrice =proPrice*qty
+        console.log(productSinglePrice)
+        await User.updateOne({_id:usertemp,'cart.productId':producttemp},{$set:{'cart.$.productTotalPrice':productSinglePrice}})
+        const cart = await User.findOne({_id:usertemp})
+        let sum=0
+        for(let i=0;i<cart.cart.length;i++){
+            sum=sum + cart.cart[i].productTotalPrice
+        }
+        const update =await User.updateOne({_id:usertemp},{$set:{cartTotalPrice:sum}})
+        console.log(sum)
+        .then(async(response)=>{
+            res.json({ response: true,productSinglePrice,sum })
+            })
 
-
+    }catch(error){
+        console.log(error.message);
+    }
+}
 
 module.exports = {
     loadRegister,
@@ -725,6 +761,7 @@ module.exports = {
     loaduserprofile,
     loadCart,
     AddToCart,
-    
+    deletecart,
+    change_Quantities
      
 }
