@@ -68,14 +68,17 @@ user_route.post('/add-to-wishlist',auth.isLogin,userController.addToWishlist)
 user_route.post('/deleteWishlist',auth.isLogin,userController.deleteWishlist)
 // user profile
 user_route.get('/userProfile',auth.isLogin,userController.loaduserprofile)
+user_route.post('/addaddress',auth.isLogin,userController.addAddress) 
 
 // user cart
 user_route.get('/cart',auth.isLogin,userController.loadCart);
 user_route.post('/add-to-cart',auth.isLogin,userController.AddToCart);
-user_route.post('/deletecart',auth.isLogin,userController.deletecart)
-user_route.post('/change-quantity',auth.isLogin,userController.change_Quantities)
+user_route.post('/deletecart',auth.isLogin,userController.deletecart);
+user_route.post('/change-quantity',auth.isLogin,userController.change_Quantities);
 
+// checkout-address
 
+user_route.get('/checkoutAddress',auth.isLogin,userController.checkoutAddress)
 
 
 module.exports = user_route;

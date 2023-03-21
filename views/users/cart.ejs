@@ -504,7 +504,7 @@
 
                     <!-- product table -->
                     <div class="col-12 shop-cart-table">
-                        <table class="table shop-cart text-center" id="carttable">
+                        <table id="table" class="table shop-cart text-center" >
                             <colgroup>
                                 <col width="100">
                                     <col>
@@ -529,6 +529,7 @@
                                     <tr>
                                         <td colspan="6" style="color: red;">Your Cart is currently empty!...</td>
                                     </tr>
+                                    
                                     <%}else{%>
                                         <% userData.cart.forEach((cart, index) => { %>
                                 <tr>
@@ -542,7 +543,7 @@
                                         <%= cart.productId.price %>
                                     </td>
                                     <td class="product-quantity">
-                                        <div class="cart-product-quantity">
+                                        <div  class="cart-product-quantity">
                                             <button
                                                 style="border: none;border-radius:3px; padding:0 16px 0 16px"
                                                 onclick="changeQuantity('<%= userData._id %>','<%= cart.productId._id %>',-1,'<%= cart.productId.price %>')">-</button> <span
@@ -554,7 +555,11 @@
                       
                                         </div>
                                     </td>
-                                    <td class="product-subtotal text-start"><%= cart.productTotalPrice %></td>
+                                    <td> 
+                                        <h5 class="<%= cart.productId._id %>">
+                                            <%= cart.productTotalPrice%>
+                                        </h5></td>
+                                      </td>
                                     <td class="product-remove text-center">
                                         
                                         <a  onclick="deletecart('<%= cart.productId._id%>')"><i class="fas fa-times"></i></a>
@@ -565,7 +570,7 @@
                                 <%}%>
                                 <tr>
                                     <th class="text-end pe-0 text-uppercase">Cart Total</th>
-                                    <td class="text-uppercase text-end pe-0">$44.70</td>
+                                    <td class="text-uppercase text-end pe-0" id="total" ><%= userData.cartTotalPrice %></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -691,7 +696,7 @@
                                         </tr>
                                     </tbody>
                                 </table> -->
-                                <a class="butn-style2 float-end" href="shop-checkout-address.html"><span>Proceed to Checkout</span></a>
+                                <a class="butn-style2 float-end" href="/checkoutAddress"><span>Proceed to Checkout</span></a>
                             </div>
                         </div>
                     </div>
@@ -863,6 +868,7 @@
                 },
                 method: 'post',
                 success: (response) => {
+                    console.log('nameer')
                   document.getElementById(productId).innerHTML = quantity+count
                   document.getElementsByClassName(productId)[0].innerHTML = response.productSinglePrice
                   document.getElementById('total').innerHTML = response.sum

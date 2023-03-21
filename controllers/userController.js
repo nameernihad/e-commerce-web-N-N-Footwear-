@@ -636,16 +636,26 @@ const loaduserprofile = async(req,res)=>{
 const loadCart = async(req,res) => {
     try{
         console.log("showing cart....");
-        const id = req.session.user_id
-       
-        const userData = await User.findOne({_id:id}).populate('cart.productId').exec()
+        const userId = req.session.user_id
+        const temp = mongoose.Types.ObjectId(req.session.user_id)
+        const usercart =  await User.aggregate([ { $match: { _id: temp } }, { $unwind: '$cart' },{ $group: { _id: null, totalcart: { $sum: '$cart.productTotalPrice' } } }])
+        // console.log(usercart);
+        if(usercart.length >0){
+            const cartTotal =usercart[0].totalcart
+        // console.log(cartTotal);
+        const cartTotalUpdate = await User.updateOne({_id:userId},{$set:{cartTotalPrice:cartTotal}})
+        // console.log(cartTotalUpdate);
+        const userData = await User.findOne({_id:userId}).populate('cart.productId').exec()
+        res.render('cart',{userData})
+
+        }else{
+            const userData = await User.findOne({userId})
             res.render('cart',{userData})
-        
+        }
         
 
     }catch(error){
         console.log(error.message);
-        console.log("loadcart");
     }
 }
 
@@ -688,12 +698,9 @@ const AddToCart = async(req,res) => {
 const deletecart  = async(req,res)=>{
     try {
      const ProductId = req.body.productId;
-     console.log(req.body.productId)
     const userId  = req.session.user_id;
-    console.log(userId)
         
     const deletedata = await User.findOneAndUpdate({_id:userId},{$pull:{cart:{productId:ProductId}}})
-    console.log(deletedata)
     if(deletedata){
         res.json({success:true})
     }
@@ -707,10 +714,8 @@ const deletecart  = async(req,res)=>{
 
 const change_Quantities = async(req,res) => {
     try{
-        console.log('quantity updation first part')
         const {user,product,count,Quantity,proPrice} =req.body
         const producttemp=mongoose.Types.ObjectId(product)
-        console.log(producttemp)
         const usertemp=mongoose.Types.ObjectId(user)
         const updateQTY = await User.findOneAndUpdate({_id:usertemp,'cart.productId':producttemp},{$inc:{'cart.$.qty':count}})
        
@@ -719,21 +724,47 @@ const change_Quantities = async(req,res) => {
         const qty = currentqty.cart[0].qty
        
         const productSinglePrice =proPrice*qty
-        console.log(productSinglePrice)
         await User.updateOne({_id:usertemp,'cart.productId':producttemp},{$set:{'cart.$.productTotalPrice':productSinglePrice}})
         const cart = await User.findOne({_id:usertemp})
         let sum=0
         for(let i=0;i<cart.cart.length;i++){
             sum=sum + cart.cart[i].productTotalPrice
         }
-        const update =await User.updateOne({_id:usertemp},{$set:{cartTotalPrice:sum}})
-        console.log(sum)
+        
+            const update =await User.updateOne({_id:usertemp},{$set:{cartTotalPrice:sum}})
         .then(async(response)=>{
             res.json({ response: true,productSinglePrice,sum })
             })
+        
+        
 
     }catch(error){
         console.log(error.message);
+    }
+}
+
+
+// choutout 
+const checkoutAddress = async(req,res)=>{
+    try {
+
+        res.render('checkout');
+
+
+    } catch (error) {
+        console.log(error.message);
+        console.log('checkout address');
+    }
+}
+
+const addAddress  = await (req,res)=>{
+    try {
+        
+         const userid = await req.session.user_id;
+
+    } catch (error) {
+        console.log(error.message);
+        console.log("addAddress");
     }
 }
 
@@ -762,6 +793,8 @@ module.exports = {
     loadCart,
     AddToCart,
     deletecart,
-    change_Quantities
+    change_Quantities,
+    checkoutAddress,
+    addAddress
      
 }

@@ -56,7 +56,7 @@ const userSchema = new mongoose.Schema({
     }],
     cartTotalPrice:{
         type:Number,
-        // default:0
+        default:0
     },
     wishlist: [{
         product:{
