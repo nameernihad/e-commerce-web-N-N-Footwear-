@@ -50,8 +50,8 @@
                         <div class="col-3 col-md-6">
                             <div class="top-bar-info">
                                 <ul class="ps-0">
-                                    <li><a href="tel:01234567890"><i class="ti-mobile"></i><span class="d-none d-md-inline-block ps-2"><%= userdata.name%></span></a></li>
-                                    <li><a href="mailto:addyour@emailhere"><i class="ti-email"></i><span class="d-none d-md-inline-block ps-2"><%= userdata.email%></span></a></li>
+                                    <li><a href="tel:01234567890"><i class="ti-mobile"></i><span class="d-none d-md-inline-block ps-2"><%= userData.name%></span></a></li>
+                                    <li><a href="mailto:addyour@emailhere"><i class="ti-email"></i><span class="d-none d-md-inline-block ps-2"><%= userData.email%></span></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -522,7 +522,7 @@
 
                                 <div class="text-center">
                                     
-                                    <h6 class="mb-0 display-28"><%=userdata.name%></h6>
+                                    <h6 class="mb-0 display-28"><%=userData.name%></h6>
                                     <div class="reward-points">
                                         <i class="ti-star text-primary pe-1"></i> Points: 7386
                                     </div>
@@ -560,7 +560,7 @@
 
                                         <div class="form-group">
                                             <label>Your Name</label>
-                                            <input type="text" disabled class="form-control" value="<%=userdata.name%>" name="name" placeholder="Your name here">
+                                            <input type="text" disabled class="form-control" value="<%=userData.name%>" name="name" placeholder="Your name here">
                                         </div>
 
                                     </div>
@@ -579,7 +579,7 @@
 
                                         <div class="form-group">
                                             <label>Email Address</label>
-                                            <input type="email" disabled value="<%=userdata.email%>" class="form-control" name="email" placeholder="Your email here">
+                                            <input type="email" disabled value="<%=userData.email%>" class="form-control" name="email" placeholder="Your email here">
                                         </div>
 
                                     </div>
@@ -588,7 +588,7 @@
 
                                         <div class="form-group">
                                             <label>Contact Number</label>
-                                            <input type="text" disabled value="<%=userdata.phone%>" class="form-control" name="phone" placeholder="+40-123 456 789">
+                                            <input type="text" disabled value="<%=userData.phone%>" class="form-control" name="phone" placeholder="+40-123 456 789">
                                         </div>
 
                                     </div>
@@ -612,7 +612,7 @@
                                   </button>
                                   
                                  <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -620,7 +620,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <form action="/ad-address" method="post">
+                      <form action="/addaddress" method="post">
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label">Full name:</label>
                             <input type="text" class="form-control" id="recipient-name" name="fullname" placeholder="Enter your name">

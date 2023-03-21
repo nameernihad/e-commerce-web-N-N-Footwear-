@@ -1,5 +1,7 @@
 const User = require('../model/userModel');
 
+const Address = require('../model/address');
+
 const coupon = require('../model/coupon');
 
 const product = require('../model/productModel');
@@ -626,8 +628,13 @@ const deleteWishlist = async(req,res) => {
 }
 const loaduserprofile = async(req,res)=>{
     try {
-        const userdata = await User.findOne({_id:req.session.user_id});
-        res.render('userprofile',{userdata})
+
+        const userId = req.session.user_id
+        const userData = await User.findOne({_id:req.session.user_id})
+        const address = await Address.findOne({userId:req.session.user_id})
+       
+        res.render('userprofile',{userData,address})
+   
     } catch (error) {
         console.log(error.message);
     }
@@ -757,11 +764,45 @@ const checkoutAddress = async(req,res)=>{
     }
 }
 
-const addAddress  = await (req,res)=>{
+const insertAddress  = async (req,res)=>{
     try {
-        
-         const userid = await req.session.user_id;
+        if(req.session.user_id){
 
+            const userId = req.session.user_id;
+            let address = {
+                fullname:req.body.fullname,
+                mobileNumber:req.body.number,
+                pincode:req.body.pincode,
+                houseAddress:req.body.houseAddress,
+                streetAddress:req.body.streetAdress,
+                landMark:req.body.landmark,
+                cityName:req.body.city,
+                state:req.body.state,
+            }
+            const userAddress = await Address.findOne({userId:userId})
+            if(userAddress){
+                console.log("added to exist address");
+                const useradrs = await Address.findOne({userId:userId}).populate('userId').exec()
+                
+                useradrs.userAddresses.push(address)
+                await useradrs .save().then((resp)=>{
+                    res.redirect('/userProfile')
+                }).catch((err)=>{
+                    res.send(err)
+                })
+                
+            }else{
+                console.log("added to new address");
+                let userAddressObj = {
+                    userId:userId,
+                    userAddresses:[address]
+                }
+                await Address.create(userAddressObj).then((response)=>{
+                    res.redirect('/userprofile')
+                })
+            }
+        }
+            
     } catch (error) {
         console.log(error.message);
         console.log("addAddress");
@@ -795,6 +836,6 @@ module.exports = {
     deletecart,
     change_Quantities,
     checkoutAddress,
-    addAddress
+    insertAddress
      
 }
