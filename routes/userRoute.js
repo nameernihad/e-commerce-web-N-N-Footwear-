@@ -76,9 +76,11 @@ user_route.post('/add-to-cart',auth.isLogin,userController.AddToCart);
 user_route.post('/deletecart',auth.isLogin,userController.deletecart);
 user_route.post('/change-quantity',auth.isLogin,userController.change_Quantities);
 
+
 // checkout-address
 
 user_route.get('/checkoutAddress',auth.isLogin,userController.checkoutAddress)
+user_route.post('/addCheckoutAddress',auth.isLogin,userController.addCheckoutAddress)
 
 
 module.exports = user_route;

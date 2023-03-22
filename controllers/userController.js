@@ -388,8 +388,6 @@ const userLogout = async(req,res)=>{
         console.log(error.message);
     }
 
-
-
 }
 
 
@@ -630,10 +628,10 @@ const loaduserprofile = async(req,res)=>{
     try {
 
         const userId = req.session.user_id
-        const userData = await User.findOne({_id:req.session.user_id})
+        const userData = await User.findOne({_id:userId})
         const address = await Address.findOne({userId:req.session.user_id})
-       
-        res.render('userprofile',{userData,address})
+        
+        res.render('userprofile',{userData})
    
     } catch (error) {
         console.log(error.message);
@@ -755,7 +753,11 @@ const change_Quantities = async(req,res) => {
 const checkoutAddress = async(req,res)=>{
     try {
 
-        res.render('checkout');
+        const userId = req.session.user_id
+        
+        const userData = await User.findOne({_id:userId}).populate('cart.productId').exec()
+        const address = await Address.findOne({userId:userId})
+        res.render('checkout',{userData,address})
 
 
     } catch (error) {
@@ -765,11 +767,10 @@ const checkoutAddress = async(req,res)=>{
 }
 
 const insertAddress  = async (req,res)=>{
-    try {
+    try{
         if(req.session.user_id){
-
-            const userId = req.session.user_id;
-            let address = {
+            const userId =req.session.user_id
+            let AddressObj ={
                 fullname:req.body.fullname,
                 mobileNumber:req.body.number,
                 pincode:req.body.pincode,
@@ -777,37 +778,82 @@ const insertAddress  = async (req,res)=>{
                 streetAddress:req.body.streetAdress,
                 landMark:req.body.landmark,
                 cityName:req.body.city,
-                state:req.body.state,
+                state:req.body.state
             }
-            const userAddress = await Address.findOne({userId:userId})
+            const userAddress= await Address.findOne({userId:userId})
             if(userAddress){
-                console.log("added to exist address");
-                const useradrs = await Address.findOne({userId:userId}).populate('userId').exec()
-                
-                useradrs.userAddresses.push(address)
-                await useradrs .save().then((resp)=>{
+                console.log("addred to exist address");
+                const userAdrs=await Address.findOne({userId:userId}).populate('userId').exec()
+                userAdrs.userAddresses.push(AddressObj)
+                await userAdrs .save().then((resp)=>{
                     res.redirect('/userProfile')
-                }).catch((err)=>{
+                }).catch((err) => { 
                     res.send(err)
+                   
                 })
                 
             }else{
-                console.log("added to new address");
-                let userAddressObj = {
+                console.log("added to new address ");
+                let userAddressObj ={
                     userId:userId,
-                    userAddresses:[address]
+                    userAddresses:[AddressObj]
                 }
-                await Address.create(userAddressObj).then((response)=>{
-                    res.redirect('/userprofile')
+                await Address.create(userAddressObj).then((resp)=>{
+                    res.redirect('/userProfile')
                 })
             }
+        
         }
-            
-    } catch (error) {
+    }catch(error){
         console.log(error.message);
-        console.log("addAddress");
     }
 }
+
+const addCheckoutAddress = async(req,res)=>{
+    try{
+        if(req.session.user_id){
+            const userId =req.session.user_id
+            let AddressObj ={
+                fullname:req.body.fullname,
+                mobileNumber:req.body.number,
+                pincode:req.body.pincode,
+                houseAddress:req.body.houseAddress,
+                streetAddress:req.body.streetAdress,
+                landMark:req.body.landmark,
+                cityName:req.body.city,
+                state:req.body.state
+            }
+            const userAddress= await Address.findOne({userId:userId})
+            if(userAddress){
+                console.log("addred to exist address");
+                const userAdrs=await Address.findOne({userId:userId}).populate('userId').exec()
+                userAdrs.userAddresses.push(AddressObj)
+                await userAdrs .save().then((resp)=>{
+                    res.redirect('/checkoutAddress')
+                }).catch((err) => { 
+                    res.send(err)
+                   
+                })
+                
+            }else{
+                console.log("added to new address ");
+                let userAddressObj ={
+                    userId:userId,
+                    userAddresses:[AddressObj]
+                }
+                await Address.create(userAddressObj).then((resp)=>{
+                    res.redirect('/checkoutAddress')
+                })
+            }
+        
+        }
+    }catch(error){
+        console.log(error.message);
+    }
+}
+
+
+
 
 module.exports = {
     loadRegister,
@@ -836,6 +882,7 @@ module.exports = {
     deletecart,
     change_Quantities,
     checkoutAddress,
-    insertAddress
+    insertAddress,
+    addCheckoutAddress
      
 }

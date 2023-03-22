@@ -14,7 +14,7 @@
     <meta name="description" content="Smartshop - Multipurpose eCommerce Template + Admin" />
 
     <!-- title  -->
-    <title>Smartshop - Multipurpose eCommerce Template + Admin</title>
+    <title>N&N KICKS</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="user/img/logos/favicon.png">
@@ -512,14 +512,13 @@
                     <div class="col-12">
                         <div class="process-steps mb-1-9 mb-lg-6">
                             <a class="step active" href="shop-checkout-address.html"><i class="ti-direction-alt"></i><h4 class="step-title">1. Address</h4></a>
-                            <a class="step" href="shop-checkout-shipping.html"><i class="ti-truck"></i><h4 class="step-title">2. Shipping</h4></a>
-                            <a class="step" href="shop-checkout-payment.html"><i class="ti-wallet"></i><h4 class="step-title">3. Payment</h4></a>
-                            <a class="step" href="shop-checkout-review.html"><i class="ti-check-box"></i><h4 class="step-title">4. Review</h4></a>
+                            <a class="step" href="shop-checkout-payment.html"><i class="ti-wallet"></i><h4 class="step-title">2. Payment</h4></a>
+                            <a class="step" href="shop-checkout-review.html"><i class="ti-check-box"></i><h4 class="step-title">3. Review</h4></a>
                         </div>
                     </div>
 
                     <!-- left pannel section -->
-                    <div class="col-lg-9 col-12 pe-lg-2-3 mb-1-9 mb-lg-0">
+                    <div class="col-lg-7 col-12 pe-lg-2-3 mb-1-9 mb-lg-0">
 
                         <div class="common-block">
 
@@ -527,129 +526,47 @@
                                 <h4 class="mb-0">Billing Address</h4>
                             </div>
 
-                            <form>
-
-                                <div class="row">
-
-                                    <div class="col-sm-6">
-
-                                        <div class="form-group">
-                                            <label>First Name</label>
-                                            <input type="text" class="form-control" name="name" placeholder="Your name here">
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-sm-6">
-
-                                        <div class="form-group">
-                                            <label>Last Name</label>
-                                            <input type="text" class="form-control" name="lastname" placeholder="Your last name here">
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="row">
-
-                                    <div class="col-sm-6">
-
-                                        <div class="form-group">
-                                            <label>Email Address</label>
-                                            <input type="email" class="form-control" name="email" placeholder="Your email address here">
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-sm-6">
-
-                                        <div class="form-group">
-                                            <label>Phone</label>
-                                            <input type="text" class="form-control" name="state" placeholder="Your phone number here">
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="row">
-
-
-                                </div>
-
-                                <div class="row">
-
-                                    <div class="col-sm-6">
-
-                                        <div class="form-group">
-                                            <label>City / Town </label>
-                                            <input type="text" class="form-control" name="city" placeholder="Your city name here">
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-sm-6">
-
-                                        <div class="form-group">
-                                            <label>Zip Code</label>
-                                            <input type="text" class="form-control" name="zipcode" placeholder="Your zip code here">
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="row">
-
-                                    <div class="col-sm-6">
-
-                                        <div class="form-group">
-                                            <label>Address 1 </label>
-                                            <input type="text" class="form-control" name="address1" placeholder="Your address here">
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-sm-6">
-
-                                        <div class="form-group">
-                                            <label>Address 2 </label>
-                                            <input type="text" class="form-control" name="address2" placeholder="Your address here">
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="inner-title mt-1-9">
-                                    <h4 class="mb-0">Shipping Address</h4>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="form-check text-start">
-                                            <input class="form-check-input" type="checkbox" value="" id="billing-address">
-                                            <label class="form-check-label" for="billing-address">Same as billing address</label>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="buttons-set">
-                                    <a href="shop-cart.html" class="butn-style2 wide"><i class="fas fa-arrow-left me-1"></i> Back</a>
-                                    <a href="shop-checkout-shipping.html" class="butn-style2 wide">Continue <i class="fas fa-arrow-right ms-1"></i></a>
-                                </div>
-
-                            </form>
-
+                            <div class=" ">
+  
+                                <form action="" id="checkout-form">
+                                  
+                                              <%if(address==null){ %>
+                                                <%}else{ %>
+                                                  <% address.userAddresses.forEach((value,index)=> { %>
+                          
+                                                    <label>
+                                                      <input type="radio" name="address" value="<%= index%>" required>
+                                                      <div class="mb-3 ms-5">
+                                                        <span>
+                                                          <%= value.fullname%><br>
+                                                            <%= value.mobileNumber %> <br>
+                                                              <%= value.houseAddress %>,<%= value.streetAddress %> ,<%= value.landMark %> <br>
+                                                              <%= value.cityName %>,<%= value.state %> <br>
+                                                              <%= value.pincode %>
+                                                        </span>
+                                                      </div>
+                                                    </label>
+                                                    <br>
+                                                    <hr>
+                                                    <% } ) }%>
+                                                      <div>
+                          
+                          
+                                                        <!-- Button trigger modal -->
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                            Add Address
+                                                           </button>
+                                                      </div>
+                                              </div>
+                                            </form>
+                                              
                         </div>
 
                     </div>
                     <!-- end left pannel section -->
-
+         
                     <!-- right pannel section -->
-                    <div class="col-lg-3 col-12 side-bar">
+                    <div class="col-lg-5 col-12 side-bar">
 
                         <div class="widget">
 
@@ -657,26 +574,47 @@
                                 <h5>Order Summary</h5>
                             </div>
 
-                            <table class="table classic">
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Qty</th>
+                                    <th scope="col">total</th>
+                                  </tr>
+                                </thead>
                                 <tbody>
+                                    <% userData.cart.forEach((cart,index)=> { %>
                                     <tr>
-                                        <th>Cart Subtotal:</th>
-                                        <td class="text-gray-dark">$2,548.50</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Shipping:</th>
-                                        <td class="text-gray-dark">$26.50</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Estimated tax:</th>
-                                        <td class="text-gray-dark">$9.72</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Total:</th>
-                                        <td class="text-lg text-gray-dark">$2,584.72</td>
-                                    </tr>
+                                    <th scope="row"></th>
+                                    <td><%= cart.productId.name %></td>
+                                    <td>x<%= cart.qty %></td>
+                                    <td>₹<%= cart.productTotalPrice%></td>
+                                  </tr>
+                                  <% }) %>
+                                  <tr>
+                                    <th scope="row"></th>
+                                    <td colspan="2">Subtotal</td>
+                                    <td>₹<%= userData.cartTotalPrice %></td>
+                                  </tr>
+                                  <th scope="row"></th>
+                                    <td colspan="2"> <b> Price Details</b>
+                                    </td>
+                                    <td></td>
+                                  <tr>
+                                    <th scope="row"></th>
+                                    <td colspan="2">Discount</td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row"></th>
+                                    <td colspan="2">Total</td>
+                                    <td>₹<%= userData.cartTotalPrice%></td>
+                                  </tr>
                                 </tbody>
-                            </table>
+                              </table>
+        
+    
 
                         </div>
 
@@ -720,6 +658,74 @@
 
                     </div>
                     <!-- end right pannel section -->
+                    
+                                  <!-- left pannel section -->
+                    <div class="col-lg-12 col-md-12 ps-0-3 mb-1-9 mb-lg-0 mt-6">
+
+                        <div class="common-block">
+
+                            <div class="inner-title">
+                                <h4 class="mb-0">Choose Payment Method</h4>
+                            </div>
+
+                            <div id="accordion" class="accordion-style3">
+                                <div class="card">
+                                    <div class="card-header" id="headingThree">
+                                        <h5 class="mb-0">
+                                        <button class="btn btn-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fas fa-award pe-2 display-29"></i>Cash On Delivery(COD)</button>
+                                    </h5>
+                                    </div>
+                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-bs-parent="#accordion">
+                                        <div class="card-body">
+
+                                            <h6 class="display-30 font-weight-600 mb-2"> Cash On Delivery Pay After Delivered</h6>
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="COD" id="reward_points">
+                                                <label class="form-check-label" for="reward_points">COD</label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" id="headingThree">
+                                        <h5 class="mb-0">
+                                        <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><i class="far fa-credit-card pe-2 display-29"></i>Pay with Credit Card</button>
+                                    </h5>
+                                    
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion">
+                                        <div class="card-body">
+
+                                            <h6 class="display-30 font-weight-600 mb-2"> We accept following credit cards:</h6>
+                                            <ul class="list-style-17 mb-4">
+                                                <li><img src="user/img/content/payment-options/visa.png" alt="..."></li>
+                                                <li><img src="user/img/content/payment-options/mastercard.png" alt="..."></li>
+                                                <li><img src="user/img/content/payment-options/amex.png" alt="..."></li>
+                                                <li><img src="user/img/content/payment-options/discover.png" alt="..."></li>
+                                            </ul>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="COD" id="reward_points">
+                                                <label class="form-check-label" for="reward_points">PAYPAL</label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                               
+                            </div>
+
+                            <div class="buttons-set">
+                                <a href="shop-checkout-shipping.html" class="butn-style2 wide"><i class="fas fa-arrow-left me-1"></i> Back</a>
+                                <a href="shop-checkout-review.html" class="butn-style2 wide">Continue <i class="fas fa-arrow-right ms-1"></i></a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- end left pannel section -->            
                 </div>
             </div>
         </section>
@@ -853,16 +859,67 @@
                 </div>
             </div>
 
+              <!-- Modal -->
+           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form action="/addCheckoutAddress" method="post">
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Full name:</label>
+                        <input type="text" class="form-control" id="recipient-name" name="fullname" placeholder="Enter your name">
+                      </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Mobile Number:</label>
+                        <input type="text" class="form-control" id="recipient-name" name="number" placeholder="Enter mobile number">
+                      </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Home Address:</label>
+                        <input type="text" class="form-control" id="recipient-name" name="houseAddress" placeholder="Address">
+                      </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Street Address:</label>
+                        <input type="text" class="form-control" id="recipient-name" name="streetAdress" placeholder="Enter street address">
+                      </div>
+                      <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">State:</label>
+                        <input type="text" class="form-control" id="recipient-name" name="state" placeholder="State">
+                      </div>
+                      <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">town/City:</label>
+                        <input type="text" class="form-control" id="recipient-name" name="city" placeholder="Town">
+                      </div>
+                      <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">LandMark:</label>
+                        <input type="text" class="form-control" id="recipient-name" name="landmark" placeholder="Landmark">
+                      </div>
+                      <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Pincode</label>
+                        <input type="text" class="form-control" id="recipient-name" name="pincode" placeholder="Pincode">
+                      </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" >Add Address</button>
+                      </div>
+                    
+                  </form>
+                </div>
+               
+              </div>
+            </div>
+          </div>
+
+
         </footer>
         
     </div>
     
-    <!-- BUY TEMPLATE
-    ================================================== -->
-    <div class="buy-theme alt-font d-none d-lg-inline-block"><a href="https://wrapbootstrap.com/theme/smartshop-multipurpose-ecommerce-template-WB0N7CT4D" target="_blank"><i class="fas fa-cart-plus"></i><span>Buy Template</span></a></div>
-
-    <div class="all-demo alt-font d-none d-lg-inline-block"><a href="https://www.chitrakootweb.com/contact.html" target="_blank"><i class="far fa-envelope"></i><span>Quick Question?</span></a></div>
-    
+   
     <!-- SCROLL TO TOP
     ================================================== -->
     <a href="#" class="scroll-to-top"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
