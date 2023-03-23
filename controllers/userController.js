@@ -2,6 +2,8 @@ const User = require('../model/userModel');
 
 const Address = require('../model/address');
 
+const Order = require('../model/OrderModel');
+
 const coupon = require('../model/coupon');
 
 const product = require('../model/productModel');
@@ -852,7 +854,81 @@ const addCheckoutAddress = async(req,res)=>{
     }
 }
 
+const loadplaced  = async(req,res)=>{
+    try {
+        res.render('orderPlaced')
 
+    } catch (error) {
+        console.log(error.message);
+        console.log('loadplaced');
+    }
+}
+
+
+const placeOrder = async(req,res) => {
+    try{
+        // console.log("get place order");
+        const index = req.body.address
+        
+        const userId = req.session.user_id;
+        const address= await Address.findOne({userId:userId})
+        const userAddress = address.userAddresses[index]
+        // console.log(userAddress);
+        const cartData = await User.findOne({_id:userId}).populate('cart.productId')
+        const total = cartData.cartTotalPrice
+        const payment = req.body.payment
+        let status  =payment === 'COD'?'placed':'pending'
+        let orderObj = { 
+            userId:userId,
+            address:{
+                fullName:userAddress.fullname,
+                mobileNumber:userAddress.mobileNumber,
+                pincode:userAddress.pincode,
+                houseAddress:userAddress.houseAddress,
+                streetAddress:userAddress.streetAddress,
+                landMark:userAddress.landMark,
+                cityName:userAddress.cityName,
+                state:userAddress.state
+            },
+            paymentMethod:payment,
+            orderStatus:status,
+            items:cartData.cart,
+            totalAmount:total
+        }
+         await Order.create(orderObj)
+        .then(async(data) => {
+            const orderId = data._id.toString()
+            if(payment == 'COD'){
+                await User.updateOne({_id:userId},{$set:{cart:[],cartTotalPrice:0}})
+                console.log(data);
+                res.json({status:true})
+            }
+        })
+
+
+    }catch(error){
+        console.log(error.message);
+
+    }
+}
+
+
+
+        
+ const orderSuccess = async(req,res) => {
+            try{
+                const userId = req.session.user_id
+                console.log(userId);
+                const userData = await User.findOne({_id:userId})
+                const catrData  = await User.findOne({_id:userId})
+                const orderData = await Order.findOne({userId:userId}).populate({path:'items',populate:{path:'productId',model:'product'}}).sort({createdAt:-1}).limit(1)
+                console.log("ahaui"+orderData);
+                res.render('orderConfirmation',{orderData})
+        
+            }catch(error){
+                console.log(error.message);
+            }
+}
 
 
 module.exports = {
@@ -883,6 +959,8 @@ module.exports = {
     change_Quantities,
     checkoutAddress,
     insertAddress,
-    addCheckoutAddress
+    addCheckoutAddress,
+    placeOrder,
+    orderSuccess
      
 }
