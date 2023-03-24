@@ -83,5 +83,6 @@ user_route.get('/checkoutAddress',auth.isLogin,userController.checkoutAddress)
 user_route.post('/addCheckoutAddress',auth.isLogin,userController.addCheckoutAddress)
 user_route.post('/place-order',auth.isLogin,userController.placeOrder)
 user_route.get('/ordersuccess',auth.isLogin,userController.orderSuccess);
+user_route.get('/orderhistory',auth.isLogin,userController.orderhistory)
 
 module.exports = user_route;

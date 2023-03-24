@@ -2,7 +2,7 @@
 <html lang="en">
 
 
-<!-- Mirrored from smartshop.websitelayout.net/checkout-complete.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 03 Jan 2023 16:00:40 GMT -->
+<!-- Mirrored from smartshop.websitelayout.net/account-orders.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 03 Jan 2023 16:00:34 GMT -->
 <head>
 
     <!-- metas -->
@@ -14,7 +14,7 @@
     <meta name="description" content="Smartshop - Multipurpose eCommerce Template + Admin" />
 
     <!-- title  -->
-    <title>Smartshop - Multipurpose eCommerce Template + Admin</title>
+    <title>N&N KICKS</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="user/img/logos/favicon.png">
@@ -62,7 +62,6 @@
                                     <ul class="dropdown-menu p-4">
                                         <li class="mb-2">
                                             <div class="media align-items-center">
-                                                <img class="w-40px rounded-circle me-3" src="user/img/avatar/01.png" alt="...">
                                                 <div class="media-body">Nancy Miller</div>
                                             </div>
 
@@ -493,153 +492,132 @@
             <div class="container">
 
                 <div class="title-info">
-                    <h1>Success!</h1></div>
+                    <h1>My Orders</h1></div>
                 <div class="breadcrumbs-info">
                     <ul class="ps-0">
                         <li><a href="/home">Home</a></li>
-                        <li><a href="#">Success!</a></li>
+                        <li><a href="#">My Orders</a></li>
                     </ul>
                 </div>
 
             </div>
         </section>
         
-        <!-- CHECKOUT COMPLETE
+        <!-- ACCOUNT ORDERS
         ================================================== -->
         <section class="md">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-lg-8">
 
-                        <div class="common-block text-center">
+                    <!-- left panel -->
+                    <div class="col-lg-4 col-sm-9 mb-2-3 mb-lg-0">
 
-                            <div class="inner-title">
-                                <h3 class="mb-0">Thank you for your order!</h3>
+                        <div class="account-pannel">
+
+                            <div class="p-4">
+
+                                <div class="text-center">
+                                    <div class="pb-3">
+                                        <img class="img-fluid rounded-circle img-thumbnail" src="user/img/avatar/t-3.jpg" alt="...">
+                                    </div>
+                                    <h6 class="mb-0 display-28">Peter Parker</h6>
+                                    <small>Joined February 06, 2017</small>
+                                    <div class="reward-points">
+                                        <i class="ti-star text-primary pe-1"></i> Points: 7386
+                                    </div>
+                                </div>
                             </div>
 
-                            <p class="lead mb-4">
-                                Thank you for your payment. An automated payment receipt will be sent to your registered email.
-                            </p>
-
-                            <a href="order-tracking.html" class="butn-style2 wide m-1">Track your order</a>
-                            <a href="/home" class="butn-style2 wide m-1">Back to home</a>
+                            <div class="list-group">
+                                <a class="list-group-items active" href="account-orders.html"><i class="ti-bag pe-2"></i>Orders<span class="badge badge-pill">6</span></a>
+                                <a class="list-group-items" href="account-profile.html"><i class="ti-user pe-2"></i>Profile</a>
+                                <a class="list-group-items" href="account-address.html"><i class="ti-location-pin pe-2"></i>Addresses</a>
+                                <a class="list-group-items" href="account-wishlist.html"><i class="ti-heart pe-2"></i>Wishlist<span class="badge badge-pill">3</span></a>
+                                <a class="list-group-items" href="account-tickets.html"><i class="ti-tag pe-2"></i>My Tickets<span class="badge badge-pill">4</span></a>
+                            </div>
 
                         </div>
 
                     </div>
+                    <!-- end left panel -->
+
+                 <div class="col-lg-8">
+  <div class="row">
+    
+      <div class="card mb-4">
+        <div class="card-body">
+          <h4 class="mb-0">My Orders</h4>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>SI No</th>
+                <th>Order</th>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%if(orders.length == 0) {%>
+              <tr>
+                <td colspan="8" class="text-center"><h3>No orders</h3></td>
+              </tr>
+              <%}else{%>
+              <% for( let i = 0; i < orders.length; i++ ) { %> 
+              <tr>
+                <td><%= i + 1 %></td>
+                <td><%= orders[i]._id.toString().substring(0,6)%></td>
+                <td><%= orders[i].date%></td>
+                <td>
+                  <% orders[i].items.forEach((element,index) => { %>
+                  <h4><%= element.productId.product_name %></h4>
+                  <% } )%>
+                </td>
+                <td>
+                  <p><%=orders[i].address.fullName %><br><%=orders[i].address.mobileNumber %><br><%=orders[i].address.pincode %><br>
+                    <%=orders[i].address.houseAddress %><br><%=orders[i].address.streetAddress %><%=orders[i].address.landMark%>,<%=orders[i].address.cityName %>,<%=orders[i].address.state %>
+                  </p>
+                </td>
+                <td><h4><%= orders[i].orderStatus%></h4></td>
+                <td><h5><%= orders[i].totalAmount %></h5></td>
+                <td>
+                  <div class="btn-group">
+                    <a href="/cancel?id=<%=orders[i]._id%>" class="btn btn-danger">Cancel Order</a>
+                  </div>
+                </td>
+              </tr>
+              <% } 
+                }%>
+            </tbody>
+          </table>
+        </div>
+        
+      </div>
+    
+  </div>
+</div>
+
+<style>
+  /* Custom styles */
+  .table td,
+  .table th {
+    vertical-align: middle;
+  }
+  
+  .card-footer {
+    background-color: #f5f5f5;
+    border-top: none;
+  }
+</style>
+
                 </div>
             </div>
-            
         </section>
-        <section class="confirmation_part padding_top">
-            <div class="container">
-              <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <div class="card bg-light">
-                      <div class="card-body">
-                        <h4 class="card-title text-primary">Order Info</h4>
-                        <ul class="list-unstyled">
-                          <li class="d-flex justify-content-between align-items-center">
-                            <p class="mb-0 text-muted">Order Number</p>
-                            <span class="font-weight-bold"><%= orderData.orderNumber %></span>
-                          </li>
-                          <li class="d-flex justify-content-between align-items-center">
-                            <p class="mb-0 text-muted">Date</p>
-                            <span class="font-weight-bold"><%= orderData.createdAt %></span>
-                          </li>
-                          <li class="d-flex justify-content-between align-items-center">
-                            <p class="mb-0 text-muted">Total</p>
-                            <span class="font-weight-bold text-success">₹<%= orderData.totalAmount %></span>
-                          </li>
-                          <li class="d-flex justify-content-between align-items-center">
-                            <p class="mb-0 text-muted">Payment Method</p>
-                            <span class="font-weight-bold"><%= orderData.paymentMethod %></span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div class="col-lg-6 col-xl-4">
-                    <div class="single_confirmation_details bg-light p-3">
-                      <% console.log(orderData.address)%>
-                      <h4 >Shipping Address</h4>
-                      <ul class="list-unstyled">
-                        <li>
-                          <p>Name <br>
-                          <%= orderData.address.fullName %></p>
-                        </li>
-                        <li>
-                          <p>House
-                          <br><%= orderData.address.houseAddress%></p>
-                        </li>
-                        <li>
-                          <p>Street
-                          <br><%= orderData.address.streetAddress%> </p>
-                        </li>
-                        <li>
-                          <p>City
-                          <br><%= orderData.address.cityName %></p>
-                        </li>
-                        <li>
-                          <p>State
-                          <br><%= orderData.address.state%></p>
-                        </li>
-                        <li>
-                          <p>Postcode
-                          <br><%= orderData.address.pincode%></p>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <div class="order_details_iner">
-                        <h3 class="text-center text-primary mb-4">Order Details</h3>
-                        <table class="table table-bordered">
-                          <thead class="thead-dark">
-                            <tr>
-                              <th scope="col" colspan="2">Product</th>
-                              <th scope="col">Quantity</th>
-                              <th scope="col">Total</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <% orderData.items.forEach((value) => { %>
-                              <tr>
-                                <td colspan="2"><span><%= value.productId.name %></span></td>
-                                <td><%= value.qty %></td>
-                                <td><span>₹<%= value.productTotalPrice %></span></td>
-                              </tr>
-                            <% }) %>
-                            <tr>
-                              <td colspan="3" class="text-right">Subtotal</td>
-                              <td><span>₹<%= orderData.totalAmount %></span></td>
-                            </tr>
-                            <tr>
-                              <td colspan="3" class="text-right">Shipping</td>
-                              <td><span>flat rate: $00.00</span></td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                              <th scope="col" colspan="3" class="text-right">Total</th>
-                              <th scope="col"><span>₹<%= orderData.totalAmount %></span></th>
-                            </tr>
-                            <tr>
-                              <td colspan="4" class="text-center">
-                                <button class="btn btn-primary" onclick="generatePDF()">Download Invoice</button>
-                              </td>
-                            </tr>
-                          </tfoot>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                  
-            </div> 
-          </section>
         
         <!-- FOOTER
         ================================================== -->
@@ -806,5 +784,5 @@
 </body>
 
 
-<!-- Mirrored from smartshop.websitelayout.net/checkout-complete.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 03 Jan 2023 16:00:40 GMT -->
+<!-- Mirrored from smartshop.websitelayout.net/account-orders.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 03 Jan 2023 16:00:34 GMT -->
 </html>

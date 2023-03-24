@@ -931,6 +931,19 @@ const placeOrder = async(req,res) => {
 }
 
 
+const orderhistory = async(req,res)=>{
+    try {
+        
+        const id = req.session.user_id
+        const orders = await Order.find({userId:id}).populate({path:'items',populate:{path:'productId',model:'product'}})
+        res.render('orderHistory',{orders})
+
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 module.exports = {
     loadRegister,
     insertUser,
@@ -961,6 +974,7 @@ module.exports = {
     insertAddress,
     addCheckoutAddress,
     placeOrder,
-    orderSuccess
+    orderSuccess,
+    orderhistory
      
 }
