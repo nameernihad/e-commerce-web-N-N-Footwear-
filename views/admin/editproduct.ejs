@@ -240,18 +240,19 @@
     </nav>
     <!-- End Navbar -->
 <div style="margin-left: 5%;">
-    <form class="row g-3" action="/admin/productform" method="post" enctype="multipart/form-data">
+   
+    <form class="row g-3" action="/admin/editProduct?id=<%= product._id %>" method="post">
       <div class="col-md-6">
-        <label for="inputEmail4" style="color: black; " class="form-label">Name</label>
-        <input type="text" class="form-control" name="name" placeholder="Product name" style="border: 1px solid #bcbcbc;">
+        <label for="inputEmail4"  style="color: black; " class="form-label"></label>
+        <input type="text" class="form-control" name="name" value="<%= product.name%>" placeholder="product name" style="border: 1px solid #bcbcbc;">
       </div>
       <div class="col-md-6">
         <label for="inputPassword4" style="color: black;" class="form-label">Price</label>
-        <input type="numbera" class="form-control" name="price" placeholder="Product Price" id="inputPassword4" style="border: 1px solid #bcbcbc;">
+        <input type="numbera" class="form-control" name="price" value="<%= product.price%>" placeholder="Product Price" id="inputPassword4" style="border: 1px solid #bcbcbc;">
       </div>
       <div class="col-12">
         <label for="inputAddress" style="color: black;" class="form-label">Discription</label>
-        <input type="text" class="form-control" name="Discription" id="inputAddress" placeholder="About the product" style="border: 1px solid #bcbcbc;">
+        <input type="text" class="form-control" name="Discription" value="<%= product.discription%>" id="inputAddress" placeholder="About the product" style="border: 1px solid #bcbcbc;">
       </div>
       <br><br>
       <div class="col-6">
@@ -260,11 +261,11 @@
       </div>
       <div class="col-md-2">
         <label for="inputZip" style="color: black;" class="form-label">Quantity</label>
-        <input type="number" class="form-control" name="quantity" id="inputZip" style="border: 1px solid #bcbcbc;">
+        <input type="number" class="form-control" name="quantity" value="<%= product.quantity%>"  id="inputZip" style="border: 1px solid #bcbcbc;">
       </div>
       <div class="col-md-6">
         <label for="inputState" style="color: black;" class="form-label">Category</label>
-        <select id="inputState" class="form-select" name="Category" style="border: 1px solid #bcbcbc;">
+        <select id="inputState" class="form-select" name="Category" value="<%= product.category%>"  style="border: 1px solid #bcbcbc;">
           <option selected>Category list</option>
           
             <% categories.forEach((Category) => { %>
@@ -287,14 +288,7 @@
           
         </select>
       </div>   
-      <div class="col-6">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="gridCheck">
-          <label class="form-check-label" style="color: black;" for="gridCheck" style="border: 1px solid #bcbcbc;">
-            Check me out
-          </label>
-        </div>
-      </div>
+     
       
       <div class="col-12">
         <button type="submit" class="btn btn-primary">ADD Product</button>

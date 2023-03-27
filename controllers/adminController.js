@@ -338,6 +338,53 @@ const ProductInsert = async (req, res) => {
     }
 }
 
+
+const editproduct = async(req,res)=>{
+    try {
+        const id = req.query.id
+        const categoryDetailes = await Category.find({})
+        const brandDetailes = await Brand.find({})
+        const product =await Product.findById({_id:id})
+        console.log(product);
+        res.render('editproduct', {
+
+            categories: categoryDetailes,
+            brands: brandDetailes,
+            product
+        });
+   
+
+    } catch (error) {
+        console.log(error.message);
+        console.log("edit product")
+    }
+}
+
+const editingProduct = async(req,res)=>{
+    try {
+        
+        const id = req.query.id
+        console.log(id,"iddddddd");
+        const updatedData = await Product.updateOne({ _id:id },{ $set: {
+            name: req.body.name,
+            price: req.body.price,
+            discription: req.body.Discription,
+            category: req.body.Category,
+            brand: req.body.brand,
+            quantity: req.body.quantity,
+         } });
+         
+        res.redirect('/admin/productList')
+
+
+
+    } catch (error) {
+        console.log(error.message);
+        console.log("editing product");
+    }
+}
+
+
 const categoryList = async (req, res) => {
     try {
 
@@ -407,7 +454,7 @@ const deleteCategory = async (req, res) => {
     }
     catch (error) {
         console.log(error.message);
-        console.log("deleteProduct");
+        console.log("deletecategory");
     }
 
 }
@@ -423,7 +470,7 @@ const deleteBrand = async (req, res) => {
     }
     catch (error) {
         console.log(error.message);
-        console.log("deleteProduct");
+        console.log("deletebrand");
     }
 
 }
@@ -662,6 +709,8 @@ const deletecoupon = async(req,res)=>{
     }
 }
 
+
+
 module.exports = {
     loadLogin,
     verifyLogin,
@@ -696,7 +745,9 @@ module.exports = {
     updatebrand,
     couponEdit,
     updateCoupon,
-    deletecoupon
+    deletecoupon,
+    editproduct,
+    editingProduct
 }
 
 

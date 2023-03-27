@@ -76,7 +76,7 @@ admin_route.post('/', adminController.verifyLogin);
 
 admin_route.get('/home', auth.is_Login, adminController.loadDashboard);
 
-admin_route.get('/user', auth.is_Logout, adminController.loadUser);
+admin_route.get('/user', auth.is_Login, adminController.loadUser);
 
 admin_route.get('/logout', auth.is_Login, adminController.logout);
 
@@ -137,6 +137,10 @@ admin_route.get('/couponEdit', auth.is_Login,adminController.couponEdit)
 admin_route.post('/couponEdit', auth.is_Login,adminController.updateCoupon)
 
 admin_route.post('/couponDelete',auth.is_Login,adminController.deletecoupon);
+
+admin_route.get('/editProduct',auth.is_Login,adminController.editproduct)
+
+admin_route.post('/editProduct',auth.is_Login,adminController.editingProduct)
 
 
 admin_route.use(session({

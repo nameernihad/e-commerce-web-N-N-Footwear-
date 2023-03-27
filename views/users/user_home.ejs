@@ -126,14 +126,15 @@
                                         <li><a href="#">Home</a>
                                             <ul>
 
-                                                <li><a href="home-shop-2.html">Home 02</a></li>
+                                                <li><a href="/home">Home</a></li>
 
 
                                             </ul>
                                         </li>
-                                        <li><a href="#">Pages</a>
+                                        <li><a href="#">Profile</a>
                                             <ul>
                                                 <li><a href="/userProfile">User Profile</a></li>
+                                                <li><a href="/orderHistory">Order History</a></li>
 
                                             </ul>
                                         </li>
@@ -543,9 +544,9 @@
                                     <a href="/productDetails?id=<%= value._id%>"><img
                                             src="/Images/<%= value.Image[0] %>" alt="..."></a>
                                     <div class="action-butn">
-                                        <a class="btn" onclick="AddToCart('<%= value._id%>')"><i class="ti-shopping-cart"></i></a>
+                                        <a  onclick="AddToCart('<%= value._id%>')"><i class="ti-shopping-cart"></i></a>
                                         <a href="#!"><i class="ti-eye"></i></a>
-                                        <a class="btn" onclick="addToWishlist('<%= value._id%>')"><i
+                                        <a  onclick="addToWishlist('<%= value._id%>')"><i
                                                 class="ti-heart"></i></a>
                                     </div>
                                 </div>

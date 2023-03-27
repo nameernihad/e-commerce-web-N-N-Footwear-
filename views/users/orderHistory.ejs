@@ -572,10 +572,11 @@
               <tr>
                 <td><%= i + 1 %></td>
                 <td><%= orders[i]._id.toString().substring(0,6)%></td>
-                <td><%= orders[i].date%></td>
+                <td><%= orders[i].date.toUTCString()%></td>
                 <td>
                   <% orders[i].items.forEach((element,index) => { %>
-                  <h4><%= element.productId.product_name %></h4>
+                  <%= element.productId.name %>
+                  <hr>
                   <% } )%>
                 </td>
                 <td>
@@ -583,11 +584,11 @@
                     <%=orders[i].address.houseAddress %><br><%=orders[i].address.streetAddress %><%=orders[i].address.landMark%>,<%=orders[i].address.cityName %>,<%=orders[i].address.state %>
                   </p>
                 </td>
-                <td><h4><%= orders[i].orderStatus%></h4></td>
-                <td><h5><%= orders[i].totalAmount %></h5></td>
+                <td class="text-center text-success" ><%= orders[i].orderStatus%></td>
+                <td>₹<%= orders[i].totalAmount %></td>
                 <td>
-                  <div class="btn-group">
-                    <a href="/cancel?id=<%=orders[i]._id%>" class="btn btn-danger">Cancel Order</a>
+                  <div class="btn">
+                    <a href="/cancel?id=<%=orders[i]._id%>" class="btn  btn-danger">Cancel</a>
                   </div>
                 </td>
               </tr>

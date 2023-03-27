@@ -271,8 +271,8 @@
                   <td><%= coupon.couponAmount %></td>
                   <td><%= coupon.minRedeemAmound %></td>
                   <td><%= coupon.minCartAmount %></td>
-                  <td><%= coupon.expiryDate %></td>
-                  <td><%= coupon.startDate %></td>
+                  <td><%= coupon.expiryDate.toLocaleString({day:'2-digit',month:'2-digit',year:'2-digit'})%></td>
+                  <td><%= coupon.startDate.toLocaleString({day:'2-digit',month:'2-digit',year:'2-digit'}) %></td>
                   <td><%= coupon.limit %></td>
                   <td>
                     <div class="d-flex justify-content-center">

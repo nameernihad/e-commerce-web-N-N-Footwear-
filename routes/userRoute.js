@@ -84,5 +84,6 @@ user_route.post('/addCheckoutAddress',auth.isLogin,userController.addCheckoutAdd
 user_route.post('/place-order',auth.isLogin,userController.placeOrder)
 user_route.get('/ordersuccess',auth.isLogin,userController.orderSuccess);
 user_route.get('/orderhistory',auth.isLogin,userController.orderhistory)
+user_route.get('/cancel',auth.isLogin.userController.cancelOrder)
 
 module.exports = user_route;

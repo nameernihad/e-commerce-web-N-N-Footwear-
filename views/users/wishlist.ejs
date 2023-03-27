@@ -570,7 +570,7 @@
                                                     <td><a href="#"><%= wishlist.product.name %></a></td>
                                                     <td class="product-price">$<%= wishlist.product.price %></td>
                                                     <td class="product-quantity">In Stock</td>
-                                                    <td><a href="#" class="butn-style2 small">Add To Cart</a></td>
+                                                    <td><a onclick="addToCart('<%= wishlist.product._id%>')" class="butn-style2 small">Add To Cart</a></td>
                                                 </tr>
                                             <% }) %>
                                         <% } %>

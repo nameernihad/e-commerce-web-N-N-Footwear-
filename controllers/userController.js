@@ -922,7 +922,6 @@ const placeOrder = async(req,res) => {
                 const userData = await User.findOne({_id:userId})
                 const catrData  = await User.findOne({_id:userId})
                 const orderData = await Order.findOne({userId:userId}).populate({path:'items',populate:{path:'productId',model:'product'}}).sort({createdAt:-1}).limit(1)
-                console.log("ahaui"+orderData);
                 res.render('orderConfirmation',{orderData})
         
             }catch(error){
@@ -941,6 +940,18 @@ const orderhistory = async(req,res)=>{
 
     } catch (error) {
         console.log(error.message);
+    }
+}
+
+const cancelOrder = async(req,res)=>{
+    try {
+        
+        const id = req.query.id;
+        const canceled = await Order.findByIdAndUpdate({_id:id},{"order.orderStatus":"canceled"})
+
+    } catch (error) {
+        console.log(error.message);
+        console.log("cancelOrder");
     }
 }
 
@@ -975,6 +986,7 @@ module.exports = {
     addCheckoutAddress,
     placeOrder,
     orderSuccess,
-    orderhistory
+    orderhistory,
+    cancelOrder
      
 }
