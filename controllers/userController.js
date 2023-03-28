@@ -854,15 +854,15 @@ const addCheckoutAddress = async(req,res)=>{
     }
 }
 
-const loadplaced  = async(req,res)=>{
-    try {
-        res.render('orderPlaced')
+// const loadplaced  = async(req,res)=>{
+//     try {
+//         res.render('orderPlaced')
 
-    } catch (error) {
-        console.log(error.message);
-        console.log('loadplaced');
-    }
-}
+//     } catch (error) {
+//         console.log(error.message);
+//         console.log('loadplaced');
+//     }
+// }
 
 
 const placeOrder = async(req,res) => {
@@ -947,7 +947,13 @@ const cancelOrder = async(req,res)=>{
     try {
         
         const id = req.query.id;
-        const canceled = await Order.findByIdAndUpdate({_id:id},{"order.orderStatus":"canceled"})
+        console.log(id);
+        const order = await Order.findById({_id:id})
+        console.log(order);
+        order.orderStatus="cancelled"
+        order.save()
+        res.redirect('/orderhistory')
+
 
     } catch (error) {
         console.log(error.message);
@@ -955,6 +961,96 @@ const cancelOrder = async(req,res)=>{
     }
 }
 
+
+const loadaddress  = async(req,res)=>{
+
+
+    try {
+        // const userData = await User.findOne({_id:req.session.user_id})
+        const address = await Address.findOne({ userId: req.session.user_id })
+
+
+        res.render('addresses', { address })
+    } catch (error) {
+        console.log(error.message);
+        console.log('error from showaddress');
+
+    }
+
+}
+
+
+const editAddress = async(req,res)=>{
+    try {
+        
+        const adrsSchemaId = req.params.id
+        const adrsId = req.params.adrsId
+        const address = mongoose.Types.ObjectId(adrsSchemaId)
+        const addresses = mongoose.Types.ObjectId(adrsId)
+
+        const addressData = await Address.findOne({ address })
+
+        const addressIndex = await addressData.userAddresses.findIndex(data => data.id == addresses)
+
+        const editAddress = addressData.userAddresses[addressIndex]
+       
+
+        res.render('editAddress', { editAddress, addressIndex })
+
+
+    } catch (error) {
+        console.log(error.message);
+        console.log(editAddress);
+    }
+}
+
+
+const editandupdateaddress = async(req,res)=>{
+    try {
+        
+        const addressIndex = req.params.addressIndex
+        console.log(addressIndex);
+        const editData = { ...req.body }
+        console.log(editData,"editDataa");
+        const userId = req.session.user_id
+        console.log(userId,"id")
+        const updateAdrs = await Address.findOne({ userId })
+        console.log(updateAdrs,"addressjhjh")
+        updateAdrs.userAddresses[addressIndex] = { ...editData }
+
+        await updateAdrs.save()
+        res.redirect('/address')
+
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const DeleteAddress = async (req , res)=>{
+
+    try {
+        
+        const adrSchemaId = req.params.id
+        const adrsId = req.params.adrsId
+        const addressId = mongoose.Types.ObjectId(adrSchemaId)
+        const addresses= mongoose.Types.ObjectId(adrsId)
+        console.log(addresses)
+        const addressData = await Address.findOne({addressId})
+
+        const addressIndex = await addressData.userAddresses.findIndex(data => data.id == addresses)
+
+        addressData.userAddresses.splice(addressIndex,1)
+
+        const deleted = await addressData.save()
+        res.redirect('/address')
+
+    } catch (error) {
+       console.log(error.message);       
+    }
+}
+   
 module.exports = {
     loadRegister,
     insertUser,
@@ -987,6 +1083,10 @@ module.exports = {
     placeOrder,
     orderSuccess,
     orderhistory,
-    cancelOrder
+    cancelOrder,
+    loadaddress,
+    editAddress,
+    editandupdateaddress,
+    DeleteAddress
      
 }

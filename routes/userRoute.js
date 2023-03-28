@@ -69,6 +69,10 @@ user_route.post('/deleteWishlist',auth.isLogin,userController.deleteWishlist)
 // user profile
 user_route.get('/userProfile',auth.isLogin,userController.loaduserprofile)
 user_route.post('/addaddress',auth.isLogin,userController.insertAddress) 
+user_route.get('/address',auth.isLogin,userController.loadaddress)
+user_route.get('/edit-address/:id/:adrsId',auth.isLogin,userController.editAddress)
+user_route.post('/updateaddress/:addressIndex', auth.isLogin, userController.editandupdateaddress)
+user_route.get('/delete-address/:id/:addressIndex',auth.isLogin,userController.DeleteAddress)
 
 // user cart
 user_route.get('/cart',auth.isLogin,userController.loadCart);
@@ -84,6 +88,7 @@ user_route.post('/addCheckoutAddress',auth.isLogin,userController.addCheckoutAdd
 user_route.post('/place-order',auth.isLogin,userController.placeOrder)
 user_route.get('/ordersuccess',auth.isLogin,userController.orderSuccess);
 user_route.get('/orderhistory',auth.isLogin,userController.orderhistory)
-user_route.get('/cancel',auth.isLogin.userController.cancelOrder)
+user_route.get('/cancel',auth.isLogin,userController.cancelOrder);
+
 
 module.exports = user_route;
