@@ -530,10 +530,13 @@
                 </div>
             </div>
             
-        </section>
-        <section class="confirmation_part padding_top">
+        </section >
+        
+        <section class="confirmation_part padding_top md" >
             <div class="container">
-              <div class="row">
+              
+              <div class="row  justify-content-center">
+                <br> <br>
                 <div class="col-lg-6 col-md-6">
                     <div class="card bg-light">
                       <div class="card-body">
@@ -545,11 +548,11 @@
                           </li>
                           <li class="d-flex justify-content-between align-items-center">
                             <p class="mb-0 text-muted">Date</p>
-                            <span class="font-weight-bold"><%= orderData.createdAt.toUTCString() %></span>
+                            <span class="font-weight-bold"><%= orderData.createdAt.toLocaleString({day:'2-digit',month:'2-digit',year:'2-digit'}) %></span>
                           </li>
                           <li class="d-flex justify-content-between align-items-center">
                             <p class="mb-0 text-muted">Total</p>
-                            <span class="font-weight-bold text-success">₹<%= orderData.totalAmount %></span>
+                            <span class="font-weight-bold text-success" id="total" >₹<%=orderData.totalAmount - orderData.discount %></span>
                           </li>
                           <li class="d-flex justify-content-between align-items-center">
                             <p class="mb-0 text-muted">Payment Method</p>
@@ -560,7 +563,7 @@
                     </div>
                   </div>
                   
-                  <div class="col-lg-6 col-xl-4">
+                  <div class="col-lg-8 col-xl-8">
                     <div class="single_confirmation_details bg-light p-3">
                       <% console.log(orderData.address)%>
                       <h4 >Shipping Address</h4>
@@ -618,14 +621,14 @@
                               <td><span>₹<%= orderData.totalAmount %></span></td>
                             </tr>
                             <tr>
-                              <td colspan="3" class="text-right">Shipping</td>
-                              <td><span>flat rate: $00.00</span></td>
+                              <td colspan="3" class="text-right">Discount</td>
+                              <td><span><%= orderData.discount %></span></td>
                             </tr>
                           </tbody>
                           <tfoot>
                             <tr>
                               <th scope="col" colspan="3" class="text-right">Total</th>
-                              <th scope="col"><span>₹<%= orderData.totalAmount %></span></th>
+                              <th scope="col"><span>₹<%=orderData.totalAmount - orderData.discount %></span></th>
                             </tr>
                             <tr>
                               <td colspan="4" class="text-center">

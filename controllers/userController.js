@@ -871,6 +871,15 @@ const placeOrder = async(req,res) => {
         const index = req.body.address
         
         const userId = req.session.user_id;
+
+
+        
+        const discount = req.body.couponDiscount
+        const totel = req.body.total1
+        const Coupon = req.body.couponC
+        const couponUpdate = await coupon.updateOne({couponCode:Coupon},{$push:{used:userId}})
+
+
         const address= await Address.findOne({userId:userId})
         const userAddress = address.userAddresses[index]
         // console.log(userAddress);
@@ -893,7 +902,8 @@ const placeOrder = async(req,res) => {
             paymentMethod:payment,
             orderStatus:status,
             items:cartData.cart,
-            totalAmount:total
+            totalAmount:total,
+            discount:discount
         }
          await Order.create(orderObj)
         .then(async(data) => {
@@ -1050,6 +1060,89 @@ const DeleteAddress = async (req , res)=>{
        console.log(error.message);       
     }
 }
+
+
+
+// coupon apply 
+const couponApply = async(req, res)=>{
+
+    try {
+
+        const user= await User.findOne({_id:req.session.user_id})
+        
+        let cartTotal = user.cartTotalPrice
+        console.log(cartTotal);
+        // inserting userid into coupon 
+        const exist = await coupon.findOne({
+
+            couponCode:req.body.code,
+
+            used:{$in:[user._id]}
+        })
+       
+        if (exist) {
+            console.log(exist);
+            res.json({user:true})
+        }else{
+
+            const couponData = await coupon.findOne({ couponCode: req.body.code})
+            if (couponData) {
+                if (couponData.expiryDate>= new Date()) {
+                    if (couponData.limit !==0) {
+                        if (couponData.minCartAmount<= cartTotal) {
+                            if (couponData.couponAmountType==="fixed") {
+                                let discountValue = couponData.couponAmount
+                                let value = Math.round(cartTotal- couponData.couponAmount)
+                                return res.json({
+                                    amountokey:true,
+                                    value,
+                                    discountValue,
+                                    code:req.body.code
+                                })
+                            }else if( couponData.couponAmountType ==="percentage"){
+
+                                const discountPercentage =
+                                (cartTotal*couponData.couponAmount)/100
+                                if (discountPercentage <= couponData.minRedeemAmound) {
+                                    let discountValue = discountPercentage
+                                    let value = Math.round(cartTotal - discountPercentage)
+                                    return res.json({
+                                        amountokey:true,
+                                        value,
+                                        discountValue,
+                                        code:req.body.code,
+                                    })
+                                }else{
+
+                                    let discountValue = couponData.minRedeemAmound
+                                    let value = Math.round(cartTotal- couponData.minRedeemAmound)
+                                    return res.json({
+                                        amountokey:true,
+                                        value,
+                                        discountValue,
+                                        code:req.body.code,
+                                    })
+                                }
+                            }
+                        }else{
+
+                            res.json({minimum:true})
+                        }
+                    }else{
+                        res.json({ limit:true})
+                    }
+                }else{
+                    res.json({datefailed:true})
+                }
+            }else{
+                res.json({invalid:true})
+            }
+        }
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+}
    
 module.exports = {
     loadRegister,
@@ -1087,6 +1180,7 @@ module.exports = {
     loadaddress,
     editAddress,
     editandupdateaddress,
-    DeleteAddress
+    DeleteAddress,
+    couponApply
      
 }

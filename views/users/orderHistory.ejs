@@ -569,7 +569,7 @@
               <tr>
                 <td><%= i + 1 %></td>
                 <td><%= orders[i]._id.toString().substring(0,6)%></td>
-                <td><%= orders[i].date.toUTCString()%></td>
+                <td><%= orders[i].date.toLocaleString({day:'2-digit',month:'2-digit',year:'2-digit'})%></td>
                 <td>
                   <% orders[i].items.forEach((element,index) => { %>
                   <%= element.productId.name %>

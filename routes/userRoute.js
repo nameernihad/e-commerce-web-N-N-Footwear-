@@ -81,6 +81,9 @@ user_route.post('/deletecart',auth.isLogin,userController.deletecart);
 user_route.post('/change-quantity',auth.isLogin,userController.change_Quantities);
 
 
+// coupon
+user_route.post('/couponapply',auth.isLogin,userController.couponApply)
+
 // checkout-address
 
 user_route.get('/checkoutAddress',auth.isLogin,userController.checkoutAddress)
