@@ -21,9 +21,16 @@ const nodemailer = require('nodemailer');
 const config = require('../config/config');
 
 const Randormstring = require('Randomstring');
+
 const { json } = require('body-parser');
+
 const mongoose = require('mongoose');
+
 const { findByIdAndDelete, findByIdAndUpdate } = require('../model/userModel');
+
+const Razorpay = require('razorpay');
+
+const crypto = require('crypto')
 
 
 const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = process.env;
@@ -912,6 +919,20 @@ const placeOrder = async(req,res) => {
                 await User.updateOne({_id:userId},{$set:{cart:[],cartTotalPrice:0}})
                 console.log(data);
                 res.json({status:true})
+            }else{
+                var instance = new Razorpay({
+                    key_id: process.env.KEY_ID,
+                    key_secret: process.env.KEY_SECRET,
+                })
+                let amount  = total
+                instance.orders.create({
+                    amount:amount*100,
+                    currency:"INR", 
+                    receipt:orderId,
+                },(err,order) => {
+                    console.log(order);
+                    res.json({status:false,order})
+                })
             }
         })
 
@@ -923,6 +944,41 @@ const placeOrder = async(req,res) => {
 }
 
 
+
+
+const verifyPayment = async(req,res)=>{
+    try{
+        console.log("inside verifypayment ");
+        console.log(req.body);
+        const userId = req.session.user_id
+            const details = req.body
+            console.log(details.payment); 
+            let hmac = crypto.createHmac('sha256', process.env.KEY_SECRET);
+            hmac.update(details.payment.razorpay_order_id + '|' + details.payment.razorpay_payment_id);
+            hmac = hmac.digest('hex')
+    
+            const orderId = details.order.receipt
+            console.log(orderId);
+            if (hmac == details.payment.razorpay_signature) {
+    
+                console.log('order Successfull')
+                await User.updateOne({_id:userId},{$set:{cart:[],cartTotalPrice:0}})
+                await Order.findByIdAndUpdate(orderId, { $set: { orderStatus: 'placed' } }).then((data) => {
+                    res.json({ status: true, data })
+                }).catch((err) => {
+                    console.log(err);
+                    res.data({ status: false, err })
+                })
+    
+            } else {
+                res.json({ status: false })
+                console.log('payment failed');
+            }
+
+    }catch(error){
+        console.log(error.message);
+    }
+}
 
         
  const orderSuccess = async(req,res) => {
@@ -1143,6 +1199,22 @@ const couponApply = async(req, res)=>{
         console.log(error.message);
     }
 }
+
+
+
+
+
+
+const productlist  = async(req,res)=>{
+    try {
+        
+        const Product = await product.find({})
+        res.render('fullProductList',{Product})
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
    
 module.exports = {
     loadRegister,
@@ -1181,6 +1253,8 @@ module.exports = {
     editAddress,
     editandupdateaddress,
     DeleteAddress,
-    couponApply
+    couponApply,
+    verifyPayment,
+    productlist
      
 }

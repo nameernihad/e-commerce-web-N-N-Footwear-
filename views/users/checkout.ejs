@@ -32,6 +32,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.3.js"
         integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 </head>
 
@@ -805,7 +806,7 @@
                                 </div>
                                 <br> <br>
                                 <div class="d-grid gap-2 col-12 mx-auto">
-                                    <button class="btn btn-dark" type="submit">Place Order</button>
+                                    <button  class="btn btn-dark" type="submit">Place Order</button>
                                 </div>
                             </div>
 
@@ -1122,11 +1123,86 @@
                             window.location.href = '/ordersuccess'
                             console.log(response)
                         }, 1000)
-                    }
+                    }else{
+                razorpayPayment(response)
+            console.log(response,"response from razorpayment");
+            }
                 }
             })
         })
     </script>
+
+     <script>
+        function razorpayPayment(order){
+          console.log("in razor");
+          var options = {
+          "key": "rzp_test_fh4WJ53qxZZ3Uu", // Enter the Key ID generated from the Dashboard
+          "amount": order.order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+          "currency": "INR",
+         "name": "Nameer Nihad PC", //your business name
+          "description": "Test Transaction",
+          "image": "https://example.com/your_logo",
+          "order_id": order.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+          "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+          "prefill": {
+              "name": "Gaurav Kumar", //your customer's name
+              "email": "gaurav.kumar@example.com",
+              "contact": "9000090000"
+          },
+          "notes": {
+              "address": "Razorpay Corporate Office"
+          },
+          "theme": {
+              "color": "#3399cc"
+          },
+                  "handler": function (response) {
+                    console.log(response);
+                    console.log(order.order);
+                      verifyPayment(response, order.order);
+                  }
+              };
+              if (typeof Razorpay !== 'undefined') {
+                console.log(options);
+              var rzp1 = new Razorpay(options);
+              rzp1.open()
+         }else{
+        console.log('errro');
+          }
+            
+        }
+      </script>
+     <script>
+        function verifyPayment(payment,order){
+            console.log("from verifyPayment");
+                $.ajax({
+                    url:'/verify-payment',
+                    data:{
+                        payment,
+                        order
+                    },
+                    method:'post',
+                    success:(response)=>{
+                        console.log(response);
+                        if(response.status){
+                            window.location.href = '/ordersuccess'
+                        }else{
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'Payment failed',
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                            // alert('Your Product Deleted from Cart')
+                            // setTimeout(() => {
+                            //     location.reload()
+                            // }, 1200);
+                            // window.location.href = '/ordersuccess'
+                        }
+                    }
+                })
+            }
+        </script>
     <!-- jQuery -->
     <script src="user/js/jquery.min.js"></script>
 

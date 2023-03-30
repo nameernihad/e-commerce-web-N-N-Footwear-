@@ -868,7 +868,6 @@
                 },
                 method: 'post',
                 success: (response) => {
-                    console.log('nameer')
                   document.getElementById(productId).innerHTML = quantity+count
                   document.getElementsByClassName(productId)[0].innerHTML = response.productSinglePrice
                   document.getElementById('total').innerHTML = response.sum
