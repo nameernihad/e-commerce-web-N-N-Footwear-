@@ -546,53 +546,53 @@
           <h4 class="mb-0">My Orders</h4>
         </div>
         <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>SI No</th>
-                <th>Order</th>
-                <th>Date</th>
-                <th>Name</th>
-                <th>Address</th>
-                <th>Status</th>
-                <th>Total</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <%if(orders.length == 0) {%>
-              <tr>
-                <td colspan="8" class="text-center"><h3>No orders</h3></td>
-              </tr>
-              <%}else{%>
-              <% for( let i = 0; i < orders.length; i++ ) { %> 
-              <tr>
-                <td><%= i + 1 %></td>
-                <td><%= orders[i]._id.toString().substring(0,6)%></td>
-                <td><%= orders[i].date.toLocaleString({day:'2-digit',month:'2-digit',year:'2-digit'})%></td>
-                <td>
-                  <% orders[i].items.forEach((element,index) => { %>
-                  <%= element.productId.name %>
-                  <hr>
-                  <% } )%>
-                </td>
-                <td>
-                  <p><%=orders[i].address.fullName %><br><%=orders[i].address.mobileNumber %><br><%=orders[i].address.pincode %><br>
-                    <%=orders[i].address.houseAddress %><br><%=orders[i].address.streetAddress %><%=orders[i].address.landMark%>,<%=orders[i].address.cityName %>,<%=orders[i].address.state %>
-                  </p>
-                </td>
-                <td class="text-center text-success" ><%= orders[i].orderStatus%></td>
-                <td>₹<%= orders[i].totalAmount %></td>
-                <td>
-                  <div class="btn">
-                    <a href="/cancel?id=<%=orders[i]._id%>" class="btn  btn-danger">Cancel</a>
-                  </div>
-                </td>
-              </tr>
-              <% } 
-                }%>
-            </tbody>
-          </table>
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>SI No</th>
+                    <th>Order</th>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%if(orders.length == 0) {%>
+                  <tr>
+                    <td colspan="8" class="text-center"><h3>No orders</h3></td>
+                  </tr>
+                  <%}else{%>
+                  <% for(let i = orders.length - 1; i >= 0; i--) { %> 
+                  <tr>
+                    <td><%= i + 1 %></td>
+                    <td><%= orders[i]._id.toString().substring(0,6)%></td>
+                    <td><%= orders[i].date.toLocaleString({day:'2-digit',month:'2-digit',year:'2-digit'})%></td>
+                    <td>
+                      <% orders[i].items.forEach((element,index) => { %>
+                      <%= element.productId.name %>
+                      <hr>
+                      <% } )%>
+                    </td>
+                    <td>
+                      <p><%=orders[i].address.fullName %><br><%=orders[i].address.mobileNumber %><br><%=orders[i].address.pincode %><br>
+                        <%=orders[i].address.houseAddress %><br><%=orders[i].address.streetAddress %><%=orders[i].address.landMark%>,<%=orders[i].address.cityName %>,<%=orders[i].address.state %>
+                      </p>
+                    </td>
+                    <td class="text-center text-success" ><%= orders[i].orderStatus%></td>
+                    <td>₹<%= orders[i].totalAmount %></td>
+                    <td>
+                      <div class="btn">
+                        <a href="/cancel?id=<%=orders[i]._id%>" class="btn  btn-danger">Cancel</a>
+                      </div>
+                    </td>
+                  </tr>
+                  <% } 
+                    }%>            
+                </tbody>          
+              </table>
         </div>
         
       </div>

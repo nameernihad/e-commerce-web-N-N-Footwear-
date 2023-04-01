@@ -239,27 +239,78 @@
           </div>
         </nav>
         <!-- End Navbar -->
-        <div style="margin-left: 5%;">
-        <form action="/admin/editbrand?id=<%= brand._id %>" method="post" >
-            <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label">Brand Name</label>
-              <input type="text" value="<%= brand.name %>" class="form-control" style="border: 1px solid #373333;" name="name" id="exampleInputEmail1" aria-describedby="emailHelp">
-              
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">Discription</label>
-              <input type="text" value="<%= brand.discription %>" class="form-control" style="border: 1px solid #373333;" name="discription" id="exampleInputPassword1">
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">Image</label>
-              <input type="file" class="form-control" style="border: 1px solid #373333;" name="image" id="exampleInputPassword1">
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
+        <form action="/admin/editbrand?id=<%= brand._id %>" method="post" onsubmit="return validateForm()">
+
+          <img src="/BrandImages/<%= brand.image[0] %>" alt="" style="width: 80px;" height="80px">
+        
+          <button type="button" class="btn btn-primary btn-sm" style="background-color: rgb(12, 227, 12); color: black;" data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop">
+            <i class="fa-sharp fa-solid fa-pen"></i>
+          </button>
+        
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Brand Name</label>
+            <input type="text" value="<%= brand.name %>" class="form-control" style="border: 1px solid #373333;" name="name" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <span id="nameError" style="color:red"></span>
+          </div>
+          
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Description</label>
+            <input type="text" value="<%= brand.discription %>" class="form-control" style="border: 1px solid #373333;" name="description" id="exampleInputPassword1">
+            <span id="descriptionError" style="color:red"></span>
+          </div>
+          
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        
+        <script>
+          function validateForm() {
+            let name = document.forms[0]["name"].value.trim();
+            let description = document.forms[0]["description"].value.trim();
+            let nameError = document.getElementById("nameError");
+            let descriptionError = document.getElementById("descriptionError");
+            let isValid = true;
+        
+            if (name === "") {
+              nameError.innerHTML = "Name is required";
+              isValid = false;
+            } else {
+              nameError.innerHTML = "";
+            }
+        
+            if (description === "") {
+              descriptionError.innerHTML = "Description is required";
+              isValid = false;
+            } else {
+              descriptionError.innerHTML = "";
+            }
+        
+            return isValid;
+          }
+        </script>
+        
+          
+          
           <div>
 
-     
+            <form action="/admin/addBrandImage?id=<%= brand._id %>" method="post" enctype="multipart/form-data">
+              <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-body">
+                              <input type="file" class="custom-file-input bg-dark" id="thumbnail" name="image" required accept="image/*" oninvalid="this.setCustomValidity('Please select an image file')" oninput="this.setCustomValidity('')">
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-md btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <button type="submit" class="btn  btn-md btn-primary">Change</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          
+        
       <!--   Core JS Files   -->
       <script src="../assets/js/core/popper.min.js"></script>
       <script src="../assets/js/core/bootstrap.min.js"></script>

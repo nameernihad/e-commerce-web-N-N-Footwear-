@@ -253,71 +253,100 @@
       </div>
     </nav>
     <!-- End Navbar -->
-
     <div style="margin-left: 5%;">
-
-      <form action="/admin/editCategory?id=<%= category._id %>" method="post">
-
-        <img src="/CategoryImages/<%= category.image[0] %>" alt="" style="width: 80px;" height="80px">
-
-        <!-- Button trigger modal -->
-        <button type="button" class="btn-3 btn-primary" style="background-color: rgb(12, 227, 12); color: black;"
-          data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <form action="/admin/editCategory?id=<%= category._id %>" method="post" onsubmit="return validateForm()">
+        <img src="/CategoryImages/<%= category.image[0] %>" alt="" style="width: 80px; height: 80px;">
+        <button type="button" class="btn btn-primary btn-sm" style="background-color: rgb(12, 227, 12); color: black;" data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop">
           <i class="fa-sharp fa-solid fa-pen"></i>
         </button>
-
-        <!-- Modal -->
-
-
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label"></label>
-          <input type="text" value=" <%= category.name %>" class="form-control" style="border: 1px solid #bcbcbc;"
-            name="name" id="exampleInputEmail1" aria-describedby="emailHelp ">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" value="<%= category.name %>" class="form-control" style="border: 1px solid #bcbcbc;"
+            name="name" id="name" aria-describedby="nameHelp">
+          <span id="nameError" style="color: red;"></span>
         </div>
-        <!-- <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">Image</label>
-              <input type="file" style="border: 1px solid #bcbcbc;"  name="image">
-            </div> -->
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">discription</label>
+          <label for="description" class="form-label">Description</label>
           <input type="text" value="<%= category.discription %>" class="form-control" style="border: 1px solid #bcbcbc;"
-            name="discription" id="exampleInputEmail1" aria-describedby="emailHelp">
+            name="description" id="discription" aria-describedby="descriptionHelp">
+          <span id="descriptionError" style="color: red;"></span>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
-      
+      </form>
     </div>
-</form>
+    
+    <script>
+      function validateForm() {
+        let name = document.getElementById("name").value.trim();
+        let description = document.getElementById("description").value.trim();
+        let nameError = document.getElementById("nameError");
+        let descriptionError = document.getElementById("descriptionError");
+        let isValid = true;
+    
+        if (name === "") {
+          nameError.innerHTML = "Name is required";
+          isValid = false;
+        } else if (name.length < 3) {
+          nameError.innerHTML = "Name must be at least 3 characters long";
+          isValid = false;
+        } else {
+          nameError.innerHTML = "";
+        }
+    
+        if (description === "") {
+          descriptionError.innerHTML = "Description is required";
+          isValid = false;
+        } else {
+          descriptionError.innerHTML = "";
+        }
+    
+        return isValid;
+      }
+    </script>
+    
+
 
     <!-- modal setting -->
 
-    <form action="/admin/editimage?id=<%= category._id %>" method="post" enctype="multipart/form-data">
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Edit Images</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-
-              <!-- form for edit image -->
-
-              <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Image</label>
-                <input type="file" style="border: 1px solid #bcbcbc;" name="image">
+    <form action="/admin/addImage?id=<%= category._id %>" method="post" enctype="multipart/form-data" id="imageForm">
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+          aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-body">
+                      <input type="file" class="custom-file-input bg-dark" id="thumbnail" name="image" accept="image/*">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-md btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-md btn-primary">Change</button>
+                  </div>
               </div>
-
-
-
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" type="submit" class="btn btn-primary">Save changes</button>
-            </div>
           </div>
-        </div>
       </div>
-    </form>
+  </form>
+  
+  <script>
+      const form = document.querySelector('#imageForm');
+      const input = document.querySelector('#thumbnail');
+      const maxSize = 1024 * 1024; // 1 MB
+  
+      form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const file = input.files[0];
+          if (!file) {
+              alert('Please select an image to upload.');
+              return;
+          }
+          if (file.size > maxSize) {
+              alert('The selected image exceeds the maximum size of 1 MB.');
+              return;
+          }
+          form.submit();
+      });
+  </script>
+  
 
 
     <!--   Core JS Files   -->

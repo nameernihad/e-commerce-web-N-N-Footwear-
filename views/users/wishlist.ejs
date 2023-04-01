@@ -565,12 +565,12 @@
                                                 <tr>
                                                     <td><a class="btn" onclick="deleteWishlist('<%= wishlist.product._id %>')"><i class="fas fa-trash"></i></a></td>
                                                     <td>
-                                                        <a href="#"><img src="/Images/<%= wishlist.product.Image[0] %>" alt="..." /></a>
+                                                        <a href="#"><img style="height: 100px;" src="/Images/<%= wishlist.product.Image[0] %> " alt="..." /></a>
                                                     </td>
                                                     <td><a href="#"><%= wishlist.product.name %></a></td>
                                                     <td class="product-price">$<%= wishlist.product.price %></td>
                                                     <td class="product-quantity">In Stock</td>
-                                                    <td><a onclick="addToCart('<%= wishlist.product._id%>')" class="butn-style2 small">Add To Cart</a></td>
+                                                    <td> <button class="btn btn-dark  "> <a onclick="AddToCart('<%= wishlist.product._id%>')" >Cart</a> </button></td>
                                                 </tr>
                                             <% }) %>
                                         <% } %>
@@ -727,6 +727,41 @@
     <a href="#" class="scroll-to-top"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
     
     <!-- all js include start -->
+    <script>
+        function AddToCart(wishId) {
+            $.ajax({
+                url: '/wish-to-cart',
+                data: {
+                    productId:wishId
+                },
+                method: 'post',
+                success: (res) => {
+                    if (res.status) {
+                        $('#wishtable').load('/wishlist #wishtable', function() {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Your product added to Cart',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                    })
+
+                    } else {
+                        Swal.fire({
+
+                            icon: 'error',
+                            title: 'oops...',
+                            Text: 'item already exist in cart',
+
+                        })
+
+                    }
+                }
+            })
+        }
+
+    </script>
 
     <script>
         function deleteWishlist(proid) {

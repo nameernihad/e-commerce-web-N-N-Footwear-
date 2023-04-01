@@ -67,6 +67,7 @@ user_route.get('/wishlist',auth.isLogin,userController.loadWishlist);
 user_route.post('/add-to-wishlist',auth.isLogin,userController.addToWishlist)
 user_route.post('/deleteWishlist',auth.isLogin,userController.deleteWishlist)
 user_route.get('/productlist',auth.isLogin,userController.productlist);
+user_route.post('/wish-to-cart',auth.isLogin,userController.wishToCart)
 // user profile
 user_route.get('/userProfile',auth.isLogin,userController.loaduserprofile)
 user_route.post('/addaddress',auth.isLogin,userController.insertAddress) 
@@ -78,6 +79,9 @@ user_route.get('/delete-address/:id/:addressIndex',auth.isLogin,userController.D
 // user cart
 user_route.get('/cart',auth.isLogin,userController.loadCart);
 user_route.post('/add-to-cart',auth.isLogin,userController.AddToCart);
+
+
+
 user_route.post('/deletecart',auth.isLogin,userController.deletecart);
 user_route.post('/change-quantity',auth.isLogin,userController.change_Quantities);
 

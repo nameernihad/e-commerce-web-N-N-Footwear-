@@ -239,42 +239,81 @@
         <!-- End Navbar -->
         
         <div style="margin-left: 5%;">
-
-        <form action="/admin/categoryAdd" method="post" enctype="multipart/form-data">
+          <form action="/admin/categoryAdd" method="post" enctype="multipart/form-data" id="category-form">
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label">Name</label>
               <input type="text" class="form-control" style="border: 1px solid #bcbcbc;" name="name" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <span style="color: red;" class="error-message" id="name-error"></span>
             </div>
             <div class="mb-3">
               <label for="exampleInputPassword1" class="form-label">Image</label>
-              <input type="file" style="border: 1px solid #bcbcbc;"  name="image">
+              <input type="file" style="border: 1px solid #bcbcbc;" name="image" id="exampleInputPassword1">
+              <span style="color: red;" class="error-message" id="image-error"></span>
             </div>
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Discription</label>
-                <input type="text" class="form-control" style="border: 1px solid #bcbcbc;" name="discription" id="exampleInputEmail1" aria-describedby="emailHelp">
-              </div>
+              <label for="exampleInputEmail1" class="form-label">Description</label>
+              <input type="text" class="form-control" style="border: 1px solid #bcbcbc;" name="description" id="description" aria-describedby="emailHelp">
+              <span style="color: red;" class="error-message" id="description-error"></span>
+            </div>
             <div class="mb-3 form-check">
               <input type="checkbox" style="border: 1px solid #bcbcbc;" class="form-check-input" id="exampleCheck1">
               <label class="form-check-label" for="exampleCheck1">Check me out</label>
+              <span style="color: red;" class="error-message" id="checkbox-error"></span>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
         </div>
         
-      <!--   Core JS Files   -->
-      <script src="../assets/js/core/popper.min.js"></script>
-      <script src="../assets/js/core/bootstrap.min.js"></script>
-      <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-      <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
-      <script>
-        var win = navigator.platform.indexOf('Win') > -1;
-        if (win && document.querySelector('#sidenav-scrollbar')) {
-          var options = {
-            damping: '0.5'
-          }
-          Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-        }
-      </script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+        $(document).ready(function() {
+          $('#category-form').submit(function() {
+            var name = $.trim($('#exampleInputEmail1').val());
+            var image = $('#exampleInputPassword1').val();
+            var description = $.trim($('#description').val());
+            var isChecked = $('#exampleCheck1').is(':checked');
+        
+            // Clear previous error messages
+            $('.error-message').empty();
+        
+            // Validate name
+            if(name == '') {
+              $('#name-error').text('Please enter a valid name');
+              return false;
+            } else if(!/^[a-zA-Z]+$/.test(name)) {
+              $('#name-error').text('Name should contain only letters');
+              return false;
+            }
+        
+            // Validate image
+            if(image == '') {
+              $('#image-error').text('Please select a valid image file');
+              return false;
+            } else {
+              var extension = image.split('.').pop().toLowerCase();
+              if($.inArray(extension, ['jpg', 'jpeg', 'png', 'gif']) == -1) {
+                $('#image-error').text('Invalid image file type. Please select a valid image file');
+                return false;
+              }
+            }
+        
+            // Validate description
+            if(description == '') {
+              $('#description-error').text('Please enter a valid description');
+              return false;
+            }
+        
+            // Validate checkbox
+            if(!isChecked) {
+              $('#checkbox-error').text('Please check the checkbox');
+              return false;
+            }
+        
+            return true;
+          });
+        });
+        </script>
+        
       <!-- Github buttons -->
       <script async defer src="https://buttons.github.io/buttons.js"></script>
       <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->

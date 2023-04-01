@@ -7,6 +7,9 @@ const randomstring = require('randomstring');
 const config = require("../config/config");
 const nodemailer = require('nodemailer');
 const bycrpt = require('bcrypt');
+const fs = require('fs')
+const path = require('path')
+
 
 // password securing 
 const securePassword = async (password) => {
@@ -283,9 +286,7 @@ const ProductForm = async (req, res) => {
 
         //   if(req.session.admin)
         const categoryDetailes = await Category.find({})
-        console.log(categoryDetailes);
         const brandDetailes = await Brand.find({})
-        console.log(brandDetailes);
         res.render('productAdd', {
             categories: categoryDetailes,
             brands: brandDetailes
@@ -327,7 +328,6 @@ const ProductInsert = async (req, res) => {
             brand: req.body.brand,
             quantity: req.body.quantity,
         })
-        console.log(Images);
         const productData = await product.save();
         res.redirect('/admin/productform')
 
@@ -595,7 +595,10 @@ const updatecategory = async (req, res) => {
         const id = req.query.id
         console.log(id);
         const updatedData = await Category.findByIdAndUpdate({ _id: id }, { $set: { name: req.body.name, discription: req.body.discription, } });
-        res.redirect('/admin/categoryList')
+        if(updatedData){
+            res.redirect('/admin/categoryList')
+        }
+       
 
     } catch (error) {
         console.log(error.message);
@@ -603,22 +606,22 @@ const updatecategory = async (req, res) => {
     }
 }
 
-const editImages = async (req, res) => {
-    try {
+// const editImages = async (req, res) => {
+//     try {
 
-        const id = req.query.id;
-        console.log(id)
-        const Image = req.file.filename;
-        console.log(Image)
-        const result = await Category.findByIdAndUpdate({ _id: id }, { $set: { image: Image } })
-        res.redirect('/admin/categoryList')
+//         const id = req.query.id;
+//         console.log(id)
+//         const Image = req.file.filename;
+//         console.log(Image)
+//         const result = await Category.findByIdAndUpdate({ _id: id }, { $set: { image: Image } })
+//         res.redirect('/admin/categoryList')
 
 
-    } catch (error) {
-        console.log(error.message);
-        console.log("editimage");
-    }
-}
+//     } catch (error) {
+//         console.log(error.message);
+//         console.log("editimage");
+//     }
+// }
 
 
 const editbrand = async (req, res) => {
@@ -709,7 +712,102 @@ const deletecoupon = async(req,res)=>{
     }
 }
 
+const deleteImage = async( req, res)=>{
 
+    try {
+        
+        const imgId = req.params.imgid
+        console.log(imgId);
+        const prodid = req.params.prodid
+        fs.unlink(path.join(__dirname,'../public/Images',imgId),()=>{})
+        const productImg = await Product.updateOne({_id:prodid},{$pull:{Image:imgId}})
+            if(productImg){
+                redirect('/admin/editProduct')
+            }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const updateImage = async( req, res)=>{
+
+
+    try {
+        
+        const id= req.params.id
+        console.log(id);
+        const proData= await Product.findOne({_id:id})
+        console.log(proData);
+        imagelength = proData.Image.length
+        console.log(imagelength);
+        if (imagelength<=4) {
+            let images =[]
+            for(file of req.files){
+
+                images.push(file.filename)
+            }
+            if (imagelength+images.length<=4) {
+
+                const updateData = await Product.updateOne({_id:id},{$addToSet:{Image:{$each:images}}})
+                if(updateData){
+                     res.redirect('/admin/editProduct')
+                }
+                    
+            }else{
+
+                const productData = await Product.findOne({_id:id})
+
+                const categoryData = await Category.find()
+
+                res.render("editproduct",{productData,categoryData})
+            }
+        }else{
+
+            res.redirect('/admin/editProduct')
+        }
+
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const updateCateImage = async (req, res) => {
+    try {
+        const id = req.query.id
+        
+        const Image = req.file.filename
+        
+        const result = await Category.findByIdAndUpdate({ _id: id }, { $set: { image: Image } });
+       
+        if(result){
+             res.redirect('/admin/categoryList')
+        console.log(result);
+        }
+       
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const updateBrandImage = async (req, res) => {
+    try {
+        const id = req.query.id
+        
+        const Image = req.file.filename
+        
+        const result = await Brand.findByIdAndUpdate({ _id: id }, { $set: { image: Image } });
+       
+        if(result){
+             res.redirect('/admin/brandList')
+        console.log(result);
+        }
+       
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
 module.exports = {
     loadLogin,
@@ -740,14 +838,18 @@ module.exports = {
     editcategory,
     updatecategory,
     couponInsert,
-    editImages,
+    // editImages,
     editbrand,
     updatebrand,
     couponEdit,
     updateCoupon,
     deletecoupon,
     editproduct,
-    editingProduct
+    editingProduct,
+    deleteImage,
+    updateImage,
+    updateCateImage,
+    updateBrandImage
 }
 
 

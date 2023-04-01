@@ -255,10 +255,10 @@
         <input type="text" class="form-control" name="Discription" value="<%= product.discription%>" id="inputAddress" placeholder="About the product" style="border: 1px solid #bcbcbc;">
       </div>
       <br><br>
-      <div class="col-6">
+      <!-- <div class="col-6">
         <label for="inputAddress2" style="color: black;" class="form-label" >Images</label>
         <input type="file" multiple  name="image"  style="border: 1px solid #bcbcbc;">
-      </div>
+      </div> -->
       <div class="col-md-2">
         <label for="inputZip" style="color: black;" class="form-label">Quantity</label>
         <input type="number" class="form-control" name="quantity" value="<%= product.quantity%>"  id="inputZip" style="border: 1px solid #bcbcbc;">
@@ -291,9 +291,50 @@
      
       
       <div class="col-12">
+        <img style="margin-left: 30px;" src=" /Images/<%= product.Image[0] %>" style="width: 80px;" height="80px"><br>
+       <br>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          edit image
+        </button>
         <button type="submit" class="btn btn-primary">ADD Product</button>
       </div>
     </form>
+    <!-- modal -->
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <form action="/admin/edit-image/<%=product._id%>" method="post" enctype="multipart/form-data">
+          <div class="modal-body">
+            <div>
+              <label for="">Image</label>
+              <input type="file" multiple name="image">
+              </div>
+            <% product.Image.forEach((x)=>{ %>
+              <div>
+                <img src="/Images/<%=x %> " style="width: 80px; height: 80px;">
+                <a href="/admin/delete-product-image/<%= x %>/<%= product._id %> ">delete</a>
+               
+              </div>
+  
+         <% }) %>
+          
+          </div>
+        
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
   </div>
 
   <!--   Core JS Files   -->
