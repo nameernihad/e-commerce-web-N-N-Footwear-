@@ -109,13 +109,13 @@ admin_route.get('/deleteProduct', auth.is_Login, adminController.deleteProduct);
 admin_route.get('/deleteCategory', auth.is_Login, adminController.deleteCategory);
 admin_route.get('/editCategory', auth.is_Login, adminController.editcategory);
 admin_route.post('/editCategory', auth.is_Login, adminController.updatecategory);
-admin_route.post('/addimage', upload.single('image'),adminController.updateCateImage)
+admin_route.post('/addimage', uploadCategory.single('image'),adminController.updateCateImage)
 
 admin_route.get('/deleteBrand', auth.is_Login, adminController.deleteBrand);
 admin_route.get('/brandList', auth.is_Login, adminController.brandList);
 admin_route.get('/brandAdd', auth.is_Login, adminController.brandAdd);
 admin_route.post('/brandAdd', auth.is_Login, uploadBrand.single('image'), adminController.brandInsert);
-admin_route.post('/addBrandImage', upload.single('image'),adminController.updateBrandImage)
+admin_route.post('/addBrandImage', uploadBrand.single('image'),adminController.updateBrandImage)
 
 
 admin_route.get('/couponList', auth.is_Login, adminController.couponList);
@@ -127,6 +127,16 @@ admin_route.post('/couponDelete',auth.is_Login,adminController.deletecoupon);
 
 admin_route.get('/editbrand', auth.is_Login, adminController.editbrand)
 admin_route.post('/editbrand', auth.is_Login, adminController.updatebrand)
+// order
+admin_route.get('/order',adminController.loadOrderlist)
+
+admin_route.get('/orderStatus-placed', auth.is_Login,adminController.placeOrder)
+admin_route.get('/orderStatus-shiped',auth.is_Login,adminController.shipedOrder)
+admin_route.get('/orderStatus-delivered',auth.is_Login,adminController.deliveredOrder)
+admin_route.get('/orderStatus-returnSuccess',auth.is_Login,adminController.orderReturnSuccess)
+admin_route.get('/orderStatus-returnCancelled',adminController.orderReturnCancelled)
+admin_route.get('/order-view',auth.is_Login,adminController.previewProduct)
+
 
 
 

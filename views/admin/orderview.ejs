@@ -1,10 +1,4 @@
-
-
-
-
-
-
-  <!--
+<!--
     =========================================================
     * Material Dashboard 2 - v3.0.0
     =========================================================
@@ -38,7 +32,6 @@
       <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
 
       <script src="https://kit.fontawesome.com/97bdc000f0.js" crossorigin="anonymous"></script>
-
       <!-- Material Icons -->
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
       <!-- CSS Files -->
@@ -51,7 +44,7 @@
           <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
           <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard " target="_blank">
             <img src="../assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
-            <span class="ms-1 font-weight-bold text-white">N&N KICKS</span>
+            <span class="ms-1 font-weight-bold text-white">Material Dashboard 2</span>
           </a>
         </div>
         <hr class="horizontal light mt-0 mb-2">
@@ -102,19 +95,19 @@
               <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white active bg-gradient-primary" href="/admin/couponList">
+              <a class="nav-link text-white " href="/admin/couponList">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i class="material-icons opacity-10">Coupon</i>
+                  <i class="material-icons opacity-10">person</i>
                 </div>
                 <span class="nav-link-text ms-1">Coupon</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white " href="../pages/sign-in.html">
+              <a class="nav-link text-white active bg-gradient-primary " href="../pages/sign-in.html">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="material-icons opacity-10">login</i>
                 </div>
-                 <span class="nav-link-text ms-1">Orders</span>
+                <span class="nav-link-text ms-1"> order</span>
               </a>
             </li>
             <li class="nav-item">
@@ -137,10 +130,10 @@
               <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                 <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
               </ol>
-              <h6 class="font-weight-bolder mb-0">Category</h6>
+              <h6 class="font-weight-bolder mb-0">brand</h6>
             </nav>
-            <button type="button" class="btn" style="background-color: #e91e63; margin-left: 20px;"><a style="text-decoration: none; color: rgb(43, 40, 42);" href="/admin/couponAdd">Add Coupon</a></button>
-                        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+            <button type="button" class="btn" style="background-color: #e91e63; margin-left: 20px;"><a style="text-decoration: none; color: rgb(43, 40, 42);" href="/admin/brandAdd">Add Brand</a></button>
+            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
               <div class="ms-md-auto pe-md-3 d-flex align-items-center">
                 <div class="input-group input-group-outline">
                   <label class="form-label">Type here...</label>
@@ -246,49 +239,47 @@
           </div>
         </nav>
         <!-- End Navbar -->
+        <div class="container">
+            <table class="table table-striped">
+                <thead>
+                    
+                  <tr>
+                    <th scope="col">si No</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                   
+                            <% order.items.forEach((product,index) => {   %>
+                  <tr>
+                    <th scope="row"><%= index +1 %></th>
+                    <td>
+                        <img src="/Images/<%= product.productId.Image[0] %>"  alt="" style="height: 100px;"/>
+                        
+                      </td>
+                      <td><%= product.productId.name %></td>
+                    <td><%= product.productId.price %></td>
+                    <td><%= product.qty %></td>
+                    <td>₹<%= product.productTotalPrice%></td>
+                  </tr>
+                  <% } 
+                  )%> 
+                  <tr>
+                    <td>
+                    <b style="color: black;">TotalAmount</b>   
+                    </td>
+                    <td style="color: black;">
+                        ₹<%= order.totalAmount%>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
       
-
-        <div class="table-responsive">
-          <table class="table table-striped table-bordered table-hover">
-            <thead>
-              <tr>
-                <th>Coupon Code</th>
-                <th>Coupon Amount Type</th>
-                <th>Coupon Amount</th>
-                <th>Minimum Redeem Amount</th>
-                <th>Minimum Cart Amount</th>
-                <th>Expiry Date</th>
-                <th>Start Date</th>
-                <th>Limit</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% coupondata.forEach((coupon) => { %>
-                <tr>
-                  <td><%= coupon.couponCode %></td>
-                  <td><%= coupon.couponAmountType %></td>
-                  <td><%= coupon.couponAmount %></td>
-                  <td><%= coupon.minRedeemAmound %></td>
-                  <td><%= coupon.minCartAmount %></td>
-                  <td><%= coupon.expiryDate.toLocaleString({day:'2-digit',month:'2-digit',year:'2-digit'})%></td>
-                  <td><%= coupon.startDate.toLocaleString({day:'2-digit',month:'2-digit',year:'2-digit'}) %></td>
-                  <td><%= coupon.limit %></td>
-                  <td>
-                    <div class="d-flex justify-content-center">
-                      <a href="/admin/couponEdit?id=<%= coupon._id %>" class="btn btn-warning mx-1"><i class="fa-sharp fa-solid fa-pen"></i></a>
-                      <form method="POST" action="/admin/couponDelete?id=<%= coupon._id %>" onSubmit="return confirm('Are you sure you want to delete this coupon?');">
-                        <button type="submit" class="btn btn-danger mx-1"><i class="fa-sharp fa-solid fa-trash"></i></button>
-                      </form>
-                    </div>
-                  </td>
-                </tr>
-              <% }); %>
-            </tbody>
-          </table>
-        </div>
-        
-
       <!--   Core JS Files   -->
       <script src="../assets/js/core/popper.min.js"></script>
       <script src="../assets/js/core/bootstrap.min.js"></script>

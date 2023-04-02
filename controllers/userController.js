@@ -20,7 +20,7 @@ const nodemailer = require('nodemailer');
 
 const config = require('../config/config');
 
-const Randormstring = require('Randomstring');
+const Randormstring = require('randomstring');
 
 const { json } = require('body-parser');
 

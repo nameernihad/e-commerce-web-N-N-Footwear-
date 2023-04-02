@@ -107,7 +107,7 @@
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="material-icons opacity-10">login</i>
                 </div>
-                <span class="nav-link-text ms-1">Sign In</span>
+                 <span class="nav-link-text ms-1">Orders</span>
               </a>
             </li>
             <li class="nav-item">
@@ -258,6 +258,7 @@
             <th scope="row"><%= index +1 %></th>
              <td><%= value.name %></td>
              <td> <img src="/BrandImages/<%= value.image[0] %>" alt="" style="width: 80px;" height="80px"></td>
+            <%console.log( value.image[0] )%>
           <td><%= value.discription %></td>
           <td><button type="button"  class="btn" style="background-color: rgb(232, 14, 14); color: #000;"> <a href="/admin/deleteBrand?id=<%= value._id %>"><i class="fa-sharp fa-solid fa-trash"></i></a> </button></td>
           <td><button type="button"  class="btn" style="background-color: rgb(12, 227, 12);"> <a href="/admin/editbrand?id=<%= value._id %>"><i class="fa-sharp fa-solid fa-pen"></i></a> </button></td>

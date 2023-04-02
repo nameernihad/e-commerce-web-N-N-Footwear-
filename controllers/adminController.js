@@ -3,12 +3,13 @@ const Product = require('../model/productModel');
 const Brand = require('../model/Brand')
 const Category = require('../model/Category');
 const Coupon = require('../model/coupon')
-const randomstring = require('randomstring');
+const randomstring = require('randomstring')
 const config = require("../config/config");
 const nodemailer = require('nodemailer');
 const bycrpt = require('bcrypt');
 const fs = require('fs')
 const path = require('path')
+const Order = require('../model/OrderModel')
 
 
 // password securing 
@@ -404,7 +405,7 @@ const categoryInsert = async (req, res) => {
         const category = new Category({
             name: req.body.name,
             image: req.file.filename,
-            discription: req.body.discription,
+            discription: req.body.description,
         })
 
         const categoryData = await category.save();
@@ -809,6 +810,119 @@ const updateBrandImage = async (req, res) => {
     }
 }
 
+// oreder section
+
+const loadOrderlist = async(req,res)=>{
+    try {
+        
+        const order = await Order.find()
+    if(order){
+        res.render('orderManagment',{order})
+    }
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const placeOrder = async(req,res)=>{
+    try {
+        const orderid = req.query.id
+        if(orderid){
+            const status = await Order.findByIdAndUpdate({_id:orderid},{$set:{orderStatus:"placed"}})
+            if(status){
+                res.redirect('/admin/order')
+            }
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const shipedOrder = async(req,res)=>{
+    try {
+        const orderid = req.query.id
+        if(orderid){
+            const status = await Order.findByIdAndUpdate({_id:orderid},{$set:{orderStatus:"Shiped"}})
+            if(status){
+                res.redirect('/admin/order')
+            }
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const deliveredOrder = async(req,res)=>{
+    try {
+        const orderid = req.query.id
+        if(orderid){
+            const status = await Order.findByIdAndUpdate({_id:orderid},{$set:{orderStatus:"delivered"}})
+            if(status){
+                res.redirect('/admin/order')
+            }
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const orderReturnSuccess = async(req,res) => { 
+    try{
+        const orderId = req.query.id
+        const update = await Order.updateOne({_id:orderId},{$set:{orderStatus:'return accept'}})
+        const orderData = await Order.findOne({_id:orderId})
+        // if(orderData.paymentMethod == 'Online Payment'){
+        //     const refund = await User.updateOne({_id:orderData.userId},{$inc:{wallet:orderData.totalAmount}})
+        //     console.log(refund,"refund");
+        // }
+        
+        const itemsData = orderData.items
+      
+            for(let i=0;i< itemsData.length;i++){
+                const productStock = await Product.updateOne({_id:itemsData[i].productId},{$inc:{quantity:itemsData[i].qty}})
+                console.log(productStock,"productUpdate");
+                res.redirect('/admin/order')
+            }
+
+
+       
+
+    }catch(error){
+        console.log(error.message);
+    }
+}
+
+const orderReturnCancelled  = async(req,res) => { 
+    try{
+        const orderId = req.query.id
+        const update = await Order.updateOne({_id:orderId},{$set:{orderStatus:'return reject'}})
+        console.log(update);
+        res.redirect('/admin/order')
+
+    }catch(error){
+        console.log(error.message);
+    }
+}
+
+const previewProduct = async(req,res)=>{
+    try {
+        const orderId = req.query.id
+        const order = await Order.findOne({_id:orderId}).populate({ path: 'items', populate: { path: 'productId', model: 'product' } })
+        console.log(order,"ghghghghghghghghghghghghghghghasdklk");
+        if(order){
+            res.render('orderview',{order})
+        }
+        
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
 module.exports = {
     loadLogin,
     verifyLogin,
@@ -849,7 +963,16 @@ module.exports = {
     deleteImage,
     updateImage,
     updateCateImage,
-    updateBrandImage
+    updateBrandImage,
+    // order
+    loadOrderlist,
+    placeOrder,
+    shipedOrder,
+    deliveredOrder,
+    orderReturnSuccess,
+    orderReturnCancelled,
+    previewProduct
+
 }
 
 

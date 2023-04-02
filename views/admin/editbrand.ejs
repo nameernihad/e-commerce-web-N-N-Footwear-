@@ -108,7 +108,7 @@
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="material-icons opacity-10">login</i>
                 </div>
-                <span class="nav-link-text ms-1">Sign In</span>
+                 <span class="nav-link-text ms-1">Orders</span>
               </a>
             </li>
             <li class="nav-item">
@@ -293,23 +293,40 @@
           
           <div>
 
-            <form action="/admin/addBrandImage?id=<%= brand._id %>" method="post" enctype="multipart/form-data">
+            <form action="/admin/addBrandImage?id=<%= brand._id %>" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
               <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                   <div class="modal-dialog">
                       <div class="modal-content">
                           <div class="modal-body">
-                              <input type="file" class="custom-file-input bg-dark" id="thumbnail" name="image" required accept="image/*" oninvalid="this.setCustomValidity('Please select an image file')" oninput="this.setCustomValidity('')">
+                              <input type="file" class="custom-file-input bg-dark" id="thumbnail" name="image" required accept="image/*">
+                              <span id="imageError" style="color: red;"></span>
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-footer">
                               <button type="button" class="btn btn-md btn-secondary" data-bs-dismiss="modal">Close</button>
-                              <button type="submit" class="btn  btn-md btn-primary">Change</button>
+                              <button type="submit" class="btn btn-md btn-primary">Change</button>
                           </div>
                       </div>
                   </div>
               </div>
           </form>
+          <script>    
+                function validateForm() {
+            var image = document.getElementById("thumbnail");
+            var imageError = document.getElementById("imageError");
+            if (!image.value) {
+                imageError.innerHTML = "Please select an image file";
+                return false;
+            }
+            if (!image.files[0].type.match("image/(jpeg|png|gif|bmp|webp)")) {
+                imageError.innerHTML = "Please select a valid JPEG, PNG, GIF, BMP, or WebP image file";
+                return false;
+            }
+            return true;
+        }
           
+      </script>
+  
         
       <!--   Core JS Files   -->
       <script src="../assets/js/core/popper.min.js"></script>

@@ -112,7 +112,7 @@
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">login</i>
             </div>
-            <span class="nav-link-text ms-1">Sign In</span>
+             <span class="nav-link-text ms-1">Orders</span>
           </a>
         </li>
         <li class="nav-item">
@@ -269,7 +269,7 @@
         <div class="mb-3">
           <label for="description" class="form-label">Description</label>
           <input type="text" value="<%= category.discription %>" class="form-control" style="border: 1px solid #bcbcbc;"
-            name="description" id="discription" aria-describedby="descriptionHelp">
+            name="description" id="description" aria-describedby="descriptionHelp">
           <span id="descriptionError" style="color: red;"></span>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -308,14 +308,13 @@
 
 
     <!-- modal setting -->
-
     <form action="/admin/addImage?id=<%= category._id %>" method="post" enctype="multipart/form-data" id="imageForm">
       <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
           aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
               <div class="modal-content">
                   <div class="modal-body">
-                      <input type="file" class="custom-file-input bg-dark" id="thumbnail" name="image" accept="image/*">
+                      <input type="file" class="custom-file-input bg-dark" id="thumbnail" name="image" accept="image/webp,image/*">
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-footer">
@@ -325,13 +324,13 @@
               </div>
           </div>
       </div>
-  </form>
-  
-  <script>
+    </form>
+    
+    <script>
       const form = document.querySelector('#imageForm');
       const input = document.querySelector('#thumbnail');
       const maxSize = 1024 * 1024; // 1 MB
-  
+    
       form.addEventListener('submit', (event) => {
           event.preventDefault();
           const file = input.files[0];
@@ -343,10 +342,15 @@
               alert('The selected image exceeds the maximum size of 1 MB.');
               return;
           }
+          const fileType = file.type.toLowerCase();
+          if (fileType !== 'image/jpeg' && fileType !== 'image/png' && fileType !== 'image/gif' && fileType !== 'image/webp') {
+              alert('Invalid file type. Please select an image in JPEG, PNG, GIF, or WEBP format.');
+              return;
+          }
           form.submit();
       });
-  </script>
-  
+    </script>
+    
 
 
     <!--   Core JS Files   -->
