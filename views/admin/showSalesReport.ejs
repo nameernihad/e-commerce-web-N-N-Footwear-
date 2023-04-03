@@ -30,6 +30,8 @@
       <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
       <!-- Font Awesome Icons -->
       <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
+      <script src="https://kit.fontawesome.com/97bdc000f0.js" crossorigin="anonymous"></script>
       <!-- Material Icons -->
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
       <!-- CSS Files -->
@@ -82,7 +84,7 @@
             </li>
           
             <li class="nav-item">
-              <a class="nav-link text-white active bg-gradient-primary" href="/admin/brandList">
+              <a class="nav-link text-white " href="/admin/brandList">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="material-icons opacity-10">notifications</i>
                 </div>
@@ -93,11 +95,11 @@
               <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white " href="./admin/couponList">
+              <a class="nav-link text-white " href="/admin/couponList">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="material-icons opacity-10">person</i>
                 </div>
-                <span class="nav-link-text ms-1">Profile</span>
+                <span class="nav-link-text ms-1">Coupon</span>
               </a>
             </li>
             <li class="nav-item">
@@ -109,7 +111,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white " href="/admin/salesReport">
+              <a class="nav-link text-white active bg-gradient-primary " href="/admin/salesReport">
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="material-icons opacity-10">assignment</i>
                 </div>
@@ -128,9 +130,9 @@
               <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                 <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
               </ol>
-              <h6 class="font-weight-bolder mb-0">Category</h6>
+              <h6 class="font-weight-bolder mb-0">Sales Report</h6>
             </nav>
-                        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
               <div class="ms-md-auto pe-md-3 d-flex align-items-center">
                 <div class="input-group input-group-outline">
                   <label class="form-label">Type here...</label>
@@ -236,72 +238,89 @@
           </div>
         </nav>
         <!-- End Navbar -->
-       <div style="margin-left: 5%;">
-  <form action="" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
-    <div class="mb-3">
-      <label for="name" class="form-label">Brand Name</label>
-      <input type="text" class="form-control" style="border: 1px solid #373333;" name="name" id="name" aria-describedby="nameHelp">
-      <div style="color: red;" id="nameHelp" class="form-text"></div>
-    </div>
-    <div class="mb-3">
-      <label for="description" class="form-label">Description</label>
-      <input type="text" class="form-control" style="border: 1px solid #373333;" name="discription" id="description">
-      <div style="color: red;" id="descriptionHelp" class="form-text"></div>
-    </div>
-    <div class="mb-3">
-      <label for="image" class="form-label">Image</label>
-      <input type="file" class="form-control" style="border: 1px solid #373333;" name="image" id="image">
-      <div style="color: red;" id="imageHelp" class="form-text"></div>
-    </div>
-    <div class="mb-3 form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-</div>
-<script>
-function validateForm() {
-  let name = document.getElementById("name").value;
-  let description = document.getElementById("description").value;
-  let image = document.getElementById("image").value;
-  let nameHelp = document.getElementById("nameHelp");
-  let descriptionHelp = document.getElementById("descriptionHelp");
-  let imageHelp = document.getElementById("imageHelp");
-  let valid = true;
-  
-  if (name === "") {
-    nameHelp.innerHTML = "Please enter the brand name.";
-    valid = false;
-  } else {
-    nameHelp.innerHTML = "";
-  }
-  
-  if (description === "") {
-    descriptionHelp.innerHTML = "Please enter the description.";
-    valid = false;
-  } else {
-    descriptionHelp.innerHTML = "";
-  }
-  
-  if (image === "") {
-    imageHelp.innerHTML = "Please select an image.";
-    valid = false;
-  } else {
-    let fileExtension = image.split('.').pop().toLowerCase();
-    if (fileExtension !== 'jpg' && fileExtension !== 'jpeg' && fileExtension !== 'png' && fileExtension !== 'webp') {
-      imageHelp.innerHTML = "Please upload a valid image file (JPG, JPEG, PNG, or WebP).";
-      valid = false;
-    } else {
-      imageHelp.innerHTML = "";
-    }
-  }
-  
-  return valid;
-}
+        
+        <div class="container">
+            <head>
+              <title>Sales Report</title>
+              <style>
+                table {
+                  border-collapse: collapse;
+                  width: 100%;
+                  margin-bottom: 1em;
+                }
+                th, td {
+                  padding: 0.5em;
+                  text-align: left;
+                  border-bottom: 1px solid #1b1313;
+                }
+                th {
+                  background-color: #1b1313;
+                  font-weight: bold;
+                  text-transform: uppercase;
+                  letter-spacing: 0.1em;
+                  color: #fff;
+                }
+                h1 {
+                  font-size: 2.5em;
+                  text-align: center;
+                  margin-top: 1em;
+                  margin-bottom: 0.5em;
+                  color: #1b1313;
+                  text-transform: uppercase;
+                  letter-spacing: 0.2em;
+                }
+                table tbody tr:nth-child(even) {
+                  background-color: #f2f2f2;
+                }
+                table tbody tr:hover {
+                  background-color: #ddd;
+                }
+                .address {
+                  font-size: 0.9em;
+                  line-height: 1.4;
+                  margin: 0;
+                  color: #555;
+                }
+              </style>
+            </head>
+            <body>
+              <h1 style="color: #555;">Sales Report</h1>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Address</th>
+                    <th>Payment Method</th>
+                    <th>Order Status</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody style="color: black;">
+                  <% saleData.forEach((value,index)=>{%>
+                  <tr>
+                    <td><%= value.date.toLocaleString({day:'2-digit',month:'2-digit',year:'2-digit'})%></td>
+                    <td>
+                      <p class="address" style="color: black;"> <b>
+                        <%=value.address.fullName %><br>
+                        <%= value.address.mobileNumber %><br>
+                        <%= value.address.houseAddress %>, <%= value.address.streetAddress %> <br>
+                        <%= value.address.landMark%> <br>
+                        <%= value.address.cityName %>, <%= value.address.state %> - <%= value.address.pincode %>
+                      </p>
+                    </b>
+                    </td>
+                    <td><%= value.paymentMethod %></td>
+                    <td style="color: green;"><b><%= value.orderStatus%></b></td>
+                    <td style="color: green;"><b>₹<%= value.totalAmount %></b></td>
+                  </tr>
+                  <% }) %>
 
-</script>
-     
+                
+                </tbody>
+              </table>
+            </body>
+          </div>
+          
       <!--   Core JS Files   -->
       <script src="../assets/js/core/popper.min.js"></script>
       <script src="../assets/js/core/bootstrap.min.js"></script>

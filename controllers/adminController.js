@@ -156,7 +156,7 @@ const loadUser = async (req, res) => {
     try {
 
         const userData = await User.find({ is_admin: 0 });
-        console.log(userData);
+        
         res.render('user_managment', { users: userData });
 
     } catch (error) {
@@ -784,7 +784,7 @@ const updateCateImage = async (req, res) => {
        
         if(result){
              res.redirect('/admin/categoryList')
-        console.log(result);
+        
         }
        
     } catch (error) {
@@ -883,7 +883,7 @@ const orderReturnSuccess = async(req,res) => {
       
             for(let i=0;i< itemsData.length;i++){
                 const productStock = await Product.updateOne({_id:itemsData[i].productId},{$inc:{quantity:itemsData[i].qty}})
-                console.log(productStock,"productUpdate");
+               
                 res.redirect('/admin/order')
             }
 
@@ -899,7 +899,7 @@ const orderReturnCancelled  = async(req,res) => {
     try{
         const orderId = req.query.id
         const update = await Order.updateOne({_id:orderId},{$set:{orderStatus:'return reject'}})
-        console.log(update);
+        
         res.redirect('/admin/order')
 
     }catch(error){
@@ -911,7 +911,7 @@ const previewProduct = async(req,res)=>{
     try {
         const orderId = req.query.id
         const order = await Order.findOne({_id:orderId}).populate({ path: 'items', populate: { path: 'productId', model: 'product' } })
-        console.log(order,"ghghghghghghghghghghghghghghghasdklk");
+        
         if(order){
             res.render('orderview',{order})
         }
@@ -922,6 +922,37 @@ const previewProduct = async(req,res)=>{
     }
 }
 
+
+const salesReport  =  async(req,res)=>{
+    try {
+        
+        res.render('salesReport')
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const showSalesReprot = async(req,res)=>{
+    try {
+       
+        
+        const startDate =  new Date(req.body.startDate)
+        const endDate = new Date (req.body.endDate)
+        const saleData = await Order.find({
+            orderStatus:'delivered',
+            date:{ $gte:startDate, $lte:endDate}
+            
+        })
+       if(saleData){
+        res.render('showSalesReport',{saleData})
+       }
+     
+       
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
 module.exports = {
     loadLogin,
@@ -971,7 +1002,10 @@ module.exports = {
     deliveredOrder,
     orderReturnSuccess,
     orderReturnCancelled,
-    previewProduct
+    previewProduct,
+    // sales report
+    salesReport,
+    showSalesReprot
 
 }
 
