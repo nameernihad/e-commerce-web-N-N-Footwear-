@@ -112,7 +112,7 @@ const verifyLogin = async (req, res) => {
                 else {
 
                     req.session.admin_id = adminData._id;
-                    res.render('admin_home')
+                    res.redirect('/admin/home')
                 }
 
 
@@ -137,108 +137,95 @@ const verifyLogin = async (req, res) => {
 
 }
 
-const loadDashboard = async (req, res) => {
+// const loadDashboard = async (req, res) => {
 
-    try {
+//     try {
 
-        res.render('admin_home');
+//         res.render('admin_home');
 
 
-    } catch (error) {
-        console.log(error.message);
-        console.log("loadDashboard admin");
-    }
-
-}
-// const loadDashboard = async (req,res)=>{
-//     try{
-//         const salesCount = await Order.find({}).count()
-//         const users = await User.find({}).count()
-//         const online = await Order.find({paymentMethod:'Online Payment'}).count()
-//         const cod = await Order.find({paymentMethod:'COD'}).count()
-//         // const wallet = await Order.find({paymentMethod:'WALLET'}).count()
-//         const ord = await Order.find().populate({path:'items',populate:{path:'productId',model:'Product',populate:{path:'category'}}})
-//         const categoryCount  = {};
-//         ord.forEach(order => { 
-//             order.items.forEach(product => { 
-//                 const category = product.productId.category.categoryName
-//                 if(category in categoryCount){
-//                     categoryCount[category] += 1
-//                 }else{
-//                     categoryCount[category] = 1
-//                 }
-//             })
-//         })
-//         const sortedCategoryCount  = Object.entries(categoryCount).sort((a,b) => b[1]-a[1])
-//         const numbersOnly  = sortedCategoryCount.map(innerArray => innerArray[1])
-//         const categoryNames = sortedCategoryCount.map((categoryCount) => { 
-//             return categoryCount[0]
-//         })
-//         const weeklyRevenueOf = await Order.aggregate([
-//             {
-//                 $match:{
-//                     date:{
-//                         $gte:new Date(new Date().setDate(new Date().getDate()-7))
-//                     },orderStatus:{
-//                         $eq:'delivered'
-//                     }
-//                 }
-//             },
-//             {
-//                 $group:{
-//                     _id:null,
-//                     Revenue:{$sum:'$totalAmount'}
-//                 }
-//             }
-//         ]);
-//         const weeklyRevenue = weeklyRevenueOf.map((item) => {
-//             return item.Revenue
-//         });
-//         const weeklySales = await Order.aggregate([
-//             {
-//                 $match:{
-//                     orderStatus:{
-//                         $eq:'delivered'
-//                     }
-//                 }
-//             },
-//             {
-//                 $group:{
-//                     _id:
-//                         { $dateToString:{ format : "%d-%m-%Y", date: "$date"}},
-//                     sales:{$sum:"$totalAmount"}
-//                 }
-//             },
-//             {
-//                 $sort:{_id:1}
-//             },
-//             {
-//                 $limit:7
-//             },
-            
-//         ])
-//         const date = weeklySales.map((item) => { 
-//             return item._id
-//         })
-//         const Sales = weeklySales.map((item) => { 
-//             return item.sales
-//         })
-//         res.render('admin_home',{
-//             salesCount:salesCount,
-//             userCount:users,
-//             weeklyRevenue:weeklyRevenue,
-//             upi:online,cash:cod,wallet:wallet,
-//             weeklySale:weeklySales,
-//             date:date,
-//             Sales:Sales,
-//             categoryName:categoryNames,
-//             categorySaleCount:numbersOnly
-//         })
-//     }catch(error){
-       
+//     } catch (error) {
 //         console.log(error.message);
+//         console.log("loadDashboard admin");
 //     }
+
 // }
+const loadDashboard = async (req,res)=>{
+    try{
+        console.log("its adshboard")
+        const salesCount = await Order.find({}).count()
+        const users = await User.find({}).count()
+        const online = await Order.find({paymentMethod:'Online Payment'}).count()
+        const cod = await Order.find({paymentMethod:'COD'}).count()
+        // const wallet = await Order.find({paymentMethod:'WALLET'}).count()
+        const ord = await Order.find().populate({path:'items',populate:{path:'productId',model:'product'}})
+
+        const product  = await Product.find().count()
+
+        const weeklyRevenueOf = await Order.aggregate([
+            {
+                $match:{
+                    date:{
+                        $gte:new Date(new Date().setDate(new Date().getDate()-7))
+                    },orderStatus:{
+                        $eq:'delivered'
+                    }
+                }
+            },
+            {
+                $group:{
+                    _id:null,
+                    Revenue:{$sum:'$totalAmount'}
+                }
+            }
+        ]);
+        const weeklyRevenue = weeklyRevenueOf.map((item) => {
+            return item.Revenue
+        });
+        const weeklySales = await Order.aggregate([
+            {
+                $match:{
+                    orderStatus:{
+                        $eq:'delivered'
+                    }
+                }
+            },
+            {
+                $group:{
+                    _id:
+                        { $dateToString:{ format : "%d-%m-%Y", date: "$date"}},
+                    sales:{$sum:"$totalAmount"}
+                }
+            },
+            {
+                $sort:{_id:1}
+            },
+            {
+                $limit:7
+            },
+            
+        ])
+        const date = weeklySales.map((item) => { 
+            return item._id
+        })
+        const Sales = weeklySales.map((item) => { 
+            return item.sales
+        })
+        res.render('admin_home',{
+            salesCount:salesCount,
+            userCount:users,
+            weeklyRevenue:weeklyRevenue,
+            upi:online,cash:cod,
+            weeklySale:weeklySales,
+            date:date,
+            Sales:Sales,
+            products:product
+        })
+    }catch(error){
+       
+        console.log(error.message);
+    }
+}
 const loadUser = async (req, res) => {
 
     try {
@@ -998,7 +985,7 @@ const orderReturnCancelled  = async(req,res) => {
 const previewProduct = async(req,res)=>{
     try {
         const orderId = req.query.id
-        const order = await Order.findOne({_id:orderId}).populate({ path: 'items', populate: { path: 'productId', model: 'product' } })
+        const order = await Order.findOne({_id:orderId}).populate({path:'items',populate:{path:'productId',model:'product'}})
         
         if(order){
             res.render('orderview',{order})
