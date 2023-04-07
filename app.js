@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(express.static(path.join(__dirname, "public")));
 
 const { PORT } = process.env;
-const port = 8080 || PORT;
+const port = 3000 || PORT;
 const jsonParser = bodyParser.json();
 
 
