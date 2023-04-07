@@ -141,7 +141,8 @@ admin_route.get('/order-view',auth.is_Login,adminController.previewProduct)
 admin_route.get('/salesReport',auth.is_Login,adminController.salesReport)
 admin_route.post('/show-salesreport',auth.is_Login,adminController.showSalesReprot)
 
-
+// OFFER MANAGEMENT
+admin_route.get('/offerManagement',auth.is_Login,adminController.loadOfferManagement)
 
 
 

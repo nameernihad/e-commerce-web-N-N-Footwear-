@@ -34,6 +34,30 @@ const productSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    
+    list:{
+        type:Boolean,
+        require:true,
+        default:true,
+    },
+    createdAt:{
+        type:Date
+    },
+    offerPrice:{
+        type:Number,
+        require:true,
+        default:0
+    },
+    offer:{
+        offerStatus:{
+            type:Boolean,
+            require:true,
+            default:false
+        },
+        offerPercentage:{
+            type:Number,
+            require:true,
+            default:0
+        }
+    }
 })
 module.exports = mongoose.model('product',productSchema);
