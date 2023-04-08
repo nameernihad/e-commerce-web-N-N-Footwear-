@@ -79,7 +79,7 @@ const sentVerifyMail = async (name, email, user_id) => {
             from: config.emailUser,
             to: email,
             subject: 'For verification mail',
-            html: '<p>hay ' + name + ',please click here to <a href="http://localhost:8080/verify?id=' + user_id + '">verify</a> your mail.</p>'
+            html: '<p>hay ' + name + ',please click here to <a href="/verify?id=' + user_id + '">verify</a> your mail.</p>'
 
         }
         transporter.sendMail(mailOption, function (error, info) {
