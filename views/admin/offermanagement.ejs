@@ -272,8 +272,8 @@
               <tr>
                 <th scope="row"><%= index + 1 %></th> 
                 <td> <%= value.name %></td>
-                <td> <%= value. price %></td>
-                <td><%= value.offerPrice%></td>
+                <td> <%= value. offerPrice%></td>
+                <td><%= value. price%></td>
                 <td><%= value.offer.offerPercentage%></td>
                 <td><%= value.offer.offerStatus %></td>
                 <td> <img src="/Images/<%= value.Image[0] %>" alt="" style="width: 80px; height: 80px;"> </td>
@@ -328,7 +328,7 @@
                          <i style="font-size:24px" class="fa m-4">&#xf142;</i>
                         </a>
                            <ul class="dropdown-menu">
-                             <li> <a href="/admin/editOfferManagement/<%= value._id %>" class="btn btn-primary d-block my-1" >EDIT Offer</a></li>
+                           
                              <% if(value.offer.offerStatus == false){ %>
                                <li> <a onclick="activeOffer('<%= value._id %>')" class="btn btn-danger d-block my-1">Activate Offer</a></li>
                              <% }else{ %>

@@ -266,15 +266,11 @@
         <label for="inputState" style="color: black;" class="form-label">Category</label>
         <select id="inputState" class="form-select" name="Category" style="border: 1px solid #bcbcbc;">
           <option selected>Category list</option>
-          
             <% categories.forEach((Category) => { %>
               <option value="<%= Category._id %>">  <%= Category.name %></option>
             <% }); %>
-           
         </select>
       </div>
-     
-     
       <div class="col-md-6">
         <label for="inputState" style="color: black;" class="form-label">Brand</label>
         <select id="inputState" class="form-select" name="brand" style="border: 1px solid #bcbcbc;">
@@ -282,13 +278,8 @@
           <% brands.forEach((brand) => { %>
             <option><%= brand.name %></option>
           <% }); %>
-         
-           
-          
         </select>
       </div>   
-    
-      
       <div class="col-12">
         <button type="submit" class="btn btn-primary">ADD Product</button>
       </div>

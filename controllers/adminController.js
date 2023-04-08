@@ -1052,8 +1052,8 @@ const addOfferManagement = async(req,res) => {
                 offerStatus:true,
                 offerPercentage:offerPercentage
             },
-            offerPrice: amount,
-            price:productData.price
+            offerPrice: productData.price,
+            price:amount
         }})
         res.redirect('/admin/offerManagement')
 
