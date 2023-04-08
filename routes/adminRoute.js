@@ -143,7 +143,10 @@ admin_route.post('/show-salesreport',auth.is_Login,adminController.showSalesRepr
 
 // OFFER MANAGEMENT
 admin_route.get('/offerManagement',auth.is_Login,adminController.loadOfferManagement)
-
+admin_route.post('/addOfferManagement/:id',auth.is_Login,adminController.addOfferManagement)
+admin_route.delete('/deleteOfferManagement',auth.is_Login,adminController.deleteOfferManagement)
+admin_route.get('/editOfferManagement/:id',auth.is_Login,adminController.editOfferManagement)
+admin_route.post('/updateOffermanagement/:id',auth.is_Login,adminController.updatedOfferManagement)
 
 
 admin_route.use(session({

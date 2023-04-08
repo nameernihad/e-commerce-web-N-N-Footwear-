@@ -1032,8 +1032,7 @@ const showSalesReprot = async(req,res)=>{
 
 const loadOfferManagement = async(req,res) => { 
     try{
-        const productData= await Product.find({list:false}).populate('category').exec()
-        console.log(productData);
+        const productData= await Product.find({})
         res.render("offermanagement",{productData})
 
 
@@ -1041,82 +1040,88 @@ const loadOfferManagement = async(req,res) => {
         console.log(error.message);
     }
 }
-// const addOfferManagement = async(req,res) => { 
-//     try{
-//         const productId = req.params.id
-//         const offerPercentage = req.body.offerPercentage
-//         const productData = await Product.findOne({_id:productId})
-//         let amount = productData.price -((productData.price/ 100)* offerPercentage)
-//         const update = await Product.findOneAndUpdate({_id:productId},{$set:{
-//             offer:{
-//                 offerStatus:true,
-//                 offerPercentage:offerPercentage
-//             },
-//             offerPrice:productData.price,
-//             price: amount
-//         }})
-//         res.redirect('/admin/offerManagement')
+const addOfferManagement = async(req,res) => { 
+    try{
+        const productId = req.params.id
+        const offerPercentage = req.body.offerPercentage
+        const productData = await Product.findOne({_id:productId})
+        let amount = productData.price -((productData.price/ 100)* offerPercentage)
+        amount = Math.round(amount) // round the price to the nearest integer
+        const update = await Product.findOneAndUpdate({_id:productId},{$set:{
+            offer:{
+                offerStatus:true,
+                offerPercentage:offerPercentage
+            },
+            offerPrice: amount,
+            price:productData.price
+        }})
+        res.redirect('/admin/offerManagement')
 
-//     }catch(error){
-        
-//         console.log(error.message);
-//     }
-// }
+    }catch(error){
+        console.log(error.message);
+    }
+}
 
-// const deleteOfferManagement = async(req,res) => { 
-//     try{
-//         const productId = req.body.productId
-//         const productData = await Product.findOne({_id:productId})
-//         if(productData.offer.offerStatus == false){
-//             // let amount = productData.price -((productData.price/ 100)* productData.offer.offerPercentage)
-//             const wait = await Product.updateOne({_id:productId},{$set:{'offer.offerStatus':true}})
-//             res.json({success:true})
-//         }else{
-//             const wait = await Product.updateOne({_id:productId},{$set:{'offer.offerStatus':false}})
-//             res.json({success:true})
 
-//         }
 
-//     }catch(error){
-//         console.log(error.message);
-//     }
-// }
+const deleteOfferManagement = async(req,res) => { 
+    try{
+        const productId = req.body.productId
+        console.log(productId);
+        const productData = await Product.findOne({_id:productId})
+        if(productData.offer.offerStatus == false){
+            // let amount = productData.price -((productData.price/ 100)* productData.offer.offerPercentage)
+            const wait = await Product.updateOne({_id:productId},{$set:{'offer.offerStatus':true}})
+            res.json({success:true})
+        }else{
+            const wait = await Product.findByIdAndUpdate({_id:productId},{$set:{'offer.offerStatus':false,
+        'offer.offerPercentage': 0,
+        offerPrice:0,
+        }})
+            res.json({success:true})
 
-// const editOfferManagement = async(req,res) => { 
-//     try{
-//         const productId = req.params.id
-//         // console.log(productId);
-//         const productData = await Product.findOne({_id:productId})
-//         res.render("admin/editOfferManagement",{productData})
+        }
 
-//     }catch(error){
-//         res.render('admin/500')
-//         console.log(error.message);
-//     }
-// }
+    }catch(error){
+        console.log(error.message);
+    }
+}
 
-// const updatedOfferManagement = async(req,res) => { 
-//     try{
-//         const productId = req.params.id
-//         const offerPercentage = req.body.offerPercentage
-//         const productData = await Product.findOne({_id:productId})
-//         const originalPrice = productData.price
-//         let amount = productData.price -((productData.price/ 100)* offerPercentage)
-//         const update = await Product.findOneAndUpdate({_id:productId},{$set:{
-//             offer:{
-//                 offerStatus:true,
-//                 offerPercentage:offerPercentage
-//             },
-//             offerPrice:originalPrice ,
-//             price: amount
-//         }})
-//         res.redirect('/admin/offerManagement')
+const editOfferManagement = async(req,res) => { 
+    try{
+        const productId = req.params.id
+        // console.log(productId);
+        const productData = await Product.findOne({_id:productId})
+        res.render("editOfferManagement",{productData})
 
-//     }catch(error){
-//         res.render('admin/500')
-//         console.log(error.message);
-//     }
-// }
+    }catch(error){
+        res.render('admin/500')
+        console.log(error.message);
+    }
+}
+
+const updatedOfferManagement = async (req, res) => {
+    try {
+      const productId = req.params.id
+      const offerPercentage = req.body.offerPercentage
+      const productData = await Product.findOne({_id: productId})
+      let amount = productData.price - ((productData.price / 100) * offerPercentage)
+      amount = Math.round(amount) // round the price to the nearest integer
+      const update = await Product.findOneAndUpdate({_id: productId}, {$set: {
+        offer: {
+          offerStatus: true,
+          offerPercentage: offerPercentage
+        },
+        offerPrice: amount,
+        price: productData.price 
+      }})
+      res.redirect('/admin/offerManagement')
+    } catch (error) {
+      res.render('admin/500')
+      console.log(error.message)
+    }
+  }
+  
 
 
 
@@ -1177,10 +1182,10 @@ module.exports = {
     showSalesReprot,
     // offer managment
     loadOfferManagement,
-    // addOfferManagement,
-    // deleteOfferManagement,
-    // editOfferManagement,
-    // updatedOfferManagement,
+    addOfferManagement,
+    deleteOfferManagement,
+    editOfferManagement,
+    updatedOfferManagement,
 }
 
 

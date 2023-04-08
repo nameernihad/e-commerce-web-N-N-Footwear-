@@ -492,7 +492,7 @@
                     <h1>Shop With Us  </h1></div>
                 <div class="breadcrumbs-info">
                     <ul class="ps-0">
-                        <li><a href="home-shop-1.html">Home</a></li>
+                        <li><a href="/home">Home</a></li>
                         <li><a href="#">trending Product </a></li>
                     </ul>
                 </div>
@@ -556,8 +556,14 @@
                             <div class="product-description">
                                 <h3><a href="shop-product-detail.html"><%= value.name%></a></h3>
                                 <h4 class="price">
-                                                        <span class="regular-price line-through"><%= value.price + value.price %></span>
-                                                        <span class="offer-price">₹<%= value.price %></span>
+                                   <%  if(value.offerPrice == 0){%>
+                                        
+                                        <span class="offer-price">₹<%= value.price %></span>
+                                   <% }else {%>
+                                           <span class="regular-price line-through">₹<%= value.price %></span>
+                                                        <span class="offer-price">₹<%= value.offerPrice%></span>
+                                   <% }%>
+                                                     
                                                     </h4>
                             </div>
                             <div class="product-buttons">

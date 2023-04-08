@@ -551,7 +551,17 @@
                                 <h3 class="h6"><a href="shop-product-detail.html">
                                         <%= value.name%>
                                     </a></h3>
-                                <span class="font-weight-600 display-29 text-muted">$<%= value.price %></span>
+                                    <h4 class="price">
+                                        <%  if(value.offerPrice == 0){%>
+                                             
+                                             <span class="font-weight-600 display-29 offer-price">₹<%= value.price %></span>
+                                        <% }else {%>
+                                                <span class="font-weight-600 display-29 regular-price line-through text-info">₹<%= value.price %></span>
+                                                             <span class="font-weight-600 display-29 offer-price ">₹<%= value.offerPrice%></span>
+                                        <% }%>
+                                                          
+                                                         </h4>
+                                
                             </div>
                         </div>
                         <%})%>
