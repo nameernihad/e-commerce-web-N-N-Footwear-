@@ -239,53 +239,153 @@
       </div>
     </nav>
     <!-- End Navbar -->
-<div style="margin-left: 5%;">
-    <form class="row g-3" action="/admin/productform" method="post" enctype="multipart/form-data">
-      <div class="col-md-6">
-        <label for="inputEmail4" style="color: black; " class="form-label">Name</label>
-        <input type="text" class="form-control" name="name" placeholder="Product name" style="border: 1px solid #bcbcbc;">
-      </div>
-      <div class="col-md-6">
-        <label for="inputPassword4" style="color: black;" class="form-label">Price</label>
-        <input type="numbera" class="form-control" name="price" placeholder="Product Price" id="inputPassword4" style="border: 1px solid #bcbcbc;">
-      </div>
-      <div class="col-12">
-        <label for="inputAddress" style="color: black;" class="form-label">Discription</label>
-        <input type="text" class="form-control" name="Discription" id="inputAddress" placeholder="About the product" style="border: 1px solid #bcbcbc;">
-      </div>
-      <br><br>
-      <div class="col-6">
-        <label for="inputAddress2" style="color: black;" class="form-label" >Images</label>
-        <input type="file" multiple  name="image"  style="border: 1px solid #bcbcbc;">
-      </div>
-      <div class="col-md-2">
-        <label for="inputZip" style="color: black;" class="form-label">Quantity</label>
-        <input type="number" class="form-control" name="quantity" id="inputZip" style="border: 1px solid #bcbcbc;">
-      </div>
-      <div class="col-md-6">
-        <label for="inputState" style="color: black;" class="form-label">Category</label>
-        <select id="inputState" class="form-select" name="Category" style="border: 1px solid #bcbcbc;">
-          <option selected>Category list</option>
-            <% categories.forEach((Category) => { %>
-              <option value="<%= Category._id %>">  <%= Category.name %></option>
+    <div style="margin-left: 5%;">
+      <form class="row g-3" action="/admin/productform" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <div class="col-md-6">
+          <label for="inputEmail4" style="color: black; " class="form-label">Name</label>
+          <input type="text" class="form-control" name="name" placeholder="Product name" style="border: 1px solid #bcbcbc;" id="nameInput" >
+          <span class="error-message" id="nameError" style="color: red;" ></span>
+        </div>
+        <div class="col-md-6">
+          <label for="inputPassword4" style="color: black;" class="form-label">Price</label>
+          <input type="number" class="form-control" name="price" placeholder="Product Price" style="border: 1px solid #bcbcbc;" id="priceInput" >
+          <span class="error-message" id="priceError" style="color: red;"></span>
+        </div>
+        <div class="col-12">
+          <label for="inputAddress" style="color: black;" class="form-label">Description</label>
+          <input type="text" class="form-control" name="Discription" placeholder="About the product" style="border: 1px solid #bcbcbc;" id="descriptionInput" >
+          <span class="error-message" id="descriptionError" style="color: red;"></span>
+        </div>
+        <br><br>
+        <div class="col-6">
+          <label for="inputAddress2" style="color: black;" class="form-label" >Images</label>
+          <input type="file" multiple  name="image"  style="border: 1px solid #bcbcbc;" id="imageInput" >
+          <span class="error-message" id="imageError" style="color: red;"></span>
+        </div>
+        <div class="col-md-2">
+          <label for="inputZip" style="color: black;" class="form-label">Quantity</label>
+          <input type="number" class="form-control" name="quantity" style="border: 1px solid #bcbcbc;" id="quantityInput" >
+          <span class="error-message" id="quantityError" style="color: red;"></span>
+        </div>
+        <div class="col-md-6">
+          <label for="inputState" style="color: black;" class="form-label">Category</label>
+          <select id="inputState" class="form-select" name="category" style="border: 1px solid #bcbcbc;" id="categoryInput" >
+            <option selected>Category list</option>
+              <% categories.forEach((category) => { %>
+                <option value="<%= category._id %>">  <%= category.name %></option>
+              <% }); %>
+          </select>
+          <span class="error-message" id="categoryError" style="color: red;"></span>
+        </div>
+        <div class="col-md-6">
+          <label for="inputState" style="color: black;" class="form-label">Brand</label>
+          <select id="inputState" class="form-select" name="brand" style="border: 1px solid #bcbcbc;" id="brandInput">
+            <option selected>Brand</option>
+            <% brands.forEach((brand) => { %>
+              <option><%= brand.name %></option>
             <% }); %>
-        </select>
-      </div>
-      <div class="col-md-6">
-        <label for="inputState" style="color: black;" class="form-label">Brand</label>
-        <select id="inputState" class="form-select" name="brand" style="border: 1px solid #bcbcbc;">
-          <option selected>Brand</option>
-          <% brands.forEach((brand) => { %>
-            <option><%= brand.name %></option>
-          <% }); %>
-        </select>
-      </div>   
+          </select>
+          <span class="error-message" id="brandError" style="color: red;"></span>
+          </div>  
       <div class="col-12">
         <button type="submit" class="btn btn-primary">ADD Product</button>
       </div>
     </form>
   </div>
 
+ <script>
+   function validateForm() {
+  const nameInput = document.getElementById("nameInput");
+  const priceInput = document.getElementById("priceInput");
+  const descriptionInput = document.getElementById("descriptionInput");
+  const imageInput = document.getElementById("imageInput");
+  const quantityInput = document.getElementById("quantityInput");
+  const categoryInput = document.getElementById("categoryInput");
+  const brandInput = document.getElementById("brandInput");
+
+  const nameError = document.getElementById("nameError");
+  const priceError = document.getElementById("priceError");
+  const descriptionError = document.getElementById("descriptionError");
+  const imageError = document.getElementById("imageError");
+  const quantityError = document.getElementById("quantityError");
+  const categoryError = document.getElementById("categoryError");
+  const brandError = document.getElementById("brandError");
+
+  // Set initial error messages to empty string
+  nameError.textContent = "";
+  priceError.textContent = "";
+  descriptionError.textContent = "";
+  imageError.textContent = "";
+  quantityError.textContent = "";
+  categoryError.textContent = "";
+  brandError.textContent = "";
+
+  // Validate name field
+  if (nameInput.value.trim() === "") {
+    nameError.textContent = "Name is required";
+    return false;
+  }
+
+  // Validate price field
+  if (priceInput.value.trim() === "") {
+    priceError.textContent = "Price is required";
+    return false;
+  } else if (isNaN(priceInput.value)) {
+    priceError.textContent = "Price must be a number";
+    return false;
+  } else if (priceInput.value <= 0) {
+    priceError.textContent = "Price must be greater than 0";
+    return false;
+  }
+
+  // Validate description field
+  if (descriptionInput.value.trim() === "") {
+    descriptionError.textContent = "Description is required";
+    return false;
+  }
+
+  // Validate image field
+  if (imageInput.value.trim() === "") {
+    imageError.textContent = "Image is required";
+    return false;
+  } else {
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif|\.webp)$/i;
+    if (!allowedExtensions.exec(imageInput.value)) {
+      imageError.textContent = "Only JPG, JPEG, PNG, GIF, and WEBP files are allowed";
+      return false;
+    }
+  }
+
+  // Validate quantity field
+  if (quantityInput.value.trim() === "") {
+    quantityError.textContent = "Quantity is required";
+    return false;
+  } else if (isNaN(quantityInput.value)) {
+    quantityError.textContent = "Quantity must be a number";
+    return false;
+  } else if (quantityInput.value <= 0) {
+    quantityError.textContent = "Quantity must be greater than 0";
+    return false;
+  }
+
+  // Validate category field
+  if (categoryInput.value === "Category list") {
+    categoryError.textContent = "Category is required";
+    return false;
+  }
+
+  // Validate brand field
+  if (brandInput.value === "Brand") {
+    brandError.textContent = "Brand is required";
+    return false;
+  }
+
+  // If all fields are valid, return true to submit the form
+  return true;
+}
+
+
+ </script>
   <!--   Core JS Files   -->
   <script src="../assets/js/core/popper.min.js"></script>
   <script src="../assets/js/core/bootstrap.min.js"></script>

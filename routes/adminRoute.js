@@ -116,6 +116,8 @@ admin_route.get('/brandList', auth.is_Login, adminController.brandList);
 admin_route.get('/brandAdd', auth.is_Login, adminController.brandAdd);
 admin_route.post('/brandAdd', auth.is_Login, uploadBrand.single('image'), adminController.brandInsert);
 admin_route.post('/addBrandImage', uploadBrand.single('image'),adminController.updateBrandImage)
+admin_route.get('/editbrand', auth.is_Login, adminController.editbrand)
+admin_route.post('/editbrand', auth.is_Login, adminController.updatebrand)
 
 
 admin_route.get('/couponList', auth.is_Login, adminController.couponList);
@@ -125,8 +127,7 @@ admin_route.get('/couponEdit', auth.is_Login,adminController.couponEdit)
 admin_route.post('/couponEdit', auth.is_Login,adminController.updateCoupon)
 admin_route.post('/couponDelete',auth.is_Login,adminController.deletecoupon);
 
-admin_route.get('/editbrand', auth.is_Login, adminController.editbrand)
-admin_route.post('/editbrand', auth.is_Login, adminController.updatebrand)
+
 // order
 admin_route.get('/order',adminController.loadOrderlist)
 

@@ -580,9 +580,11 @@ const productDetails = async (req, res) => {
 const loadWishlist = async (req, res) => {
     try {
         const id = req.session.user_id
+        
+        const user = await User.findOne({ _id: id })
         const userData = await User.findOne({ _id: id }).populate('wishlist.product').exec()
 
-        res.render('wishlist', { userData })
+        res.render('wishlist', { userData ,user })
 
     } catch (error) {
         console.log(error.message);
@@ -763,7 +765,8 @@ const checkoutAddress = async (req, res) => {
     try {
 
         const userId = req.session.user_id
-
+       
+      
         const userData = await User.findOne({ _id: userId }).populate('cart.productId').exec()
         const address = await Address.findOne({ userId: userId })
         res.render('checkout', { userData, address })
@@ -997,8 +1000,9 @@ const orderhistory = async (req, res) => {
     try {
 
         const id = req.session.user_id
+        const userData = await User.findOne({ _id: id })
         const orders = await Order.find({ userId: id }).populate({ path: 'items', populate: { path: 'productId', model: 'product' } })
-        res.render('orderHistory', { orders })
+        res.render('orderHistory', { orders , userData})
 
 
     } catch (error) {
@@ -1030,10 +1034,12 @@ const loadaddress = async (req, res) => {
 
     try {
         // const userData = await User.findOne({_id:req.session.user_id})
+        const userId = req.session.user_id
+        const userData = await User.findOne({ _id: userId })
         const address = await Address.findOne({ userId: req.session.user_id })
 
 
-        res.render('addresses', { address })
+        res.render('addresses', { address ,userData})
     } catch (error) {
         console.log(error.message);
         console.log('error from showaddress');
@@ -1251,6 +1257,35 @@ const wishToCart = async (req, res) => {
     }
 }
 
+
+const loadCategory = async(req,res)=>{
+    try {
+        
+        const Id = req.query.id;
+        const categoryData = await category.findById({_id:Id}) 
+        
+        if(categoryData ){
+            const categoryName = categoryData.name
+            
+            if(categoryName){
+                const eachCategory = await product.find({ category: { $in: categoryName } });
+                console.log(eachCategory);
+                if(eachCategory){
+                    res.render('categorylist',{eachCategory})
+                }
+
+            }
+            
+        }
+        
+       
+
+
+    } catch (error) {
+        console.log(error.log);
+    }
+}
+
 module.exports = {
     loadRegister,
     insertUser,
@@ -1291,6 +1326,7 @@ module.exports = {
     couponApply,
     verifyPayment,
     productlist,
-    wishToCart
+    wishToCart,
+    loadCategory
 
 }

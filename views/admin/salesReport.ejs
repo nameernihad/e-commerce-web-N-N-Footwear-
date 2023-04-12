@@ -346,7 +346,90 @@
         
             <button type="submit">Generate Report</button>
         </form>
-        
+
+
+
+
+        <div class="container">
+          <head>
+            <title>Sales Report</title>
+            <style>
+              table {
+                border-collapse: collapse;
+                width: 100%;
+                margin-bottom: 1em;
+              }
+              th, td {
+                padding: 0.5em;
+                text-align: left;
+                border-bottom: 1px solid #1b1313;
+              }
+              th {
+                background-color: #1b1313;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: #fff;
+              }
+              h1 {
+                font-size: 2.5em;
+                text-align: center;
+                margin-top: 1em;
+                margin-bottom: 0.5em;
+                color: #1b1313;
+                text-transform: uppercase;
+                letter-spacing: 0.2em;
+              }
+              table tbody tr:nth-child(even) {
+                background-color: #f2f2f2;
+              }
+              table tbody tr:hover {
+                background-color: #ddd;
+              }
+              .address {
+                font-size: 0.9em;
+                line-height: 1.4;
+                margin: 0;
+                color: #555;
+              }
+            </style>
+          </head>
+          <body>
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Address</th>
+                  <th>Payment Method</th>
+                  <th>Order Status</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody style="color: black;">
+                <% saleData.forEach((value,index)=>{%>
+                <tr>
+                  <td><%= value.date.toLocaleString({day:'2-digit',month:'2-digit',year:'2-digit'})%></td>
+                  <td>
+                    <p class="address" style="color: black;"> <b>
+                      <%=value.address.fullName %><br>
+                      <%= value.address.mobileNumber %><br>
+                      <%= value.address.houseAddress %>, <%= value.address.streetAddress %> <br>
+                      <%= value.address.landMark%> <br>
+                      <%= value.address.cityName %>, <%= value.address.state %> - <%= value.address.pincode %>
+                    </p>
+                  </b>
+                  </td>
+                  <td><%= value.paymentMethod %></td>
+                  <td style="color: green;"><b><%= value.orderStatus%></b></td>        
+                  <td style="color: green;"><b>₹<%= value.totalAmount %></b></td>
+                </tr>
+                <% }) %>
+
+              
+              </tbody>
+            </table>
+          </body>
+        </div>
         <script>
             function validateForm(event) {
                 event.preventDefault(); // prevent the form from submitting

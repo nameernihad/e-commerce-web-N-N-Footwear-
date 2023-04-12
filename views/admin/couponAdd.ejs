@@ -244,70 +244,79 @@
         <!-- End Navbar -->
       <div>
        
-            <form method="POST" action="/admin/couponAdd" class="container my-5">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="couponCode">Coupon Code:</label>
-                    <input type="text" style="border: 2px solid black;" id="couponCode" name="couponCode" class="form-control" required>
+        <form method="POST" action="/admin/couponAdd" class="container my-5" onsubmit="return validateForm()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="couponCode">Coupon Code:</label>
+                <input type="text" style="border: 2px solid black;" id="couponCode" name="couponCode" class="form-control" >
+                <div id="couponCodeError" class="text-danger"></div>
+              </div>
+        
+              <div class="form-group">
+                <label for="couponAmountType">Coupon Amount Type:</label>
+                <select id="couponAmountType" style="border: 2px solid black;" name="couponAmountType" class="form-control" >
+                  <option value="percentage">select coupon type</option>
+                  <option value="percentage">Percentage</option>
+                  <option value="fixed">Fixed</option>
+                </select>
+              </div>
+        
+              <div class="form-group">
+                <label for="couponAmount">Coupon Amount:</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
                   </div>
-            
-                  <div class="form-group">
-                    <label for="couponAmountType">Coupon Amount Type:</label>
-                    <select id="couponAmountType" style="border: 2px solid black;" name="couponAmountType" class="form-control" required>
-                      <option value="percentage">select coupon type</option>
-                      <option value="percentage">Percentage</option>
-                      <option value="fixed">Fixed</option>
-                    </select>
+                  <input type="number" style="border: 2px solid black;" id="couponAmount" name="couponAmount" class="form-control" >
+                </div> 
+                    <div id="couponAmountError" class="text-danger"></div>
+              </div>
+        
+              <div class="form-group">
+                <label for="minRedeemAmount">Minimum Redeem Amount:</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
                   </div>
-            
-                  <div class="form-group">
-                    <label for="couponAmount">Coupon Amount:</label>
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">$</span>
-                      </div>
-                      <input type="number" style="border: 2px solid black;" id="couponAmount" name="couponAmount" class="form-control" required>
-                    </div>
-                  </div>
-            
-                  <div class="form-group">
-                    <label for="minRedeemAmound">Minimum Redeem Amount:</label>
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">$</span>
-                      </div>
-                      <input type="number" style="border: 2px solid black;" id="minRedeemAmound" name="minRedeemAmound" class="form-control" required>
-                    </div>
-                  </div>
-            
+                  <input type="number" style="border: 2px solid black;" id="minRedeemAmount" name="minRedeemAmount" class="form-control" >
+                  
                 </div>
-            
-                <div class="col-md-6">
-            
-                  <div class="form-group">
-                    <label for="minCartAmount">Minimum Cart Amount:</label>
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">$</span>
-                      </div>
-                      <input type="number" style="border: 2px solid black;" id="minCartAmount" name="minCartAmount" class="form-control" required>
-                    </div>
+             
+              </div>
+           <div id="minRedeemAmountError" class="text-danger"></div>
+            </div>
+        
+            <div class="col-md-6">
+        
+              <div class="form-group">
+                <label for="minCartAmount">Minimum Cart Amount:</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
                   </div>
-            
-                  <div class="form-group">
-                    <label for="expiryDate">Expiry Date:</label>
-                    <input type="date" style="border: 2px solid black;" id="expiryDate" name="expiryDate" class="form-control" required>
-                  </div>
-            
-                  <div class="form-group">
-                    <label for="startDate">Start Date:</label>
-                    <input type="date" style="border: 2px solid black;" id="startDate" name="startDate" class="form-control" required>
-                  </div>
-            
-                  <div class="form-group">
+                  <input type="number" style="border: 2px solid black;" id="minCartAmount" name="minCartAmount" class="form-control" >
+                  
+                </div>
+                <div id="minCartAmountError" class="text-danger"></div>
+              </div>
+        
+              <div class="form-group">
+                <label for="expiryDate">Expiry Date:</label>
+                <input type="date" style="border: 2px solid black;" id="expiryDate" name="expiryDate" class="form-control" >
+                <div id="expiryDateError" class="text-danger"></div>
+              </div>
+        
+              <div class="form-group">
+                <label for="startDate">Start Date:</label>
+                <input type="date" style="border: 2px solid black;" id="startDate" name="startDate" class="form-control" >
+                <div id="startDateError" class="text-danger"></div>
+              </div>
+        
+              <div class="form-group
                     <label for="limit">Limit:</label>
-                    <input type="number" style="border: 2px solid black;" id="limit" name="limit" class="form-control" required>
+                    <input type="number" style="border: 2px solid black;" id="limit" name="limit" class="form-control" >
+                    <div id="limitError" class="text-danger"></div>
                   </div>
             
                 </div>
@@ -316,8 +325,87 @@
               <button type="submit" class="btn btn-primary mt-3">Submit</button>
             </form>
             
-          
-          
+          <script>
+              function validateForm() {
+              const couponCodeInput = document.getElementById("couponCode");
+              const couponAmountInput = document.getElementById("couponAmount");
+              const minRedeemAmountInput = document.getElementById("minRedeemAmount");
+              const minCartAmountInput = document.getElementById("minCartAmount");
+              const expiryDateInput = document.getElementById("expiryDate");
+              const startDateInput = document.getElementById("startDate");
+              const limitInput = document.getElementById("limit");
+            
+              let isValid = true;
+            
+              // Validate coupon code
+              if (couponCodeInput.value.trim() === "") {
+                document.getElementById("couponCodeError").innerHTML = "Coupon code is required";
+                isValid = false;
+              } else {
+                document.getElementById("couponCodeError").innerHTML = "";
+              }
+            
+              // Validate coupon amount
+              if (couponAmountInput.value.trim() === "") {
+                document.getElementById("couponAmountError").innerHTML = "Coupon amount is required";
+                isValid = false;
+              } else {
+                document.getElementById("couponAmountError").innerHTML = "";
+              }
+            
+              // Validate minimum redeem amount
+              if (minRedeemAmountInput.value.trim() === "") {
+                document.getElementById("minRedeemAmountError").innerHTML = "Minimum redeem amount is required";
+                isValid = false;
+              } else {
+                document.getElementById("minRedeemAmountError").innerHTML = "";
+              }
+            
+              // Validate minimum cart amount
+              if (minCartAmountInput.value.trim() === "") {
+                document.getElementById("minCartAmountError").innerHTML = "Minimum cart amount is required";
+                isValid = false;
+              } else {
+                document.getElementById("minCartAmountError").innerHTML = "";
+              }
+            
+              // Validate expiry date
+              if (expiryDateInput.value.trim() === "") {
+                document.getElementById("expiryDateError").innerHTML = "Expiry date is required";
+                isValid = false;
+              } else if (new Date(expiryDateInput.value) < new Date()) {
+                document.getElementById("expiryDateError").innerHTML = "Expiry date must be a future date";
+                isValid = false;
+              } else {
+                document.getElementById("expiryDateError").innerHTML = "";
+              }
+            
+              // Validate start date
+              if (startDateInput.value.trim() === "") {
+                document.getElementById("startDateError").innerHTML = "Start date is required";
+                isValid = false;
+              } else if (new Date(startDateInput.value) < new Date()) {
+                document.getElementById("startDateError").innerHTML = "Start date must be a future date";
+                isValid = false;
+              } else if (new Date(expiryDateInput.value) < new Date(startDateInput.value)) {
+                document.getElementById("startDateError").innerHTML = "Start date must be before expiry date";
+                isValid = false;
+              } else {
+                document.getElementById("startDateError").innerHTML = "";
+              }
+            
+              // Validate limit
+              if (limitInput.value.trim() === "") {
+                document.getElementById("limitError").innerHTML = "Limit is required";
+                isValid = false;
+              } else {
+                document.getElementById("limitError").innerHTML = "";
+              }
+            
+              return isValid;
+            }
+            
+          </script>
           
         
       </div>

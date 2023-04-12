@@ -240,56 +240,46 @@
     </nav>
     <!-- End Navbar -->
 <div style="margin-left: 5%;">
-   
-    <form class="row g-3" action="/admin/editProduct?id=<%= product._id %>" method="post">
-      <div class="col-md-6">
-        <label for="inputEmail4"  style="color: black; " class="form-label"></label>
-        <input type="text" class="form-control" name="name" value="<%= product.name%>" placeholder="product name" style="border: 1px solid #bcbcbc;">
-      </div>
-      <div class="col-md-6">
-        <label for="inputPassword4" style="color: black;" class="form-label">Price</label>
-        <input type="numbera" class="form-control" name="price" value="<%= product.price%>" placeholder="Product Price" id="inputPassword4" style="border: 1px solid #bcbcbc;">
-      </div>
-      <div class="col-12">
-        <label for="inputAddress" style="color: black;" class="form-label">Discription</label>
-        <input type="text" class="form-control" name="Discription" value="<%= product.discription%>" id="inputAddress" placeholder="About the product" style="border: 1px solid #bcbcbc;">
-      </div>
-      <br><br>
-      <!-- <div class="col-6">
-        <label for="inputAddress2" style="color: black;" class="form-label" >Images</label>
-        <input type="file" multiple  name="image"  style="border: 1px solid #bcbcbc;">
-      </div> -->
-      <div class="col-md-2">
-        <label for="inputZip" style="color: black;" class="form-label">Quantity</label>
-        <input type="number" class="form-control" name="quantity" value="<%= product.quantity%>"  id="inputZip" style="border: 1px solid #bcbcbc;">
-      </div>
-      <div class="col-md-6">
-        <label for="inputState" style="color: black;" class="form-label">Category</label>
-        <select id="inputState" class="form-select" name="Category" value="<%= product.category%>"  style="border: 1px solid #bcbcbc;">
-          <option selected>Category list</option>
-          
-            <% categories.forEach((Category) => { %>
-              <option><%= Category.name %></option>
-            <% }); %>
-           
-        </select>
-      </div>
-     
-     
-      <div class="col-md-6">
-        <label for="inputState" style="color: black;" class="form-label">Brand</label>
-        <select id="inputState" class="form-select" name="brand" style="border: 1px solid #bcbcbc;">
-          <option selected>Brand</option>
-          <% brands.forEach((brand) => { %>
-            <option><%= brand.name %></option>
-          <% }); %>
-         
-           
-          
-        </select>
+  <form class="row g-3" action="/admin/editProduct?id=<%= product._id %>" method="post" onsubmit="return validateForm()">
+    <div class="col-md-6">
+      <label for="inputEmail4"  style="color: black; " class="form-label">Product Name</label>
+      <input type="text" class="form-control" name="name" value="<%= product.name%>" placeholder="product name" style="border: 1px solid #bcbcbc;" id="nameInput">
+      <p id="nameError" style="color: red; display: none;">Please enter a valid product name.</p>
+    </div>
+    <div class="col-md-6">
+      <label for="inputPassword4" style="color: black;" class="form-label">Price</label>
+      <input type="number" class="form-control" name="price" value="<%= product.price%>" placeholder="Product Price" id="priceInput" style="border: 1px solid #bcbcbc;">
+      <p id="priceError" style="color: red; display: none;">Please enter a valid price.</p>
+    </div>
+    <div class="col-12">
+      <label for="inputAddress" style="color: black;" class="form-label">Description</label>
+      <input type="text" class="form-control" name="Discription" value="<%= product.discription%>" id="descriptionInput" placeholder="About the product" style="border: 1px solid #bcbcbc;">
+      <p id="descriptionError" style="color: red; display: none;">Please enter a valid description.</p>
+    </div>
+    <div class="col-md-2">
+      <label for="inputZip" style="color: black;" class="form-label">Quantity</label>
+      <input type="number" class="form-control" name="quantity" value="<%= product.quantity%>"  id="quantityInput" style="border: 1px solid #bcbcbc;">
+      <p id="quantityError" style="color: red; display: none;">Please enter a valid quantity.</p>
+    </div>
+    <div class="col-md-6">
+      <label for="inputState" style="color: black;" class="form-label">Category</label>
+      <select id="categoryInput" class="form-select" name="category" value="<%= product.category%>"  style="border: 1px solid #bcbcbc;">
+        <option selected>Category</option>
+        <% categories.forEach((category) => { %>
+          <option><%= category.name %></option>
+        <% }); %>
+      </select>
+      <p id="categoryError" style="color: red; display: none;">Please select a category.</p>
+    </div>
+    <div class="col-md-6">
+      <label for="inputState" style="color: black;" class="form-label">Brand</label>
+      <select id="brandInput" class="form-select" name="brand" style="border: 1px solid #bcbcbc;">
+        <option selected><%= product.brand%></option>
+        <% brands.forEach((brand) => { %>
+          <option><%= brand.name %></option>
+        <% }); %>
+      </select>
       </div>   
-     
-      
       <div class="col-12">
         <img style="margin-left: 30px;" src=" /Images/<%= product.Image[0] %>" style="width: 80px;" height="80px"><br>
        <br>
@@ -299,6 +289,70 @@
         <button type="submit" class="btn btn-primary">ADD Product</button>
       </div>
     </form>
+    <script>
+      function validateForm() {
+  // Get form fields
+  const nameInput = document.getElementById("nameInput");
+  const priceInput = document.getElementById("priceInput");
+  const descriptionInput = document.getElementById("descriptionInput");
+  const quantityInput = document.getElementById("quantityInput");
+  const categoryInput = document.getElementById("categoryInput");
+  const brandInput = document.getElementById("brandInput");
+
+  // Get error message elements
+  const nameError = document.getElementById("nameError");
+  const priceError = document.getElementById("priceError");
+  const descriptionError = document.getElementById("descriptionError");
+  const quantityError = document.getElementById("quantityError");
+  const categoryError = document.getElementById("categoryError");
+
+  // Initialize validation status
+  let isValid = true;
+
+  // Validate name field
+  if (nameInput.value === "") {
+    nameError.style.display = "block";
+    isValid = false;
+  } else {
+    nameError.style.display = "none";
+  }
+
+  // Validate price field
+  if (isNaN(priceInput.value) || priceInput.value <= 0) {
+    priceError.style.display = "block";
+    isValid = false;
+  } else {
+    priceError.style.display = "none";
+  }
+
+  // Validate description field
+  if (descriptionInput.value === "") {
+    descriptionError.style.display = "block";
+    isValid = false;
+  } else {
+    descriptionError.style.display = "none";
+  }
+
+  // Validate quantity field
+  if (isNaN(quantityInput.value) || quantityInput.value <= 0) {
+    quantityError.style.display = "block";
+    isValid = false;
+  } else {
+    quantityError.style.display = "none";
+  }
+
+  // Validate category field
+  if (categoryInput.value === "Category") {
+    categoryError.style.display = "block";
+    isValid = false;
+  } else {
+    categoryError.style.display = "none";
+  }
+
+  return isValid;
+}
+
+    </script>
     <!-- modal -->
 
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -309,28 +363,52 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         
-        <form action="/admin/edit-image/<%=product._id%>" method="post" enctype="multipart/form-data">
+        <form id="image-form" action="/admin/edit-image/<%=product._id%>" method="post" enctype="multipart/form-data">
           <div class="modal-body">
             <div>
               <label for="">Image</label>
-              <input type="file" multiple name="image">
-              </div>
+              <input type="file" multiple name="image" accept="image/*,.webp" required>
+            </div>
             <% product.Image.forEach((x)=>{ %>
-              <div>
-                <img src="/Images/<%=x %> " style="width: 80px; height: 80px;">
-                <a href="/admin/delete-product-image/<%= x %>/<%= product._id %> ">delete</a>
-               
-              </div>
-  
-         <% }) %>
-          
+            <div>
+              <img src="/Images/<%=x %> " style="width: 80px; height: 80px;">
+              <a href="/admin/delete-product-image/<%= x %>/<%= product._id %> ">delete</a>
+            </div>
+            <% }) %>
           </div>
-        
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Save changes</button>
           </div>
         </form>
+        
+        <script>
+          const fileInput = document.querySelector('input[type="file"]');
+          const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        
+          fileInput.addEventListener('change', (event) => {
+            const files = Array.from(event.target.files);
+            const invalidFiles = files.filter((file) => !allowedTypes.includes(file.type));
+        
+            if (invalidFiles.length > 0) {
+              event.target.setCustomValidity('Invalid file type. Please select only JPEG, PNG or WEBP files.');
+            } else {
+              event.target.setCustomValidity('');
+            }
+          });
+        
+          const imageForm = document.querySelector('#image-form');
+        
+          imageForm.addEventListener('submit', (event) => {
+            if (!imageForm.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+        
+            imageForm.classList.add('was-validated');
+          });
+        </script>
+        
         
       </div>
     </div>

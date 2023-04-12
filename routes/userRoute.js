@@ -68,6 +68,8 @@ user_route.post('/add-to-wishlist',auth.isLogin,userController.addToWishlist)
 user_route.post('/deleteWishlist',auth.isLogin,userController.deleteWishlist)
 user_route.get('/productlist',auth.isLogin,userController.productlist);
 user_route.post('/wish-to-cart',auth.isLogin,userController.wishToCart)
+user_route.get('/categorylist',auth.isLogin,userController.loadCategory);
+
 // user profile
 user_route.get('/userProfile',auth.isLogin,userController.loaduserprofile)
 user_route.post('/addaddress',auth.isLogin,userController.insertAddress) 

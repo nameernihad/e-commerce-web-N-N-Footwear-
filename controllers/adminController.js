@@ -604,7 +604,7 @@ const brandInsert = async (req, res) => {
 const couponList = async (req, res) => {
     try {
         const coupondata = await Coupon.find({});
-        console.log(coupondata);
+      
         res.render("couponList", { coupondata })
 
     } catch (error) {
@@ -640,7 +640,7 @@ const couponInsert = async (req, res) => {
             limit: req.body.limit,
         })
         const couponData = await coupon.save();
-        console.log(couponData);
+        
         if (couponData) {
             res.redirect('/admin/couponAdd')
         }
@@ -669,7 +669,7 @@ const updatecategory = async (req, res) => {
     try {
 
         const id = req.query.id
-        console.log(id);
+     
         const updatedData = await Category.findByIdAndUpdate({ _id: id }, { $set: { name: req.body.name, discription: req.body.discription, } });
         if(updatedData){
             res.redirect('/admin/categoryList')
@@ -682,22 +682,6 @@ const updatecategory = async (req, res) => {
     }
 }
 
-// const editImages = async (req, res) => {
-//     try {
-
-//         const id = req.query.id;
-//         console.log(id)
-//         const Image = req.file.filename;
-//         console.log(Image)
-//         const result = await Category.findByIdAndUpdate({ _id: id }, { $set: { image: Image } })
-//         res.redirect('/admin/categoryList')
-
-
-//     } catch (error) {
-//         console.log(error.message);
-//         console.log("editimage");
-//     }
-// }
 
 
 const editbrand = async (req, res) => {
@@ -722,7 +706,7 @@ const updatebrand = async(req,res)=>{
         const id = req.query.id
         console.log(req.body.name);
         const updatedData = await Brand.findByIdAndUpdate({ _id: id }, { $set: { name: req.body.name, discription: req.body.discription } });
-        console.log(updatedData)
+      
         if(updatedData){
              res.redirect('/admin/brandList')
         }
@@ -739,7 +723,7 @@ const couponEdit = async(req,res)=>{
     try {
         
         const id = req.query.id
-        console.log(id);
+
         const coupon = await Coupon.findOne({ _id: id })
        
         res.render('couponedit', { coupon });
@@ -764,7 +748,7 @@ const updateCoupon = async(req,res)=>{
             startDate: req.body.startDate,
             limit: req.body.limit,
         }})
-        console.log(updateCoupon);
+   
         if(updatedData){
             res.redirect('/admin/couponList')
         }
@@ -793,7 +777,7 @@ const deleteImage = async( req, res)=>{
     try {
         
         const imgId = req.params.imgid
-        console.log(imgId);
+
         const prodid = req.params.prodid
         fs.unlink(path.join(__dirname,'../public/Images',imgId),()=>{})
         const productImg = await Product.updateOne({_id:prodid},{$pull:{Image:imgId}})
@@ -812,11 +796,11 @@ const updateImage = async( req, res)=>{
     try {
         
         const id= req.params.id
-        console.log(id);
+
         const proData= await Product.findOne({_id:id})
-        console.log(proData);
+
         imagelength = proData.Image.length
-        console.log(imagelength);
+
         if (imagelength<=4) {
             let images =[]
             for(file of req.files){
@@ -1000,8 +984,10 @@ const previewProduct = async(req,res)=>{
 
 const salesReport  =  async(req,res)=>{
     try {
-        
-        res.render('salesReport')
+        const saleData = await Order.find({
+            orderStatus:'delivered',
+        })
+        res.render('salesReport',{saleData})
 
     } catch (error) {
         console.log(error.message);
@@ -1067,7 +1053,7 @@ const addOfferManagement = async(req,res) => {
 const deleteOfferManagement = async(req,res) => { 
     try{
         const productId = req.body.productId
-        console.log(productId);
+
         const productData = await Product.findOne({_id:productId})
         if(productData.offer.offerStatus == false){
             // let amount = productData.price -((productData.price/ 100)* productData.offer.offerPercentage)
